@@ -4,7 +4,7 @@ set -euo pipefail
 export VLLM_TORCH_COMPILE_LEVEL=1
 export VLLM_ATTENTION_BACKEND=TRITON_ATTN_VLLM_V1
 
-source /home/p/ai/inference/backends/vllm/.venv/bin/activate
+source /home/p/ml/backends/vllm/.venv/bin/activate
 
 vllm serve openai/gpt-oss-20b \
     --host 0.0.0.0 \
@@ -25,4 +25,4 @@ vllm serve openai/gpt-oss-20b \
     --generation-config vllm \
     --override-generation-config '{"top_k": 0, "top_p": 1.0,  "min_p": 0.0, "temperature": 0.0}' \
     --enable-log-requests \
-    --chat-template /home/p/ai/inference/chat_template_gpt_oss_fixed_tools.jinja
+    --chat-template /home/p/ml/backends/chat_template_gpt_oss_fixed_tools.jinja

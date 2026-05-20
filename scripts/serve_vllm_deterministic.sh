@@ -4,7 +4,7 @@ set -euo pipefail
 export VLLM_TORCH_COMPILE_LEVEL=1
 export VLLM_ATTENTION_BACKEND=TRITON_ATTN_VLLM_V1
 
-source /home/p/ai/inference/backends/vllm/.venv/bin/activate
+source /home/p/ml/backends/vllm/.venv/bin/activate
 
 vllm serve openai/gpt-oss-20b \
     --host 0.0.0.0 \

@@ -9,7 +9,7 @@ set -euo pipefail
 --ctx_size 131072 \
 --parallel 1 \
 --flash-attn 'on' \
---model /home/p/ai/models/hub/models--ggml-org--gpt-oss-20b-GGUF/snapshots/e1dc459feff949ff451ce107337a2026daa80df8/gpt-oss-20b-mxfp4.gguf \
+--model /home/p/ml/models/gguf/gpt-oss-20b-mxfp4.gguf \
 --alias gpt-oss-20b \
 --jinja \
 --ubatch-size 2048 \

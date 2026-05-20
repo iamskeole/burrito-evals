@@ -12,7 +12,7 @@ set -euo pipefail
 --batch-size 2048 \
 --ubatch-size 512 \
 --flash-attn 'on' \
---model /home/p/ai/models/hub/models--ggml-org--gpt-oss-20b-GGUF/snapshots/e1dc459feff949ff451ce107337a2026daa80df8/gpt-oss-20b-mxfp4.gguf \
+--model /home/p/ml/models/gguf/gpt-oss-20b-mxfp4.gguf \
 --alias gpt-oss-20b \
 --jinja \
 --seed 69421337 \
