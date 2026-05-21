@@ -1,12 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
 export VLLM_TORCH_COMPILE_LEVEL=1
 export VLLM_ATTENTION_BACKEND=TRITON_ATTN_VLLM_V1
 
-source /home/p/ml/backends/vllm/.venv/bin/activate
-
-vllm serve openai/gpt-oss-20b \
+/home/p/ml/backends/vllm/.venv/bin/vllm serve openai/gpt-oss-20b \
     --host 0.0.0.0 \
     --port 9999 \
     --served-model-name "openai/gpt-oss-20b" "openai-gpt-oss-20b-chat" "openai-gpt-oss-20b-responses" \

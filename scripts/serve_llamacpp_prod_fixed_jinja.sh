@@ -1,7 +1,7 @@
-#!/usr/bin/env sh
+#!/bin/bash
 set -euo pipefail
 
-/home/p/ai/inference/backends/llama.cpp/build/bin/llama-server \
+/home/p/ml/backends/llama.cpp/build/bin/llama-server \
 --threads 16 \
 --n-gpu-layers 999 \
 --host 0.0.0.0 \
@@ -9,7 +9,7 @@ set -euo pipefail
 --ctx_size 131072 \
 --parallel 1 \
 --flash-attn 'on' \
---model /home/p/ml/models/gguf/gpt-oss-20b-mxfp4.gguf \
+--model /home/p/ml/models/gguf/ggml-org--gpt-oss-20b-mxfp4.gguf \
 --alias gpt-oss-20b \
 --jinja \
 --ubatch-size 2048 \

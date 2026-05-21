@@ -1,2 +1,2 @@
-llama.cpp ==
-vllm ==
+llama.cpp == commit 3a479c913
+vllm == v0.21.0

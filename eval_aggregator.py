@@ -101,7 +101,7 @@ class EvalAggregator:
                 ),
             )
         with open(self.out_csv, "w", newline="", encoding="utf-8") as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=headers)
+            writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=",")
             writer.writeheader()
             writer.writerows(rows)
         print(f"Aggregated {len(rows)} rows to {self.out_csv}", flush=True)
@@ -386,7 +386,7 @@ if __name__ == "__main__":
                 all_keys.update(r.keys())
             headers = COLUMN_ORDER
             with open(out_csv, "w", newline="", encoding="utf-8") as csvfile:
-                writer = csv.DictWriter(csvfile, fieldnames=headers)
+                writer = csv.DictWriter(csvfile, fieldnames=headers, delimiter=",")
                 writer.writeheader()
                 writer.writerows(rows)
             print(f"Aggregated {len(rows)} rows to {out_csv}", flush=True)
