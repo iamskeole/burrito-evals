@@ -1,2 +1,6 @@
 llama.cpp == commit 3a479c913
 vllm == v0.21.0
+
+# datestrings
+- baseline seed gpt_oss: 2026-05-22
+- baseline seed bfcl_v4: 2026-05-24

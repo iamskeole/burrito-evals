@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": "", "input_token_count": 490, "output_token_count": 56, "latency": 0.4733259677886963}
+{"id": "simple_javascript_1", "result": "", "input_token_count": 579, "output_token_count": 226, "latency": 1.571885585784912}
+{"id": "simple_javascript_2", "result": "", "input_token_count": 644, "output_token_count": 264, "latency": 1.8327243328094482}
+{"id": "simple_javascript_3", "result": "", "input_token_count": 581, "output_token_count": 187, "latency": 1.3310670852661133}
+{"id": "simple_javascript_4", "result": "", "input_token_count": 501, "output_token_count": 45, "latency": 0.40659236907958984}
+{"id": "simple_javascript_5", "result": "", "input_token_count": 775, "output_token_count": 487, "latency": 3.2283806800842285}
+{"id": "simple_javascript_6", "result": "", "input_token_count": 516, "output_token_count": 125, "latency": 0.9017937183380127}
+{"id": "simple_javascript_7", "result": "", "input_token_count": 550, "output_token_count": 183, "latency": 1.2919180393218994}
+{"id": "simple_javascript_8", "result": "", "input_token_count": 495, "output_token_count": 56, "latency": 0.4712653160095215}
+{"id": "simple_javascript_9", "result": "I\u2019m unable to call `validateApiResponse` because the actual JSON payload (`responseData`) hasn\u2019t been provided. Please supply the JSON string you\u2019d like to validate.", "input_token_count": 584, "output_token_count": 331, "latency": 2.2296721935272217}
+{"id": "simple_javascript_10", "result": "[fetchSalesDepartmentRecords(databaseName='employeeRecords', queryFunction='getSales')]", "input_token_count": 545, "output_token_count": 215, "latency": 1.4865257740020752}
+{"id": "simple_javascript_11", "result": "I need the actual list of items (the array of objects) to perform the sorting.", "input_token_count": 588, "output_token_count": 247, "latency": 1.7040050029754639}
+{"id": "simple_javascript_12", "result": "", "input_token_count": 723, "output_token_count": 319, "latency": 2.182710886001587}
+{"id": "simple_javascript_13", "result": "", "input_token_count": 623, "output_token_count": 449, "latency": 2.9750277996063232}
+{"id": "simple_javascript_14", "result": "[chartDataAccessorFactory(chart={\"nm\":\"BarChart\",\"mn\":\"chartModule\"}, library=\"visualizationLibrary\", configObject=\"config\")]", "input_token_count": 673, "output_token_count": 277, "latency": 1.9069325923919678}
+{"id": "simple_javascript_15", "result": "", "input_token_count": 631, "output_token_count": 416, "latency": 2.7812750339508057}
+{"id": "simple_javascript_16", "result": "", "input_token_count": 591, "output_token_count": 182, "latency": 1.3027498722076416}
+{"id": "simple_javascript_17", "result": "", "input_token_count": 629, "output_token_count": 173, "latency": 1.2652919292449951}
+{"id": "simple_javascript_18", "result": "", "input_token_count": 554, "output_token_count": 184, "latency": 1.2954010963439941}
+{"id": "simple_javascript_19", "result": "", "input_token_count": 582, "output_token_count": 467, "latency": 3.0737192630767822}
+{"id": "simple_javascript_20", "result": "", "input_token_count": 569, "output_token_count": 165, "latency": 1.184844970703125}
+{"id": "simple_javascript_21", "result": "I need the list of product objects (in JavaScript array format) to search for the product with `productId` equal to 123.", "input_token_count": 506, "output_token_count": 523, "latency": 3.3821611404418945}
+{"id": "simple_javascript_22", "result": "", "input_token_count": 436, "output_token_count": 58, "latency": 0.4739093780517578}
+{"id": "simple_javascript_23", "result": "", "input_token_count": 632, "output_token_count": 261, "latency": 1.8180646896362305}
+{"id": "simple_javascript_24", "result": "", "input_token_count": 479, "output_token_count": 202, "latency": 1.3785693645477295}
+{"id": "simple_javascript_25", "result": "", "input_token_count": 545, "output_token_count": 176, "latency": 1.248610258102417}
+{"id": "simple_javascript_26", "result": "", "input_token_count": 553, "output_token_count": 185, "latency": 1.3022770881652832}
+{"id": "simple_javascript_27", "result": "", "input_token_count": 559, "output_token_count": 96, "latency": 0.7539858818054199}
+{"id": "simple_javascript_28", "result": "", "input_token_count": 518, "output_token_count": 877, "latency": 5.602281808853149}
+{"id": "simple_javascript_29", "result": "", "input_token_count": 579, "output_token_count": 338, "latency": 2.2656524181365967}
+{"id": "simple_javascript_30", "result": "", "input_token_count": 539, "output_token_count": 58, "latency": 0.5096921920776367}
+{"id": "simple_javascript_31", "result": "", "input_token_count": 497, "output_token_count": 74, "latency": 0.5856001377105713}
+{"id": "simple_javascript_32", "result": "", "input_token_count": 620, "output_token_count": 87, "latency": 0.7241449356079102}
+{"id": "simple_javascript_33", "result": "", "input_token_count": 612, "output_token_count": 207, "latency": 1.4670970439910889}
+{"id": "simple_javascript_34", "result": "", "input_token_count": 530, "output_token_count": 92, "latency": 0.7181639671325684}
+{"id": "simple_javascript_35", "result": "I need the actual TypeScript declaration objects for `parameterObject` and `variableDeclarationObject` in order to compare their declaration flags. Could you provide those objects?", "input_token_count": 534, "output_token_count": 400, "latency": 2.6381492614746094}
+{"id": "simple_javascript_36", "result": "I need the node representation (the break node in your AST) in order to update its label.", "input_token_count": 513, "output_token_count": 335, "latency": 2.2094037532806396}
+{"id": "simple_javascript_37", "result": "", "input_token_count": 585, "output_token_count": 237, "latency": 1.643805980682373}
+{"id": "simple_javascript_38", "result": "", "input_token_count": 526, "output_token_count": 242, "latency": 1.647052526473999}
+{"id": "simple_javascript_39", "result": "", "input_token_count": 548, "output_token_count": 212, "latency": 1.4637656211853027}
+{"id": "simple_javascript_40", "result": "", "input_token_count": 627, "output_token_count": 655, "latency": 4.265570878982544}
+{"id": "simple_javascript_41", "result": "", "input_token_count": 570, "output_token_count": 90, "latency": 0.7213106155395508}
+{"id": "simple_javascript_42", "result": "", "input_token_count": 585, "output_token_count": 712, "latency": 4.606379985809326}
+{"id": "simple_javascript_43", "result": "", "input_token_count": 554, "output_token_count": 209, "latency": 1.4516420364379883}
+{"id": "simple_javascript_44", "result": "", "input_token_count": 562, "output_token_count": 207, "latency": 1.442094326019287}
+{"id": "simple_javascript_45", "result": "", "input_token_count": 575, "output_token_count": 188, "latency": 1.3324170112609863}
+{"id": "simple_javascript_46", "result": "", "input_token_count": 571, "output_token_count": 309, "latency": 2.0784780979156494}
+{"id": "simple_javascript_47", "result": "", "input_token_count": 536, "output_token_count": 72, "latency": 0.5977401733398438}
+{"id": "simple_javascript_48", "result": "I need the actual `oldVirtualNode` and `newVirtualNode` values to call `updateDOMListeners`.", "input_token_count": 530, "output_token_count": 191, "latency": 1.332975149154663}
+{"id": "simple_javascript_49", "result": "", "input_token_count": 512, "output_token_count": 517, "latency": 3.3420886993408203}
