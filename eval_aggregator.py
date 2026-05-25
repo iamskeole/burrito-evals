@@ -149,6 +149,8 @@ class BFCLAggregator(EvalAggregator):
         if self.BFCL_DIR is None:
             return data_rows
         for run_path in self.BFCL_DIR.iterdir():
+            if "__discard" in run_path.name:
+                continue
             if not run_path.is_dir():
                 continue
             meta = self.parse_run_dir(run_path.name)
@@ -367,9 +369,15 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) < 2:
-        print("usage: python aggregator.py bfcl_v4|gpt_oss|all", flush=True)
-        exit(1)
-    eval_name = sys.argv[1]
+        print(
+            (
+                "usage: python aggregator.py bfcl_v4|gpt_oss|all. "
+                "No eval name provided, defaulting to all."
+            ), flush=True
+        )
+        eval_name = "all"
+    else:
+        eval_name = sys.argv[1]
     base = Path(__file__).parent / "data"
     os.makedirs(base, exist_ok=True)
     if eval_name == "all":
