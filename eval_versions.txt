@@ -2,6 +2,31 @@ llama.cpp == commit 3a479c913
 vllm == v0.21.0
 
 # datestrings
-- baseline seed gpt_oss: 2026-05-22
-- baseline seed bfcl_v4: 2026-05-24
-- bfcl_v4 multiseed, prod like setup: 2026-05-25 (llama.cpp, tbd vllm)
+
+- [llama.cpp] baseline seed gpt_oss: 2026-05-22
+- [vllm] baseline seed gpt_oss: 2026-05-22
+
+- [llama.cpp] baseline seed bfcl_v4: 2026-05-24
+- [vllm] baseline seed bfcl_v4: 2026-05-24
+
+// probably not relevant for direct comparison burrito vs backend since 
+// backend is likely to go over 24 hours, but will be relevant for 
+// future comparisons burrito vs burrito to reproduce results
+
+------------------------------------------------------
+# bfcl_v4   llama.cpp
+------------------------------------------------------
+- bfcl_v4   llama.cpp   chat        fc-0    2026-05-25
+- bfcl_v4   llama.cpp   responses   fc-0    2026-05-25
+------------------------------------------------------
+- bfcl_v4   llama.cpp   chat        fc-1    tbd
+- bfcl_v4   llama.cpp   responses   fc-1    tbd
+
+------------------------------------------------------
+# bfcl_v4   vllm
+------------------------------------------------------
+- bfcl_v4   vllm        chat        fc-0    tbd
+- bfcl_v4   vllm        responses   fc-0    tbd
+------------------------------------------------------
+- bfcl_v4   vllm        chat        fc-1    tbd
+- bfcl_v4   vllm        responses   fc-1    tbd
