@@ -18,14 +18,12 @@ export FAKETIME="2026-05-25 00:00:00"
 --model /home/p/ml/models/gguf/ggml-org--gpt-oss-20b-mxfp4.gguf \
 --alias gpt-oss-20b \
 --jinja \
---seed 69421337 \
 --top_k 0 \
 --top_p 1.0 \
 --min_p 0.0 \
---temp 0.0 \
+--temp 1.0 \
 --samplers 'top_k;top_p;min_p;temperature' \
 --no-cache-prompt \
 --ctx-checkpoints 0 \
 --cache-ram 0 \
---chat-template-kwargs '{"reasoning_effort": "medium"}' \
---chat-template-file /home/p/ml/backends/chat_template_gpt_oss_fixed_tools.jinja
+--chat-template-kwargs '{"reasoning_effort": "medium"}'

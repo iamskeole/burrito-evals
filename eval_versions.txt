@@ -3,29 +3,45 @@ vllm == v0.21.0
 
 # datestrings
 
-- [llama.cpp] baseline seed gpt_oss: 2026-05-22
-- [vllm] baseline seed gpt_oss: 2026-05-22
-
-- [llama.cpp] baseline seed bfcl_v4: 2026-05-24
-- [vllm] baseline seed bfcl_v4: 2026-05-24
-
-// probably not relevant for direct comparison burrito vs backend since 
-// backend is likely to go over 24 hours, but will be relevant for 
-// future comparisons burrito vs burrito to reproduce results
+(baseline only live_relevance, simple_javascript; irrelevance is broken, not using it [even jibberish makes it pass])
+------------------------------------------------------
+# bfcl_v4   llama.cpp baseline seed (69421337)
+------------------------------------------------------
+- default jinja 2026-05-25
+- fixed jinja   2026-05-25
 
 ------------------------------------------------------
-# bfcl_v4   llama.cpp
+# bfcl_v4   vllm baseline seed (69421337)
 ------------------------------------------------------
-- bfcl_v4   llama.cpp   chat        fc-0    2026-05-25
-- bfcl_v4   llama.cpp   responses   fc-0    2026-05-25
+- default jinja 2026-05-25
+- fixed jinja   2026-05-25
+
+------------------------------------------------------
+# gpt_oss   llama.cpp baseline seed (69421337)
+------------------------------------------------------
+- default jinja 2026-05-??
+- fixed jinja   2026-05-??
+
+------------------------------------------------------
+# gpt_oss   vllm baseline seed (69421337)
+------------------------------------------------------
+- default jinja 2026-05-??
+- fixed jinja   2026-05-??
+
+
+------------------------------------------------------
+# bfcl_v4   llama.cpp multiseed
+------------------------------------------------------
+- bfcl_v4   llama.cpp   chat        fc-0    tbd (2026-05-26?)
+- bfcl_v4   llama.cpp   responses   fc-0    tbd
 ------------------------------------------------------
 - bfcl_v4   llama.cpp   chat        fc-1    tbd
 - bfcl_v4   llama.cpp   responses   fc-1    tbd
 
 ------------------------------------------------------
-# bfcl_v4   vllm
+# bfcl_v4   vllm multiseed
 ------------------------------------------------------
-- bfcl_v4   vllm        chat        fc-0    tbd
+- bfcl_v4   vllm        chat        fc-0    tbd (2026-05-27? with timezone set to pago pago to get more hours in a day?)
 - bfcl_v4   vllm        responses   fc-0    tbd
 ------------------------------------------------------
 - bfcl_v4   vllm        chat        fc-1    tbd

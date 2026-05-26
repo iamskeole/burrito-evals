@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-export VLLM_TORCH_COMPILE_LEVEL=3
+export VLLM_TORCH_COMPILE_LEVEL=1
 export VLLM_ATTENTION_BACKEND=TRITON_ATTN_VLLM_V1
 
 export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1
@@ -17,11 +17,12 @@ export FAKETIME="2026-05-25 00:00:00"
     --reasoning-parser openai_gptoss \
     --enable-auto-tool-choice \
     --quantization mxfp4 \
-    --max-num-batched-tokens 2048 \
-    --max-num-seqs 128 \
-    --max-cudagraph-capture-size 128 \
+    --max-num-batched-tokens 32 \
+    --max-num-seqs 1 \
+    --max-cudagraph-capture-size 1 \
     --gpu-memory-utilization 0.90 \
+    --seed 69421337 \
+    --disable-custom-all-reduce \
     --no-enable-prefix-caching \
     --generation-config vllm \
-    --override-generation-config '{"top_k": 0, "top_p": 1.0, "min_p": 0.0, "temperature": 1.0}' \
-    --chat-template /home/p/ml/backends/chat_template_gpt_oss_fixed_tools.jinja
+    --override-generation-config '{"top_k": 0, "top_p": 1.0,  "min_p": 0.0, "temperature": 0.0}'

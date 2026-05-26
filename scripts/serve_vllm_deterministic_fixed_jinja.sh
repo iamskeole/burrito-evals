@@ -4,7 +4,11 @@ set -euo pipefail
 export VLLM_TORCH_COMPILE_LEVEL=1
 export VLLM_ATTENTION_BACKEND=TRITON_ATTN_VLLM_V1
 
+export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1
+export FAKETIME="2026-05-25 00:00:00"
+
 /home/p/ml/backends/vllm/.venv/bin/vllm serve openai/gpt-oss-20b \
+    --enable-log-requests \
     --host 0.0.0.0 \
     --port 9999 \
     --served-model-name "openai/gpt-oss-20b" "openai-gpt-oss-20b-chat" "openai-gpt-oss-20b-responses" \
@@ -22,5 +26,4 @@ export VLLM_ATTENTION_BACKEND=TRITON_ATTN_VLLM_V1
     --no-enable-prefix-caching \
     --generation-config vllm \
     --override-generation-config '{"top_k": 0, "top_p": 1.0,  "min_p": 0.0, "temperature": 0.0}' \
-    --enable-log-requests \
     --chat-template /home/p/ml/backends/chat_template_gpt_oss_fixed_tools.jinja

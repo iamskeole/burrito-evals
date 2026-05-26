@@ -23,5 +23,5 @@ export FAKETIME="2026-05-25 00:00:00"
     --gpu-memory-utilization 0.90 \
     --no-enable-prefix-caching \
     --generation-config vllm \
-    --override-generation-config '{"top_k": 0, "top_p": 1.0, "min_p": 0.0, "temperature": 1.0}' \
-    --chat-template /home/p/ml/backends/chat_template_gpt_oss_fixed_tools.jinja
+    --override-generation-config '{"top_k": 0, "top_p": 1.0, "min_p": 0.0, "temperature": 1.0}'
+    
