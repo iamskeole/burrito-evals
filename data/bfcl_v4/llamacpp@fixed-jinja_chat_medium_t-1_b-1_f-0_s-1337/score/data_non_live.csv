@@ -1,0 +1,2 @@
+Rank,Model,Non-Live Overall Acc,AST Summary,Simple AST,Python Simple AST,Java Simple AST,JavaScript Simple AST,Multiple AST,Parallel AST,Parallel Multiple AST,Irrelevance Detection
+1,gpt-oss:20b (Chat Completions API - Prompt),13.23%,N/A,52.92%,43.75%,57.00%,58.00%,N/A,N/A,N/A,93.75%

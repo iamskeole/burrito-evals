@@ -42,6 +42,7 @@ COLUMN_ORDER: list[str] = [
     "input_token_count",
     "output_token_count",
     "latency",
+    "is_error",
     "correct",
 ]
 
@@ -142,6 +143,7 @@ class BFCLAggregator(EvalAggregator):
             "seed": seed,
             "browser_enabled": 0,
             "python_enabled": 0,
+            "is_error": 0,
         }
 
     def collect_rows(self):
@@ -237,6 +239,7 @@ class BFCLAggregator(EvalAggregator):
                                     **obj,
                                     "test_id": test_id,
                                     "test_name": test_name,
+                                    "is_error": int(obj["latency"] is None)
                                 }
                                 data_rows.append(row)
         return data_rows
@@ -276,6 +279,7 @@ class GPTOSSAggregator(EvalAggregator):
             "python_enabled": python_enabled,
             "seed": seed,
             "fc_model": 1,  # as per requirement
+            "is_error": 0,
         }
 
     def collect_rows(self):

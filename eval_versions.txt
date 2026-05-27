@@ -3,46 +3,5 @@ vllm == v0.21.0
 
 # datestrings
 
-(baseline only live_relevance, simple_javascript; irrelevance is broken, not using it [even jibberish makes it pass])
-------------------------------------------------------
-# bfcl_v4   llama.cpp baseline seed (69421337)
-------------------------------------------------------
-- default jinja 2026-05-25
-- fixed jinja   2026-05-25
-
-------------------------------------------------------
-# bfcl_v4   vllm baseline seed (69421337)
-------------------------------------------------------
-- default jinja 2026-05-25
-- fixed jinja   2026-05-25
-
-------------------------------------------------------
-# gpt_oss   llama.cpp baseline seed (69421337)
-------------------------------------------------------
-- default jinja 2026-05-??
-- fixed jinja   2026-05-??
-
-------------------------------------------------------
-# gpt_oss   vllm baseline seed (69421337)
-------------------------------------------------------
-- default jinja 2026-05-??
-- fixed jinja   2026-05-??
-
-
-------------------------------------------------------
-# bfcl_v4   llama.cpp multiseed
-------------------------------------------------------
-- bfcl_v4   llama.cpp   chat        fc-0    tbd (2026-05-26?)
-- bfcl_v4   llama.cpp   responses   fc-0    tbd
-------------------------------------------------------
-- bfcl_v4   llama.cpp   chat        fc-1    tbd
-- bfcl_v4   llama.cpp   responses   fc-1    tbd
-
-------------------------------------------------------
-# bfcl_v4   vllm multiseed
-------------------------------------------------------
-- bfcl_v4   vllm        chat        fc-0    tbd (2026-05-27? with timezone set to pago pago to get more hours in a day?)
-- bfcl_v4   vllm        responses   fc-0    tbd
-------------------------------------------------------
-- bfcl_v4   vllm        chat        fc-1    tbd
-- bfcl_v4   vllm        responses   fc-1    tbd
+export FAKETIME="2026-05-25 00:00:00"
+export SYSTEM_MESSAGE_DATE_CONFIG="2026-05-25"
