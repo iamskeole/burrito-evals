@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": "", "input_token_count": 489, "output_token_count": 106, "latency": 0.9534223079681396}
+{"id": "simple_javascript_1", "result": "", "input_token_count": 578, "output_token_count": 115, "latency": 1.0628986358642578}
+{"id": "simple_javascript_2", "result": "[extractLastTransactionId(filepath=\"/var/log/db.log\", status=[\"completed\",\"failed\"], encoding=\"utf-8\", processFunction=\"processTransaction\")]", "input_token_count": 643, "output_token_count": 495, "latency": 3.5098419189453125}
+{"id": "simple_javascript_3", "result": "", "input_token_count": 580, "output_token_count": 279, "latency": 2.0862624645233154}
+{"id": "simple_javascript_4", "result": "", "input_token_count": 500, "output_token_count": 112, "latency": 0.9913020133972168}
+{"id": "simple_javascript_5", "result": "", "input_token_count": 774, "output_token_count": 687, "latency": 4.804233074188232}
+{"id": "simple_javascript_6", "result": "[mapTransitions(category=\"transition\", limit=\"4\")]", "input_token_count": 515, "output_token_count": 213, "latency": 1.636206865310669}
+{"id": "simple_javascript_7", "result": "", "input_token_count": 549, "output_token_count": 124, "latency": 1.0948407649993896}
+{"id": "simple_javascript_8", "result": "", "input_token_count": 494, "output_token_count": 128, "latency": 1.0902323722839355}
+{"id": "simple_javascript_9", "result": "[validateApiResponse(jsonPayload=\"responseData\", keyToCheck=\"expectedKey\", processingCallback=\"processingCallBack\")]", "input_token_count": 583, "output_token_count": 282, "latency": 2.1149778366088867}
+{"id": "simple_javascript_10", "result": "[fetchSalesDepartmentRecords(databaseName=\"employeeRecords\", queryFunction=\"getSales\")]", "input_token_count": 544, "output_token_count": 247, "latency": 1.8647677898406982}
+{"id": "simple_javascript_11", "result": "[prioritizeAndSort(items=myItemList, priorityStatus='urgent', ascending=\"true\")]", "input_token_count": 587, "output_token_count": 635, "latency": 4.358335494995117}
+{"id": "simple_javascript_12", "result": "", "input_token_count": 722, "output_token_count": 426, "latency": 3.100130558013916}
+{"id": "simple_javascript_13", "result": "", "input_token_count": 622, "output_token_count": 539, "latency": 3.7636051177978516}
+{"id": "simple_javascript_14", "result": "[chartDataAccessorFactory(chart={\"nm\":\"BarChart\",\"mn\":\"chartModule\"}, library=\"visualizationLibrary\", configObject=\"config\")]", "input_token_count": 672, "output_token_count": 342, "latency": 2.534777879714966}
+{"id": "simple_javascript_15", "result": "[ChartSeriesGenerator(labels=\"axisLabelsArray\", data=\"dataPointsArray\", color=\"defaultColor\", chartLayout=\"chartLayoutObject\")]", "input_token_count": 630, "output_token_count": 379, "latency": 2.7446448802948}
+{"id": "simple_javascript_16", "result": "[rotateVertices(vertices=\"[[10,15],[20,25]]\", pivot=\"[12,17]\", angle=\"30\")]", "input_token_count": 590, "output_token_count": 146, "latency": 1.2582800388336182}
+{"id": "simple_javascript_17", "result": "[generateNotificationHandler(app=\"app\", priorityLevel=\"3\", messagingService=\"messagingSvc\", notificationType=\"2\")]", "input_token_count": 628, "output_token_count": 212, "latency": 1.6955413818359375}
+{"id": "simple_javascript_18", "result": "I need a numeric value for gravity\u202f(g) in order to calculate the final velocity.", "input_token_count": 553, "output_token_count": 525, "latency": 3.636216640472412}
+{"id": "simple_javascript_19", "result": "", "input_token_count": 581, "output_token_count": 248, "latency": 1.8946049213409424}
+{"id": "simple_javascript_20", "result": "[buttonAddClickHandler(element=\"myButton\", callback=\"handleButtonClick\", options='{\"stopPropagation\": true}')]", "input_token_count": 568, "output_token_count": 214, "latency": 1.6663925647735596}
+{"id": "simple_javascript_21", "result": "I need the list of product objects (as a JavaScript array string) to locate the product with `productId` 123.", "input_token_count": 505, "output_token_count": 482, "latency": 3.3222224712371826}
+{"id": "simple_javascript_22", "result": "", "input_token_count": 435, "output_token_count": 71, "latency": 0.693305492401123}
+{"id": "simple_javascript_23", "result": "", "input_token_count": 631, "output_token_count": 402, "latency": 2.8935487270355225}
+{"id": "simple_javascript_24", "result": "[getUniqueSorted(array=\"[3,1,2,1,4,3]\")]", "input_token_count": 478, "output_token_count": 263, "latency": 1.9233508110046387}
+{"id": "simple_javascript_25", "result": "[trackSubmitWithValidation(obj=\"formHandler\", validationFlags=\"['isRequired', 'isValidEmail']\")]", "input_token_count": 544, "output_token_count": 648, "latency": 4.399649620056152}
+{"id": "simple_javascript_26", "result": "", "input_token_count": 552, "output_token_count": 163, "latency": 1.341111421585083}
+{"id": "simple_javascript_27", "result": "", "input_token_count": 558, "output_token_count": 146, "latency": 1.2354555130004883}
+{"id": "simple_javascript_28", "result": "", "input_token_count": 517, "output_token_count": 435, "latency": 3.0414822101593018}
+{"id": "simple_javascript_29", "result": "", "input_token_count": 578, "output_token_count": 364, "latency": 2.6367075443267822}
+{"id": "simple_javascript_30", "result": "", "input_token_count": 538, "output_token_count": 214, "latency": 1.650578260421753}
+{"id": "simple_javascript_31", "result": "[transformAllDecoratorsOfDeclaration(node='myNode', container='myContainer')]", "input_token_count": 496, "output_token_count": 104, "latency": 0.9359531402587891}
+{"id": "simple_javascript_32", "result": "", "input_token_count": 619, "output_token_count": 251, "latency": 1.938826084136963}
+{"id": "simple_javascript_33", "result": "", "input_token_count": 611, "output_token_count": 322, "latency": 2.385849714279175}
+{"id": "simple_javascript_34", "result": "", "input_token_count": 529, "output_token_count": 217, "latency": 1.6662065982818604}
+{"id": "simple_javascript_35", "result": "The question lacks the required parameters left and right.", "input_token_count": 533, "output_token_count": 620, "latency": 4.2194085121154785}
+{"id": "simple_javascript_36", "result": "I need the representation of the break node (e.g., its JavaScript object string) in order to call `updateBreak`.", "input_token_count": 512, "output_token_count": 179, "latency": 1.4166688919067383}
+{"id": "simple_javascript_37", "result": "[addInitializedPropertyStatements(statements=shapeStatements, property=['width', 'height'], receiver='shape')]", "input_token_count": 584, "output_token_count": 444, "latency": 3.1295325756073}
+{"id": "simple_javascript_38", "result": "", "input_token_count": 525, "output_token_count": 758, "latency": 5.094927549362183}
+{"id": "simple_javascript_39", "result": "[maybeAddJsSyntheticRestParameter(declaration=funcDeclaration, parameters=funcParameters)]", "input_token_count": 547, "output_token_count": 404, "latency": 2.864131450653076}
+{"id": "simple_javascript_40", "result": "", "input_token_count": 626, "output_token_count": 600, "latency": 4.1532299518585205}
+{"id": "simple_javascript_41", "result": "", "input_token_count": 569, "output_token_count": 238, "latency": 1.8269999027252197}
+{"id": "simple_javascript_42", "result": "", "input_token_count": 584, "output_token_count": 552, "latency": 3.824808359146118}
+{"id": "simple_javascript_43", "result": "", "input_token_count": 553, "output_token_count": 293, "latency": 2.159604549407959}
+{"id": "simple_javascript_44", "result": "[skipThrough(node='currentNode', st='nodeState', c='processNode')]", "input_token_count": 561, "output_token_count": 280, "latency": 2.0863072872161865}
+{"id": "simple_javascript_45", "result": "", "input_token_count": 574, "output_token_count": 565, "latency": 3.9000513553619385}
+{"id": "simple_javascript_46", "result": "", "input_token_count": 570, "output_token_count": 442, "latency": 3.1159238815307617}
+{"id": "simple_javascript_47", "result": "", "input_token_count": 535, "output_token_count": 111, "latency": 1.0123512744903564}
+{"id": "simple_javascript_48", "result": "I need the string representations of both `oldVirtualNode` and `newVirtualNode` to call `updateDOMListeners`.", "input_token_count": 529, "output_token_count": 432, "latency": 3.0337090492248535}
+{"id": "simple_javascript_49", "result": "", "input_token_count": 511, "output_token_count": 241, "latency": 1.8113775253295898}

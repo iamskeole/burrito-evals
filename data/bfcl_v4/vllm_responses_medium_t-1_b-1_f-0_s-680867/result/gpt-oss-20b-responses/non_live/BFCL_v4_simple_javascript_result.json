@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": "", "input_token_count": 489, "output_token_count": 59, "latency": 0.6487088203430176}
+{"id": "simple_javascript_1", "result": "", "input_token_count": 578, "output_token_count": 118, "latency": 1.0791254043579102}
+{"id": "simple_javascript_2", "result": "", "input_token_count": 643, "output_token_count": 342, "latency": 2.538916826248169}
+{"id": "simple_javascript_3", "result": "", "input_token_count": 580, "output_token_count": 90, "latency": 0.8994266986846924}
+{"id": "simple_javascript_4", "result": "", "input_token_count": 500, "output_token_count": 54, "latency": 0.6238753795623779}
+{"id": "simple_javascript_5", "result": "[manageReactState(store='{\"initialState\": initialStateObject, \"reducers\": reducersMap, \"middlewares\": [loggerMiddleware], \"enhancers\": [\"applyMiddleware(\\'myMiddleWare\\')\"]}', context='{}', hooks='{\"useSelector\": useStateSelectorHook, \"dispatch\": useDispatchActionHook}')]", "input_token_count": 774, "output_token_count": 1118, "latency": 7.565490484237671}
+{"id": "simple_javascript_6", "result": "", "input_token_count": 515, "output_token_count": 88, "latency": 0.8531796932220459}
+{"id": "simple_javascript_7", "result": "", "input_token_count": 549, "output_token_count": 120, "latency": 1.0736744403839111}
+{"id": "simple_javascript_8", "result": "[doesEmailInputExist(formElem=\"emailForm\", inputName=\"emailAddress\")]", "input_token_count": 494, "output_token_count": 142, "latency": 1.1869683265686035}
+{"id": "simple_javascript_9", "result": "[validateApiResponse(jsonPayload=\"responseData\", keyToCheck=\"expectedKey\", processingCallback=\"processKeyFunction\")]", "input_token_count": 583, "output_token_count": 153, "latency": 1.306999683380127}
+{"id": "simple_javascript_10", "result": "[fetchSalesDepartmentRecords(databaseName=\"employeeRecords\", queryFunction=\"getSales\")]", "input_token_count": 544, "output_token_count": 262, "latency": 1.9551281929016113}
+{"id": "simple_javascript_11", "result": "I need the actual content of `myItemList` (the array of objects) in order to sort it.", "input_token_count": 587, "output_token_count": 766, "latency": 5.194585561752319}
+{"id": "simple_javascript_12", "result": "performDataFetch(apiEndpoint='https://api.example.com/data', requestConfig='{\"method\":\"GET\"}', expectedResponse='{\"key\":\"value\"}')", "input_token_count": 722, "output_token_count": 137, "latency": 1.2746293544769287}
+{"id": "simple_javascript_13", "result": "[DynamicChartGenerator(userData=\"userDataArray\", scalingFactor=\"3\", dashboard=\"dashboardElement\")]", "input_token_count": 622, "output_token_count": 423, "latency": 3.034156560897827}
+{"id": "simple_javascript_14", "result": "[chartDataAccessorFactory(chart='{\"nm\":\"BarChart\",\"mn\":\"chartModule\"}', library='visualizationLibrary', configObject='config')]", "input_token_count": 672, "output_token_count": 582, "latency": 4.0687456130981445}
+{"id": "simple_javascript_15", "result": "", "input_token_count": 630, "output_token_count": 725, "latency": 4.960037708282471}
+{"id": "simple_javascript_16", "result": "", "input_token_count": 590, "output_token_count": 149, "latency": 1.2848360538482666}
+{"id": "simple_javascript_17", "result": "", "input_token_count": 628, "output_token_count": 136, "latency": 1.2170507907867432}
+{"id": "simple_javascript_18", "result": "", "input_token_count": 553, "output_token_count": 189, "latency": 1.5176746845245361}
+{"id": "simple_javascript_19", "result": "[configureShaderMaterial(property='materialProps', textures='textureList', object3D='meshObject')]", "input_token_count": 581, "output_token_count": 263, "latency": 1.995131492614746}
+{"id": "simple_javascript_20", "result": "[buttonAddClickHandler(element='myButton', callback='handleButtonClick', options='{\"stopPropagation\": true}')]", "input_token_count": 568, "output_token_count": 150, "latency": 1.2706570625305176}
+{"id": "simple_javascript_21", "result": "[findProductById(products=\"[{productId:101, name:'Product A'}, {productId:123, name:'Product B'}, {productId:103, name:'Product C'}]\", id=\"123\")]", "input_token_count": 505, "output_token_count": 489, "latency": 3.378575325012207}
+{"id": "simple_javascript_22", "result": "[resetStateProperty(stateProperty=\"userSession\")]", "input_token_count": 435, "output_token_count": 93, "latency": 0.831475019454956}
+{"id": "simple_javascript_23", "result": "", "input_token_count": 631, "output_token_count": 222, "latency": 1.761155605316162}
+{"id": "simple_javascript_24", "result": "", "input_token_count": 478, "output_token_count": 567, "latency": 3.8504135608673096}
+{"id": "simple_javascript_25", "result": "", "input_token_count": 544, "output_token_count": 180, "latency": 1.4413261413574219}
+{"id": "simple_javascript_26", "result": "", "input_token_count": 552, "output_token_count": 66, "latency": 0.733269453048706}
+{"id": "simple_javascript_27", "result": "", "input_token_count": 558, "output_token_count": 69, "latency": 0.7575578689575195}
+{"id": "simple_javascript_28", "result": "", "input_token_count": 517, "output_token_count": 286, "latency": 2.097984552383423}
+{"id": "simple_javascript_29", "result": "", "input_token_count": 578, "output_token_count": 242, "latency": 1.8644931316375732}
+{"id": "simple_javascript_30", "result": "", "input_token_count": 538, "output_token_count": 110, "latency": 1.0021190643310547}
+{"id": "simple_javascript_31", "result": "", "input_token_count": 496, "output_token_count": 115, "latency": 1.0129482746124268}
+{"id": "simple_javascript_32", "result": "", "input_token_count": 619, "output_token_count": 100, "latency": 0.9967005252838135}
+{"id": "simple_javascript_33", "result": "[emitNewLineBeforeLeadingComments(lineMap='tsLineMap', writer='tsWriter', node='42', leadingComments='[]')]", "input_token_count": 611, "output_token_count": 239, "latency": 1.8709468841552734}
+{"id": "simple_javascript_34", "result": "", "input_token_count": 529, "output_token_count": 141, "latency": 1.1930620670318604}
+{"id": "simple_javascript_35", "result": "I cannot perform the comparison because the actual TypeScript declaration objects you want to compare were not provided.", "input_token_count": 533, "output_token_count": 599, "latency": 4.102898120880127}
+{"id": "simple_javascript_36", "result": "I need the node representation of the break node you want to update. Could you provide that?", "input_token_count": 512, "output_token_count": 403, "latency": 2.8355603218078613}
+{"id": "simple_javascript_37", "result": "", "input_token_count": 584, "output_token_count": 665, "latency": 4.548454999923706}
+{"id": "simple_javascript_38", "result": "", "input_token_count": 525, "output_token_count": 299, "latency": 2.186063766479492}
+{"id": "simple_javascript_39", "result": "", "input_token_count": 547, "output_token_count": 339, "latency": 2.4641900062561035}
+{"id": "simple_javascript_40", "result": "", "input_token_count": 626, "output_token_count": 302, "latency": 2.2614634037017822}
+{"id": "simple_javascript_41", "result": "", "input_token_count": 569, "output_token_count": 139, "latency": 1.2028112411499023}
+{"id": "simple_javascript_42", "result": "", "input_token_count": 584, "output_token_count": 489, "latency": 3.434051513671875}
+{"id": "simple_javascript_43", "result": "[invokeCallback(callback=\"processResult\", error=\"null\", value=\"Operation successful\")]", "input_token_count": 553, "output_token_count": 229, "latency": 1.7582314014434814}
+{"id": "simple_javascript_44", "result": "", "input_token_count": 561, "output_token_count": 64, "latency": 0.7255043983459473}
+{"id": "simple_javascript_45", "result": "", "input_token_count": 574, "output_token_count": 197, "latency": 1.566908597946167}
+{"id": "simple_javascript_46", "result": "", "input_token_count": 570, "output_token_count": 192, "latency": 1.5368597507476807}
+{"id": "simple_javascript_47", "result": "", "input_token_count": 535, "output_token_count": 72, "latency": 0.766566276550293}
+{"id": "simple_javascript_48", "result": "[updateDOMListeners(oldVnode=\"oldVirtualNode\", vnode=\"newVirtualNode\")]", "input_token_count": 529, "output_token_count": 131, "latency": 1.1263017654418945}
+{"id": "simple_javascript_49", "result": "", "input_token_count": 511, "output_token_count": 342, "latency": 2.4495432376861572}

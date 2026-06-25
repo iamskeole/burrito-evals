@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": "", "input_token_count": 489, "output_token_count": 66, "latency": 0.7029280662536621}
+{"id": "simple_javascript_1", "result": "", "input_token_count": 578, "output_token_count": 147, "latency": 1.258852243423462}
+{"id": "simple_javascript_2", "result": "", "input_token_count": 643, "output_token_count": 401, "latency": 2.9144558906555176}
+{"id": "simple_javascript_3", "result": "", "input_token_count": 580, "output_token_count": 133, "latency": 1.180053949356079}
+{"id": "simple_javascript_4", "result": "", "input_token_count": 500, "output_token_count": 54, "latency": 0.636542797088623}
+{"id": "simple_javascript_5", "result": "[manageReactState(store='{\"initialState\": initialStateObject, \"reducers\": reducersMap, \"middlewares\": [loggerMiddleware], \"enhancers\": [applyMiddleware(\"myMiddleWare\")]}' context='{}' hooks='{\"useStateSelector\": useStateSelectorHook, \"useDispatchAction\": useDispatchActionHook}')]]", "input_token_count": 774, "output_token_count": 740, "latency": 5.154060125350952}
+{"id": "simple_javascript_6", "result": "", "input_token_count": 515, "output_token_count": 109, "latency": 0.9890749454498291}
+{"id": "simple_javascript_7", "result": "[getNextKeyValues(ctx=\"dataAnalysisContext\", currentKey=\"userId\")]", "input_token_count": 549, "output_token_count": 192, "latency": 1.5415468215942383}
+{"id": "simple_javascript_8", "result": "", "input_token_count": 494, "output_token_count": 84, "latency": 0.8115968704223633}
+{"id": "simple_javascript_9", "result": "", "input_token_count": 583, "output_token_count": 409, "latency": 2.9203333854675293}
+{"id": "simple_javascript_10", "result": "", "input_token_count": 544, "output_token_count": 543, "latency": 3.7459218502044678}
+{"id": "simple_javascript_11", "result": "", "input_token_count": 587, "output_token_count": 332, "latency": 2.4412028789520264}
+{"id": "simple_javascript_12", "result": "", "input_token_count": 722, "output_token_count": 170, "latency": 1.4851267337799072}
+{"id": "simple_javascript_13", "result": "", "input_token_count": 622, "output_token_count": 953, "latency": 6.414855241775513}
+{"id": "simple_javascript_14", "result": "", "input_token_count": 672, "output_token_count": 93, "latency": 0.9677066802978516}
+{"id": "simple_javascript_15", "result": "[ChartSeriesGenerator(labels=\"axisLabelsArray\", data=\"dataPointsArray\", color=\"defaultColor\", chartLayout=\"chartLayoutObject\")]", "input_token_count": 630, "output_token_count": 616, "latency": 4.267007350921631}
+{"id": "simple_javascript_16", "result": "[rotateVertices(vertices=\"[[10,15],[20,25]]\", pivot=\"[12,17]\", angle=\"30\")]", "input_token_count": 590, "output_token_count": 160, "latency": 1.356194257736206}
+{"id": "simple_javascript_17", "result": "[generateNotificationHandler(app=\"app\", priorityLevel=\"3\", messagingService=\"messagingSvc\", notificationType=\"2\")]", "input_token_count": 628, "output_token_count": 161, "latency": 1.3718228340148926}
+{"id": "simple_javascript_18", "result": "The function requires a numeric value for gravity. Since the question only references \"g\" symbolically without specifying its numerical value, I cannot compute a final velocity.", "input_token_count": 553, "output_token_count": 200, "latency": 1.587756872177124}
+{"id": "simple_javascript_19", "result": "[configureShaderMaterial(property='materialProps', textures='textureList', object3D='meshObject')]", "input_token_count": 581, "output_token_count": 247, "latency": 1.8975975513458252}
+{"id": "simple_javascript_20", "result": "", "input_token_count": 568, "output_token_count": 135, "latency": 1.1743364334106445}
+{"id": "simple_javascript_21", "result": "[findProductById(products='[{productId:123, name:\"Product A\"},{productId:456, name:\"Product B\"},{productId:789, name:\"Product C\"}]', id='123')]", "input_token_count": 505, "output_token_count": 374, "latency": 2.6588284969329834}
+{"id": "simple_javascript_22", "result": "", "input_token_count": 435, "output_token_count": 42, "latency": 0.5142972469329834}
+{"id": "simple_javascript_23", "result": "[createAuthToken(username=\"johndoe\", validity=\"3600\", options='{\"issuer\":\"myapp.net\",\"role\":\"admin\",\"algorithm\":\"HS256\"}')]", "input_token_count": 631, "output_token_count": 184, "latency": 1.524940013885498}
+{"id": "simple_javascript_24", "result": "", "input_token_count": 478, "output_token_count": 238, "latency": 1.773979902267456}
+{"id": "simple_javascript_25", "result": "[trackSubmitWithValidation(obj=\"formHandler\", validationFlags=\"['isRequired', 'isValidEmail']\")]", "input_token_count": 544, "output_token_count": 334, "latency": 2.4168710708618164}
+{"id": "simple_javascript_26", "result": "", "input_token_count": 552, "output_token_count": 157, "latency": 1.3131186962127686}
+{"id": "simple_javascript_27", "result": "", "input_token_count": 558, "output_token_count": 130, "latency": 1.1393980979919434}
+{"id": "simple_javascript_28", "result": "", "input_token_count": 517, "output_token_count": 294, "latency": 2.159512519836426}
+{"id": "simple_javascript_29", "result": "", "input_token_count": 578, "output_token_count": 237, "latency": 1.8327584266662598}
+{"id": "simple_javascript_30", "result": "", "input_token_count": 538, "output_token_count": 62, "latency": 0.6998889446258545}
+{"id": "simple_javascript_31", "result": "[transformAllDecoratorsOfDeclaration(node='myNode', container='myContainer')]", "input_token_count": 496, "output_token_count": 102, "latency": 0.9284601211547852}
+{"id": "simple_javascript_32", "result": "", "input_token_count": 619, "output_token_count": 74, "latency": 0.8274178504943848}
+{"id": "simple_javascript_33", "result": "[emitNewLineBeforeLeadingComments(lineMap=\"tsLineMap\", writer=\"tsWriter\", node=\"42\")]", "input_token_count": 611, "output_token_count": 254, "latency": 1.954904556274414}
+{"id": "simple_javascript_34", "result": "", "input_token_count": 529, "output_token_count": 80, "latency": 0.8128452301025391}
+{"id": "simple_javascript_35", "result": "I need the string representations of the two declaration objects (`parameterObject` and `variableDeclarationObject`) to perform the comparison.", "input_token_count": 533, "output_token_count": 779, "latency": 5.239171504974365}
+{"id": "simple_javascript_36", "result": "I need the string representation of the break node you want to update in order to call the `updateBreak` function.", "input_token_count": 512, "output_token_count": 109, "latency": 0.9803578853607178}
+{"id": "simple_javascript_37", "result": "", "input_token_count": 584, "output_token_count": 138, "latency": 1.2181422710418701}
+{"id": "simple_javascript_38", "result": "", "input_token_count": 525, "output_token_count": 133, "latency": 1.150587558746338}
+{"id": "simple_javascript_39", "result": "", "input_token_count": 547, "output_token_count": 246, "latency": 1.87400221824646}
+{"id": "simple_javascript_40", "result": "", "input_token_count": 626, "output_token_count": 133, "latency": 1.205005168914795}
+{"id": "simple_javascript_41", "result": "", "input_token_count": 569, "output_token_count": 115, "latency": 1.0599141120910645}
+{"id": "simple_javascript_42", "result": "", "input_token_count": 584, "output_token_count": 569, "latency": 3.9495112895965576}
+{"id": "simple_javascript_43", "result": "", "input_token_count": 553, "output_token_count": 109, "latency": 1.0147993564605713}
+{"id": "simple_javascript_44", "result": "[skipThrough(node=\"currentNode\", st=\"nodeState\", c=\"processNode\")]", "input_token_count": 561, "output_token_count": 231, "latency": 1.7942628860473633}
+{"id": "simple_javascript_45", "result": "", "input_token_count": 574, "output_token_count": 304, "latency": 2.249401807785034}
+{"id": "simple_javascript_46", "result": "[vOe(r=\"packageInfo\", e=\"version\", t=\"1.2.3\")]", "input_token_count": 570, "output_token_count": 213, "latency": 1.6803059577941895}
+{"id": "simple_javascript_47", "result": "", "input_token_count": 535, "output_token_count": 72, "latency": 0.7652900218963623}
+{"id": "simple_javascript_48", "result": "[updateDOMListeners(oldVnode=oldVirtualNode, vnode=newVirtualNode)]", "input_token_count": 529, "output_token_count": 193, "latency": 1.5164201259613037}
+{"id": "simple_javascript_49", "result": "[convertEnumeratedValue(key=\"contenteditable\", value=\"plaintext-only\")]", "input_token_count": 511, "output_token_count": 222, "latency": 1.6945240497589111}

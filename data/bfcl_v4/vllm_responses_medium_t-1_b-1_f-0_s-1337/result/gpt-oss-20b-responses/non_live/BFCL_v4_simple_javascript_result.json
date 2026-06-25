@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": "[validateUserInput(inputField='userInputField', isComplete='true')]", "input_token_count": 489, "output_token_count": 212, "latency": 1.6239748001098633}
+{"id": "simple_javascript_1", "result": "[getActiveDataEntries(listElement='listElement')]", "input_token_count": 578, "output_token_count": 124, "latency": 1.1188979148864746}
+{"id": "simple_javascript_2", "result": "", "input_token_count": 643, "output_token_count": 844, "latency": 5.745354175567627}
+{"id": "simple_javascript_3", "result": "", "input_token_count": 580, "output_token_count": 299, "latency": 2.230241537094116}
+{"id": "simple_javascript_4", "result": "", "input_token_count": 500, "output_token_count": 54, "latency": 0.6341423988342285}
+{"id": "simple_javascript_5", "result": "", "input_token_count": 774, "output_token_count": 546, "latency": 3.9195547103881836}
+{"id": "simple_javascript_6", "result": "[mapTransitions(category='transition', limit='4')]", "input_token_count": 515, "output_token_count": 132, "latency": 1.1334593296051025}
+{"id": "simple_javascript_7", "result": "[getNextKeyValues(ctx=\"dataAnalysisContext\", currentKey=\"userId\")]", "input_token_count": 549, "output_token_count": 277, "latency": 2.0805838108062744}
+{"id": "simple_javascript_8", "result": "", "input_token_count": 494, "output_token_count": 142, "latency": 1.1904118061065674}
+{"id": "simple_javascript_9", "result": "[validateApiResponse(jsonPayload=\"responseData\", keyToCheck=\"expectedKey\", processingCallback=\"processKeyFunction\")]", "input_token_count": 583, "output_token_count": 237, "latency": 1.8386964797973633}
+{"id": "simple_javascript_10", "result": "", "input_token_count": 544, "output_token_count": 193, "latency": 1.5331323146820068}
+{"id": "simple_javascript_11", "result": "[pioritizeAndSort(items='[{name:\"item1\",status:\"normal\"},{name:\"item2\",status:\"urgent\"},{name:\"item3\",status:\"normal\"}]', priorityStatus='urgent', ascending='true')]", "input_token_count": 587, "output_token_count": 290, "latency": 2.1723742485046387}
+{"id": "simple_javascript_12", "result": "", "input_token_count": 722, "output_token_count": 236, "latency": 1.909654140472412}
+{"id": "simple_javascript_13", "result": "I\u2019m missing the actual contents of the data array (`userDataArray`) to generate the chart. Please provide the array of strings that should be plotted.", "input_token_count": 622, "output_token_count": 905, "latency": 6.116825103759766}
+{"id": "simple_javascript_14", "result": "[chartDataAccessorFactory(chart='{\"nm\":\"BarChart\",\"mn\":\"chartModule\"}', library='visualizationLibrary', configObject='config')]", "input_token_count": 672, "output_token_count": 209, "latency": 1.7108180522918701}
+{"id": "simple_javascript_15", "result": "[ChartSeriesGenerator(labels=\"['Jan', 'Feb', 'Mar', 'Apr']\", data=\"['15', '22', '13', '9']\", color=\"defaultColor\", chartLayout=\"chartLayoutObject\")]", "input_token_count": 630, "output_token_count": 985, "latency": 6.6312761306762695}
+{"id": "simple_javascript_16", "result": "[rotateVertices(vertices='[[10,15],[20,25]]', pivot='[12,17]', angle='30')]", "input_token_count": 590, "output_token_count": 233, "latency": 1.8183479309082031}
+{"id": "simple_javascript_17", "result": "", "input_token_count": 628, "output_token_count": 335, "latency": 2.4858338832855225}
+{"id": "simple_javascript_18", "result": "", "input_token_count": 553, "output_token_count": 484, "latency": 3.3909189701080322}
+{"id": "simple_javascript_19", "result": "", "input_token_count": 581, "output_token_count": 259, "latency": 1.97969651222229}
+{"id": "simple_javascript_20", "result": "We will produce function call.[buttonAddClickHandler(element='myButton', callback='handleButtonClick', options='{\"stopProgation\": true}')]", "input_token_count": 568, "output_token_count": 367, "latency": 2.652315616607666}
+{"id": "simple_javascript_21", "result": "", "input_token_count": 505, "output_token_count": 540, "latency": 3.708184003829956}
+{"id": "simple_javascript_22", "result": "", "input_token_count": 435, "output_token_count": 97, "latency": 0.8644793033599854}
+{"id": "simple_javascript_23", "result": "", "input_token_count": 631, "output_token_count": 241, "latency": 1.8896410465240479}
+{"id": "simple_javascript_24", "result": "", "input_token_count": 478, "output_token_count": 146, "latency": 1.194108247756958}
+{"id": "simple_javascript_25", "result": "[trackSubmitWithValidation(obj=\"formHandler\", validationFlags=\"['isRequired', 'isValidEmail']\")]", "input_token_count": 544, "output_token_count": 83, "latency": 0.8407285213470459}
+{"id": "simple_javascript_26", "result": "", "input_token_count": 552, "output_token_count": 66, "latency": 0.7423958778381348}
+{"id": "simple_javascript_27", "result": "", "input_token_count": 558, "output_token_count": 469, "latency": 3.2893381118774414}
+{"id": "simple_javascript_28", "result": "[filterBooksByAuthor(library='[\"bookA\",\"bookB\",\"bookC\"]', author='J.K. Rowling')]", "input_token_count": 517, "output_token_count": 303, "latency": 2.2227110862731934}
+{"id": "simple_javascript_29", "result": "", "input_token_count": 578, "output_token_count": 394, "latency": 2.8349080085754395}
+{"id": "simple_javascript_30", "result": "", "input_token_count": 538, "output_token_count": 317, "latency": 2.3192079067230225}
+{"id": "simple_javascript_31", "result": "[transformAllDecoratorsOfDeclaration(node='myNode', container='myContainer')]", "input_token_count": 496, "output_token_count": 138, "latency": 1.1612813472747803}
+{"id": "simple_javascript_32", "result": "[pollQueue(queue='fileWatchQueue', pollingInterval='500', pollIndex='0', chunkSize='10')]", "input_token_count": 619, "output_token_count": 240, "latency": 1.882197380065918}
+{"id": "simple_javascript_33", "result": "[emitNewLineBeforeLeadingComments(lineMap=\"tsLineMap\", writer=\"tsWriter\", node=\"42\")]", "input_token_count": 611, "output_token_count": 254, "latency": 1.9685370922088623}
+{"id": "simple_javascript_34", "result": "[forEachType(type='unionTypeObj', f='processType')]", "input_token_count": 529, "output_token_count": 207, "latency": 1.6227784156799316}
+{"id": "simple_javascript_35", "result": "I need the two declaration objects (e.g., the JSON/string representation of `parameterObject` and `variableDeclarationObject`) to compare their flags.", "input_token_count": 533, "output_token_count": 106, "latency": 0.9746057987213135}
+{"id": "simple_javascript_36", "result": "Missing required parameter 'node' for updateBreak.", "input_token_count": 512, "output_token_count": 463, "latency": 3.225013494491577}
+{"id": "simple_javascript_37", "result": "", "input_token_count": 584, "output_token_count": 88, "latency": 0.8990511894226074}
+{"id": "simple_javascript_38", "result": "", "input_token_count": 525, "output_token_count": 171, "latency": 1.3908448219299316}
+{"id": "simple_javascript_39", "result": "[maybeAddJsSyntheticRestParameter(declaration=funcDeclaration, parameters=funcParameters)]", "input_token_count": 547, "output_token_count": 221, "latency": 1.7123031616210938}
+{"id": "simple_javascript_40", "result": "", "input_token_count": 626, "output_token_count": 421, "latency": 3.035489320755005}
+{"id": "simple_javascript_41", "result": "[queue_1(worker='myWorkerFunction', concurrency='5')]", "input_token_count": 569, "output_token_count": 89, "latency": 0.8963825702667236}
+{"id": "simple_javascript_42", "result": "[B(e='{tasks:[()=>console.log(\"Task 1\"),()=>console.log(\"Task 2\")],onSaturated:()=>console.log(\"Queue is saturated\"),onUnsaturated:()=>console.log(\"Queue is unsaturated\")}', t='5')]", "input_token_count": 584, "output_token_count": 854, "latency": 5.776156663894653}
+{"id": "simple_javascript_43", "result": "We need only invoke function, nothing else.[invokeCallback(callback='processResult', error='null', value='Operation successful')]", "input_token_count": 553, "output_token_count": 409, "latency": 2.9105498790740967}
+{"id": "simple_javascript_44", "result": "[skipThrough(node='currentNode', st='nodeState', c='processNode')]", "input_token_count": 561, "output_token_count": 145, "latency": 1.2405116558074951}
+{"id": "simple_javascript_45", "result": "", "input_token_count": 574, "output_token_count": 305, "latency": 2.2665553092956543}
+{"id": "simple_javascript_46", "result": "[vOe(r='packageInfo', e='version', t='\"1.2.3\"')]", "input_token_count": 570, "output_token_count": 253, "latency": 1.9288585186004639}
+{"id": "simple_javascript_47", "result": "", "input_token_count": 535, "output_token_count": 91, "latency": 0.8901674747467041}
+{"id": "simple_javascript_48", "result": "[updateDOMListeners(oldVnode=\"oldVirtualNode\", vnode=\"newVirtualNode\")]", "input_token_count": 529, "output_token_count": 446, "latency": 3.1313321590423584}
+{"id": "simple_javascript_49", "result": "", "input_token_count": 511, "output_token_count": 140, "latency": 1.1846938133239746}

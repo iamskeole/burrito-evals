@@ -1,0 +1,100 @@
+{"id": "simple_java_0", "result": null, "input_token_count": 505, "output_token_count": 57, "latency": 0.6519584655761719}
+{"id": "simple_java_1", "result": "[SQLCompletionAnalyzer.makeProposalsFromObject(object='Customers', useShortName='true', params='{limit=50, schema=public}')]", "input_token_count": 555, "output_token_count": 245, "latency": 1.8683784008026123}
+{"id": "simple_java_2", "result": null, "input_token_count": 568, "output_token_count": 211, "latency": 1.6518759727478027}
+{"id": "simple_java_3", "result": null, "input_token_count": 578, "output_token_count": 224, "latency": 1.7485551834106445}
+{"id": "simple_java_4", "result": null, "input_token_count": 516, "output_token_count": 161, "latency": 1.3169076442718506}
+{"id": "simple_java_5", "result": null, "input_token_count": 528, "output_token_count": 219, "latency": 1.6882688999176025}
+{"id": "simple_java_6", "result": null, "input_token_count": 541, "output_token_count": 66, "latency": 0.7253279685974121}
+{"id": "simple_java_7", "result": null, "input_token_count": 581, "output_token_count": 93, "latency": 0.9337813854217529}
+{"id": "simple_java_8", "result": null, "input_token_count": 619, "output_token_count": 102, "latency": 1.0012719631195068}
+{"id": "simple_java_9", "result": "[writeMultiPoint(multiPoint=\"new MultiPoint(Arrays.asList(new Point(1,2), new Point(3,4), new Point(5,6), new Point(7,8), new Point(9,10)))\", xyzmMode=\"XyzmMode.XYZ\", buffer=\"ByteBuffer.allocate(1024)\")]", "input_token_count": 634, "output_token_count": 399, "latency": 2.889400005340576}
+{"id": "simple_java_10", "result": "[JNIBridge.setLauncherInfo(launcher='/usr/local/bin/dbeaver', name='DBeaverLauncher')]", "input_token_count": 482, "output_token_count": 96, "latency": 0.8831989765167236}
+{"id": "simple_java_11", "result": null, "input_token_count": 518, "output_token_count": 264, "latency": 1.9645144939422607}
+{"id": "simple_java_12", "result": null, "input_token_count": 504, "output_token_count": 72, "latency": 0.7461864948272705}
+{"id": "simple_java_13", "result": null, "input_token_count": 512, "output_token_count": 104, "latency": 0.9436295032501221}
+{"id": "simple_java_14", "result": null, "input_token_count": 500, "output_token_count": 63, "latency": 0.6826591491699219}
+{"id": "simple_java_15", "result": null, "input_token_count": 520, "output_token_count": 84, "latency": 0.8313333988189697}
+{"id": "simple_java_16", "result": null, "input_token_count": 504, "output_token_count": 106, "latency": 0.9576678276062012}
+{"id": "simple_java_17", "result": null, "input_token_count": 518, "output_token_count": 74, "latency": 0.7738685607910156}
+{"id": "simple_java_18", "result": null, "input_token_count": 513, "output_token_count": 68, "latency": 0.7223124504089355}
+{"id": "simple_java_19", "result": null, "input_token_count": 517, "output_token_count": 49, "latency": 0.605473518371582}
+{"id": "simple_java_20", "result": null, "input_token_count": 513, "output_token_count": 67, "latency": 0.7245678901672363}
+{"id": "simple_java_21", "result": null, "input_token_count": 515, "output_token_count": 83, "latency": 0.8218998908996582}
+{"id": "simple_java_22", "result": null, "input_token_count": 513, "output_token_count": 184, "latency": 1.4528734683990479}
+{"id": "simple_java_23", "result": null, "input_token_count": 600, "output_token_count": 78, "latency": 0.8388075828552246}
+{"id": "simple_java_24", "result": null, "input_token_count": 520, "output_token_count": 113, "latency": 1.0186989307403564}
+{"id": "simple_java_25", "result": null, "input_token_count": 490, "output_token_count": 55, "latency": 0.6387085914611816}
+{"id": "simple_java_26", "result": null, "input_token_count": 649, "output_token_count": 132, "latency": 1.2027554512023926}
+{"id": "simple_java_27", "result": null, "input_token_count": 505, "output_token_count": 66, "latency": 0.7128283977508545}
+{"id": "simple_java_28", "result": null, "input_token_count": 558, "output_token_count": 96, "latency": 0.925621509552002}
+{"id": "simple_java_29", "result": null, "input_token_count": 553, "output_token_count": 213, "latency": 1.6622254848480225}
+{"id": "simple_java_30", "result": null, "input_token_count": 532, "output_token_count": 55, "latency": 0.6495802402496338}
+{"id": "simple_java_31", "result": null, "input_token_count": 485, "output_token_count": 117, "latency": 1.0223186016082764}
+{"id": "simple_java_32", "result": "[RedissonPermitExpirableSemaphore.tryAcquireAsync(waitTime=\"5\", leaseTime=\"120\", unit=\"SECONDS\")]", "input_token_count": 571, "output_token_count": 118, "latency": 1.078186273574829}
+{"id": "simple_java_33", "result": null, "input_token_count": 501, "output_token_count": 61, "latency": 0.6821484565734863}
+{"id": "simple_java_34", "result": "[ServiceManager.newTimeout(task=\"cleanupTask\", delay=\"5\", unit=\"TimeUnit.MINUTES\")]", "input_token_count": 550, "output_token_count": 162, "latency": 1.3391008377075195}
+{"id": "simple_java_35", "result": null, "input_token_count": 606, "output_token_count": 369, "latency": 2.6882312297821045}
+{"id": "simple_java_36", "result": null, "input_token_count": 531, "output_token_count": 258, "latency": 1.9332976341247559}
+{"id": "simple_java_37", "result": null, "input_token_count": 500, "output_token_count": 87, "latency": 0.8365046977996826}
+{"id": "simple_java_38", "result": null, "input_token_count": 470, "output_token_count": 214, "latency": 1.615072250366211}
+{"id": "simple_java_39", "result": "[NodeIdConverter.format(event=logEvent, toAppendTo=logBuilder)]", "input_token_count": 506, "output_token_count": 63, "latency": 0.6850459575653076}
+{"id": "simple_java_40", "result": null, "input_token_count": 501, "output_token_count": 124, "latency": 1.0750110149383545}
+{"id": "simple_java_41", "result": null, "input_token_count": 444, "output_token_count": 73, "latency": 0.7183611392974854}
+{"id": "simple_java_42", "result": null, "input_token_count": 543, "output_token_count": 103, "latency": 0.9582531452178955}
+{"id": "simple_java_43", "result": null, "input_token_count": 554, "output_token_count": 115, "latency": 1.0467610359191895}
+{"id": "simple_java_44", "result": null, "input_token_count": 547, "output_token_count": 62, "latency": 0.7159304618835449}
+{"id": "simple_java_45", "result": "[Basic.checkSizes(environ=\"envVariables\", size=\"5\")]\n", "input_token_count": 485, "output_token_count": 79, "latency": 0.7772696018218994}
+{"id": "simple_java_46", "result": null, "input_token_count": 530, "output_token_count": 178, "latency": 1.42287015914917}
+{"id": "simple_java_47", "result": null, "input_token_count": 524, "output_token_count": 577, "latency": 3.9582605361938477}
+{"id": "simple_java_48", "result": null, "input_token_count": 555, "output_token_count": 187, "latency": 1.5045642852783203}
+{"id": "simple_java_49", "result": null, "input_token_count": 523, "output_token_count": 66, "latency": 0.7175629138946533}
+{"id": "simple_java_50", "result": null, "input_token_count": 538, "output_token_count": 185, "latency": 1.4764125347137451}
+{"id": "simple_java_51", "result": null, "input_token_count": 616, "output_token_count": 219, "latency": 1.7373778820037842}
+{"id": "simple_java_52", "result": null, "input_token_count": 510, "output_token_count": 174, "latency": 1.3877830505371094}
+{"id": "simple_java_53", "result": null, "input_token_count": 512, "output_token_count": 70, "latency": 0.7306978702545166}
+{"id": "simple_java_54", "result": null, "input_token_count": 624, "output_token_count": 128, "latency": 1.168588638305664}
+{"id": "simple_java_55", "result": "[SearchableSnapshotDirectory.create(repositories='repositoriesService', cache='cacheService', indexSettings='indexSettingsForLogs', shardPath='/data/nodes/0/indices/logs/5', currentTimeNanosSupplier='currentTimeNanos', threadPool='threadPool', blobStoreCacheService='blobStoreCacheService', sharedBlobCacheService='sharedBlobCacheService')]", "input_token_count": 871, "output_token_count": 202, "latency": 1.7923519611358643}
+{"id": "simple_java_56", "result": "[CCSDuelIT.parseEntity(entity=\"httpResponseEntity\", entityParser=\"responseParser\", parserConfig=\"defaultParserConfig\")]", "input_token_count": 567, "output_token_count": 132, "latency": 1.1539273262023926}
+{"id": "simple_java_57", "result": null, "input_token_count": 518, "output_token_count": 123, "latency": 1.084784746170044}
+{"id": "simple_java_58", "result": null, "input_token_count": 594, "output_token_count": 188, "latency": 1.5379483699798584}
+{"id": "simple_java_59", "result": null, "input_token_count": 638, "output_token_count": 263, "latency": 2.018254518508911}
+{"id": "simple_java_60", "result": "The available function\u202f`NestedQueryBuilder.doBuild` does not accept parameters for specifying a nested path or the `ignoreUnmapped` setting, so it cannot be used to build the requested query with those requirements.", "input_token_count": 538, "output_token_count": 671, "latency": 4.556450366973877}
+{"id": "simple_java_61", "result": null, "input_token_count": 660, "output_token_count": 112, "latency": 1.090651273727417}
+{"id": "simple_java_62", "result": null, "input_token_count": 695, "output_token_count": 111, "latency": 1.102698802947998}
+{"id": "simple_java_63", "result": null, "input_token_count": 633, "output_token_count": 78, "latency": 0.862767219543457}
+{"id": "simple_java_64", "result": null, "input_token_count": 651, "output_token_count": 238, "latency": 1.8837144374847412}
+{"id": "simple_java_65", "result": null, "input_token_count": 530, "output_token_count": 306, "latency": 2.24208927154541}
+{"id": "simple_java_66", "result": null, "input_token_count": 622, "output_token_count": 128, "latency": 1.1736702919006348}
+{"id": "simple_java_67", "result": null, "input_token_count": 537, "output_token_count": 446, "latency": 3.131504535675049}
+{"id": "simple_java_68", "result": "[MacBaseInstallerBundler.validateAppImageAndBundeler(params='{\"appImagePath\":\"/Applications/MyApp.app\",\"appName\":\"MyApp\"}')]", "input_token_count": 483, "output_token_count": 396, "latency": 2.78393292427063}
+{"id": "simple_java_69", "result": null, "input_token_count": 580, "output_token_count": 122, "latency": 1.1117639541625977}
+{"id": "simple_java_70", "result": null, "input_token_count": 540, "output_token_count": 139, "latency": 1.1929168701171875}
+{"id": "simple_java_71", "result": null, "input_token_count": 572, "output_token_count": 99, "latency": 0.9536750316619873}
+{"id": "simple_java_72", "result": null, "input_token_count": 576, "output_token_count": 170, "latency": 1.4074804782867432}
+{"id": "simple_java_73", "result": null, "input_token_count": 488, "output_token_count": 91, "latency": 0.8540163040161133}
+{"id": "simple_java_74", "result": null, "input_token_count": 554, "output_token_count": 69, "latency": 0.759437084197998}
+{"id": "simple_java_75", "result": null, "input_token_count": 508, "output_token_count": 69, "latency": 0.7291398048400879}
+{"id": "simple_java_76", "result": null, "input_token_count": 474, "output_token_count": 61, "latency": 0.6477370262145996}
+{"id": "simple_java_77", "result": null, "input_token_count": 518, "output_token_count": 197, "latency": 1.5508167743682861}
+{"id": "simple_java_78", "result": "OptionSpecBuilder.requiredUnless(dependent=\"output-format\", otherDependents=\"quiet,verbose\")", "input_token_count": 505, "output_token_count": 168, "latency": 1.3471627235412598}
+{"id": "simple_java_79", "result": "[SAXFilterFactoryImpl.resolveEntity(publicid=\"1234\", sysId=\"http://astro.com/stylesheets/toptemplate\")]", "input_token_count": 530, "output_token_count": 71, "latency": 0.7540302276611328}
+{"id": "simple_java_80", "result": null, "input_token_count": 500, "output_token_count": 186, "latency": 1.4671008586883545}
+{"id": "simple_java_81", "result": null, "input_token_count": 781, "output_token_count": 519, "latency": 3.748945713043213}
+{"id": "simple_java_82", "result": null, "input_token_count": 542, "output_token_count": 364, "latency": 2.6096339225769043}
+{"id": "simple_java_83", "result": null, "input_token_count": 570, "output_token_count": 422, "latency": 2.994964599609375}
+{"id": "simple_java_84", "result": null, "input_token_count": 519, "output_token_count": 207, "latency": 1.6107466220855713}
+{"id": "simple_java_85", "result": null, "input_token_count": 562, "output_token_count": 299, "latency": 2.2155392169952393}
+{"id": "simple_java_86", "result": null, "input_token_count": 537, "output_token_count": 462, "latency": 3.2317373752593994}
+{"id": "simple_java_87", "result": null, "input_token_count": 508, "output_token_count": 261, "latency": 1.9402072429656982}
+{"id": "simple_java_88", "result": null, "input_token_count": 617, "output_token_count": 118, "latency": 1.107607364654541}
+{"id": "simple_java_89", "result": "[runThis(argv=\"-waitTime, 2, -debuggeeName, TestDebuggee\", out=\"testLogStream\")]", "input_token_count": 556, "output_token_count": 338, "latency": 2.468827724456787}
+{"id": "simple_java_90", "result": null, "input_token_count": 529, "output_token_count": 171, "latency": 1.379349708557129}
+{"id": "simple_java_91", "result": null, "input_token_count": 526, "output_token_count": 281, "latency": 2.0762155055999756}
+{"id": "simple_java_92", "result": null, "input_token_count": 510, "output_token_count": 103, "latency": 0.9455349445343018}
+{"id": "simple_java_93", "result": "[AbstractJarAgent.runJarAgent(options=\"trace log\", inst=\"appInstrumentation\")]", "input_token_count": 518, "output_token_count": 123, "latency": 1.079939603805542}
+{"id": "simple_java_94", "result": null, "input_token_count": 487, "output_token_count": 89, "latency": 0.8572492599487305}
+{"id": "simple_java_95", "result": "[ExportNodeTest.doGeneric(receiver='ExportInlinedObject1Instance', argument='HelloWorld', node='InlinableNodeInstance', library='NodeLibraryInstance')]", "input_token_count": 621, "output_token_count": 99, "latency": 0.9866361618041992}
+{"id": "simple_java_96", "result": "[InstrumentableProcessor.createCallConverter(converterMethod=\"convertValue\", frameParameterName=\"frameVar\", returnName=\"returnValueCode\")]", "input_token_count": 577, "output_token_count": 171, "latency": 1.4227266311645508}
+{"id": "simple_java_97", "result": null, "input_token_count": 505, "output_token_count": 78, "latency": 0.7756872177124023}
+{"id": "simple_java_98", "result": null, "input_token_count": 497, "output_token_count": 66, "latency": 0.7125759124755859}
+{"id": "simple_java_99", "result": null, "input_token_count": 515, "output_token_count": 100, "latency": 0.944138765335083}

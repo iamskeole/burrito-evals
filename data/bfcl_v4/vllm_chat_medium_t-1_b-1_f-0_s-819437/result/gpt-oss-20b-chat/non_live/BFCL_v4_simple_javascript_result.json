@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": null, "input_token_count": 487, "output_token_count": 54, "latency": 0.624443531036377}
+{"id": "simple_javascript_1", "result": "I need the actual content of the `listElement` variable to pass it to the `getActiveDataEntries` function. Please provide the list element (as a JavaScript object or JSON string).", "input_token_count": 576, "output_token_count": 288, "latency": 2.1419289112091064}
+{"id": "simple_javascript_2", "result": null, "input_token_count": 641, "output_token_count": 426, "latency": 3.0743966102600098}
+{"id": "simple_javascript_3", "result": null, "input_token_count": 578, "output_token_count": 667, "latency": 4.574715852737427}
+{"id": "simple_javascript_4", "result": null, "input_token_count": 498, "output_token_count": 65, "latency": 0.6966907978057861}
+{"id": "simple_javascript_5", "result": null, "input_token_count": 772, "output_token_count": 363, "latency": 2.7518036365509033}
+{"id": "simple_javascript_6", "result": null, "input_token_count": 513, "output_token_count": 60, "latency": 0.6739165782928467}
+{"id": "simple_javascript_7", "result": null, "input_token_count": 547, "output_token_count": 108, "latency": 0.9996421337127686}
+{"id": "simple_javascript_8", "result": null, "input_token_count": 492, "output_token_count": 83, "latency": 0.8160486221313477}
+{"id": "simple_javascript_9", "result": null, "input_token_count": 581, "output_token_count": 101, "latency": 0.9753725528717041}
+{"id": "simple_javascript_10", "result": null, "input_token_count": 542, "output_token_count": 404, "latency": 2.866657257080078}
+{"id": "simple_javascript_11", "result": null, "input_token_count": 585, "output_token_count": 175, "latency": 1.4470317363739014}
+{"id": "simple_javascript_12", "result": null, "input_token_count": 720, "output_token_count": 373, "latency": 2.776228904724121}
+{"id": "simple_javascript_13", "result": null, "input_token_count": 620, "output_token_count": 236, "latency": 1.8552944660186768}
+{"id": "simple_javascript_14", "result": null, "input_token_count": 670, "output_token_count": 339, "latency": 2.5321309566497803}
+{"id": "simple_javascript_15", "result": null, "input_token_count": 628, "output_token_count": 223, "latency": 1.7687253952026367}
+{"id": "simple_javascript_16", "result": null, "input_token_count": 588, "output_token_count": 125, "latency": 1.1333353519439697}
+{"id": "simple_javascript_17", "result": null, "input_token_count": 626, "output_token_count": 123, "latency": 1.143143653869629}
+{"id": "simple_javascript_18", "result": "I need a numeric value for the gravity (g) to compute the final velocity.", "input_token_count": 551, "output_token_count": 457, "latency": 3.2264811992645264}
+{"id": "simple_javascript_19", "result": null, "input_token_count": 579, "output_token_count": 136, "latency": 1.1962471008300781}
+{"id": "simple_javascript_20", "result": null, "input_token_count": 566, "output_token_count": 252, "latency": 1.920816421508789}
+{"id": "simple_javascript_21", "result": "I\u2019m sorry, but I don\u2019t have the actual list of product objects (including their `productId` values) to search through. I can\u2019t proceed with the `findProductById` function without that data.", "input_token_count": 503, "output_token_count": 760, "latency": 5.113565921783447}
+{"id": "simple_javascript_22", "result": null, "input_token_count": 433, "output_token_count": 71, "latency": 0.6994667053222656}
+{"id": "simple_javascript_23", "result": null, "input_token_count": 629, "output_token_count": 104, "latency": 1.0190625190734863}
+{"id": "simple_javascript_24", "result": null, "input_token_count": 476, "output_token_count": 366, "latency": 2.5949838161468506}
+{"id": "simple_javascript_25", "result": null, "input_token_count": 542, "output_token_count": 183, "latency": 1.4607086181640625}
+{"id": "simple_javascript_26", "result": null, "input_token_count": 550, "output_token_count": 100, "latency": 0.955643892288208}
+{"id": "simple_javascript_27", "result": null, "input_token_count": 556, "output_token_count": 160, "latency": 1.3401176929473877}
+{"id": "simple_javascript_28", "result": "[filterBooksByAuthor(library='[\"bookA\",\"bookB\",\"bookC\"]', author='J.K. Rowling')]", "input_token_count": 515, "output_token_count": 167, "latency": 1.35520601272583}
+{"id": "simple_javascript_29", "result": null, "input_token_count": 576, "output_token_count": 264, "latency": 1.993502140045166}
+{"id": "simple_javascript_30", "result": null, "input_token_count": 536, "output_token_count": 108, "latency": 0.9898278713226318}
+{"id": "simple_javascript_31", "result": null, "input_token_count": 494, "output_token_count": 135, "latency": 1.1414144039154053}
+{"id": "simple_javascript_32", "result": null, "input_token_count": 617, "output_token_count": 56, "latency": 0.7234525680541992}
+{"id": "simple_javascript_33", "result": null, "input_token_count": 609, "output_token_count": 139, "latency": 1.2307202816009521}
+{"id": "simple_javascript_34", "result": null, "input_token_count": 527, "output_token_count": 169, "latency": 1.3857054710388184}
+{"id": "simple_javascript_35", "result": "I need the actual TypeScript declaration objects (in string or JSON form) for both the parameter (`parameterObject`) and the variable (`variableDeclarationObject`) in order to call the comparison function `areDeclarationFlagsIdentical`. Please provide those objects.", "input_token_count": 531, "output_token_count": 249, "latency": 1.8749699592590332}
+{"id": "simple_javascript_36", "result": null, "input_token_count": 510, "output_token_count": 372, "latency": 2.644617795944214}
+{"id": "simple_javascript_37", "result": null, "input_token_count": 582, "output_token_count": 241, "latency": 1.8634309768676758}
+{"id": "simple_javascript_38", "result": null, "input_token_count": 523, "output_token_count": 95, "latency": 0.9070463180541992}
+{"id": "simple_javascript_39", "result": "I need the actual content of `funcDeclaration` and `funcParameters` to call `maybeAddJsSyntheticRestParameter`.", "input_token_count": 545, "output_token_count": 248, "latency": 1.8796133995056152}
+{"id": "simple_javascript_40", "result": "[assignOwnDefaults(objectValue=\"undefined\", sourceValue=\"10\", key=\"maxItems\", object=\"{}\")]", "input_token_count": 624, "output_token_count": 297, "latency": 2.2400500774383545}
+{"id": "simple_javascript_41", "result": null, "input_token_count": 567, "output_token_count": 75, "latency": 0.8067049980163574}
+{"id": "simple_javascript_42", "result": null, "input_token_count": 582, "output_token_count": 555, "latency": 3.866331100463867}
+{"id": "simple_javascript_43", "result": null, "input_token_count": 551, "output_token_count": 47, "latency": 0.6172845363616943}
+{"id": "simple_javascript_44", "result": null, "input_token_count": 559, "output_token_count": 65, "latency": 0.7317235469818115}
+{"id": "simple_javascript_45", "result": null, "input_token_count": 572, "output_token_count": 263, "latency": 1.991565465927124}
+{"id": "simple_javascript_46", "result": "[vOe(r=\"packageInfo\", e=\"version\", t=\"1.2.3\")]", "input_token_count": 568, "output_token_count": 178, "latency": 1.4566421508789062}
+{"id": "simple_javascript_47", "result": null, "input_token_count": 533, "output_token_count": 120, "latency": 1.0648524761199951}
+{"id": "simple_javascript_48", "result": null, "input_token_count": 527, "output_token_count": 102, "latency": 0.9536781311035156}
+{"id": "simple_javascript_49", "result": "[convertEnumeratedValue(key='contenteditable', value='plaintext-only')]", "input_token_count": 509, "output_token_count": 258, "latency": 1.9235949516296387}

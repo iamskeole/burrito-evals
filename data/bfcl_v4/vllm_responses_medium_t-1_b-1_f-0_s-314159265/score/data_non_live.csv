@@ -1,0 +1,2 @@
+Rank,Model,Non-Live Overall Acc,AST Summary,Simple AST,Python Simple AST,Java Simple AST,JavaScript Simple AST,Multiple AST,Parallel AST,Parallel Multiple AST,Irrelevance Detection
+1,gpt-oss:20b (Responses API - Prompt),2.85%,N/A,11.42%,1.25%,17.00%,16.00%,N/A,N/A,N/A,99.58%

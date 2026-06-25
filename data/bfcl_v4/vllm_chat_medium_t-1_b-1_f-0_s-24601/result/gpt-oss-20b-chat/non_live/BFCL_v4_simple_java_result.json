@@ -1,0 +1,100 @@
+{"id": "simple_java_0", "result": null, "input_token_count": 505, "output_token_count": 59, "latency": 0.660858154296875}
+{"id": "simple_java_1", "result": null, "input_token_count": 555, "output_token_count": 129, "latency": 1.13670015335083}
+{"id": "simple_java_2", "result": null, "input_token_count": 568, "output_token_count": 121, "latency": 1.088411569595337}
+{"id": "simple_java_3", "result": "[DB2Tablespace.resolveTablespaceReference(monitor='dbMonitor', dataSource='db2DataSource', reference='USERSPACE1')]", "input_token_count": 578, "output_token_count": 136, "latency": 1.1972713470458984}
+{"id": "simple_java_4", "result": "[DB2ViewBaseDepCache.prepareObjectsStatement(session='jdbcSession', db2ViewBase='new DB2ViewBase(\"HR\", \"EmployeeView\")')]", "input_token_count": 516, "output_token_count": 484, "latency": 3.363368272781372}
+{"id": "simple_java_5", "result": null, "input_token_count": 528, "output_token_count": 185, "latency": 1.4641058444976807}
+{"id": "simple_java_6", "result": "Error during inference: Error code: 500 - {'error': {'message': 'unexpected tokens remaining in message header: Some(\"to=functions.SpreadsheetPresentation.refreshData <|constrain|>json<|channel|>analysis\")', 'type': 'InternalServerError', 'param': None, 'code': 500}}", "traceback": "Traceback (most recent call last):\n  File \"/home/p/code/iamskeole/gorilla/berkeley-function-call-leaderboard/bfcl_eval/_llm_response_generation.py\", line 213, in multi_threaded_inference\n    result, metadata = handler.inference(\n                       ^^^^^^^^^^^^^^^^^^\n  File \"/home/p/code/iamskeole/gorilla/berkeley-function-call-leaderboard/bfcl_eval/model_handler/base_handler.py\", line 92, in inference\n    return self.inference_single_turn_prompting(test_entry, include_input_log)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/p/code/iamskeole/gorilla/berkeley-function-call-leaderboard/bfcl_eval/model_handler/base_handler.py\", line 730, in inference_single_turn_prompting\n    api_response, query_latency = self._query_prompting(inference_data)\n                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/p/code/iamskeole/gorilla/berkeley-function-call-leaderboard/bfcl_eval/model_handler/api_inference/openai_completion.py\", line 234, in _query_prompting\n    return self.generate_with_backoff(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/p/code/iamskeole/gorilla/berkeley-function-call-leaderboard/bfcl_eval/model_handler/api_inference/openai_completion.py\", line 77, in generate_with_backoff\n    api_response = self.client.chat.completions.create(**kwargs)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/p/code/iamskeole/gorilla/berkeley-function-call-leaderboard/.venv/lib/python3.12/site-packages/openai/_utils/_utils.py\", line 298, in wrapper\n    return func(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/p/code/iamskeole/gorilla/berkeley-function-call-leaderboard/.venv/lib/python3.12/site-packages/openai/resources/chat/completions/completions.py\", line 1215, in create\n    return self._post(\n           ^^^^^^^^^^^\n  File \"/home/p/code/iamskeole/gorilla/berkeley-function-call-leaderboard/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1332, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/p/code/iamskeole/gorilla/berkeley-function-call-leaderboard/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1105, in request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.InternalServerError: Error code: 500 - {'error': {'message': 'unexpected tokens remaining in message header: Some(\"to=functions.SpreadsheetPresentation.refreshData <|constrain|>json<|channel|>analysis\")', 'type': 'InternalServerError', 'param': None, 'code': 500}}\n"}
+{"id": "simple_java_7", "result": null, "input_token_count": 581, "output_token_count": 93, "latency": 0.921630859375}
+{"id": "simple_java_8", "result": "[EFSNIOFile.setContents(source='fileStream', force='true', keepHistory='false', monitor='progressMonitor')]", "input_token_count": 619, "output_token_count": 270, "latency": 2.0638599395751953}
+{"id": "simple_java_9", "result": null, "input_token_count": 634, "output_token_count": 268, "latency": 2.061009645462036}
+{"id": "simple_java_10", "result": null, "input_token_count": 482, "output_token_count": 102, "latency": 0.9292566776275635}
+{"id": "simple_java_11", "result": null, "input_token_count": 518, "output_token_count": 203, "latency": 1.589247226715088}
+{"id": "simple_java_12", "result": "[ExasolExecutionContext.setCurrentSchema(monitor='progressMonitor', schemaName='AnalyticsDB')]", "input_token_count": 504, "output_token_count": 127, "latency": 1.0819368362426758}
+{"id": "simple_java_13", "result": null, "input_token_count": 512, "output_token_count": 78, "latency": 0.7856030464172363}
+{"id": "simple_java_14", "result": null, "input_token_count": 500, "output_token_count": 78, "latency": 0.7741055488586426}
+{"id": "simple_java_15", "result": null, "input_token_count": 520, "output_token_count": 64, "latency": 0.7051084041595459}
+{"id": "simple_java_16", "result": null, "input_token_count": 504, "output_token_count": 388, "latency": 2.739314556121826}
+{"id": "simple_java_17", "result": null, "input_token_count": 518, "output_token_count": 378, "latency": 2.6856396198272705}
+{"id": "simple_java_18", "result": null, "input_token_count": 513, "output_token_count": 149, "latency": 1.2344074249267578}
+{"id": "simple_java_19", "result": null, "input_token_count": 517, "output_token_count": 51, "latency": 0.622791051864624}
+{"id": "simple_java_20", "result": null, "input_token_count": 513, "output_token_count": 171, "latency": 1.372948408126831}
+{"id": "simple_java_21", "result": null, "input_token_count": 515, "output_token_count": 265, "latency": 1.9741883277893066}
+{"id": "simple_java_22", "result": null, "input_token_count": 513, "output_token_count": 390, "latency": 2.768312692642212}
+{"id": "simple_java_23", "result": null, "input_token_count": 600, "output_token_count": 83, "latency": 0.8705196380615234}
+{"id": "simple_java_24", "result": null, "input_token_count": 520, "output_token_count": 77, "latency": 0.787712574005127}
+{"id": "simple_java_25", "result": null, "input_token_count": 490, "output_token_count": 148, "latency": 1.2126619815826416}
+{"id": "simple_java_26", "result": "[ProxyConnection.prepareCall(sql=\"CALL totalSales(?)\", resultSetType=\"ResultSet.TYPE_SCROLL_INSENSITIVE\", concurrency=\"ResultSet.CONCUR_READ_ONLY\", holdability=\"ResultSet.CLOSE_CURSORS_AT_COMMIT\")]", "input_token_count": 649, "output_token_count": 457, "latency": 3.273811101913452}
+{"id": "simple_java_27", "result": null, "input_token_count": 505, "output_token_count": 123, "latency": 1.0705273151397705}
+{"id": "simple_java_28", "result": null, "input_token_count": 558, "output_token_count": 136, "latency": 1.1867921352386475}
+{"id": "simple_java_29", "result": null, "input_token_count": 553, "output_token_count": 157, "latency": 1.3179688453674316}
+{"id": "simple_java_30", "result": null, "input_token_count": 532, "output_token_count": 57, "latency": 0.6598756313323975}
+{"id": "simple_java_31", "result": null, "input_token_count": 485, "output_token_count": 139, "latency": 1.161911964416504}
+{"id": "simple_java_32", "result": null, "input_token_count": 571, "output_token_count": 196, "latency": 1.5701045989990234}
+{"id": "simple_java_33", "result": null, "input_token_count": 501, "output_token_count": 99, "latency": 0.9118545055389404}
+{"id": "simple_java_34", "result": null, "input_token_count": 550, "output_token_count": 115, "latency": 1.045201301574707}
+{"id": "simple_java_35", "result": null, "input_token_count": 606, "output_token_count": 286, "latency": 2.1585404872894287}
+{"id": "simple_java_36", "result": null, "input_token_count": 531, "output_token_count": 186, "latency": 1.4864487648010254}
+{"id": "simple_java_37", "result": null, "input_token_count": 500, "output_token_count": 204, "latency": 1.5680413246154785}
+{"id": "simple_java_38", "result": null, "input_token_count": 470, "output_token_count": 409, "latency": 2.853752374649048}
+{"id": "simple_java_39", "result": null, "input_token_count": 506, "output_token_count": 61, "latency": 0.676506519317627}
+{"id": "simple_java_40", "result": "[RoutingNodesChangedObserver.shardInitialized(unassignedShard=\"shardA\", initializedShard=\"shardB\")]", "input_token_count": 501, "output_token_count": 71, "latency": 0.7340729236602783}
+{"id": "simple_java_41", "result": null, "input_token_count": 444, "output_token_count": 134, "latency": 1.0918059349060059}
+{"id": "simple_java_42", "result": null, "input_token_count": 543, "output_token_count": 130, "latency": 1.1304545402526855}
+{"id": "simple_java_43", "result": "[SecureMockMaker.createSpy(settings=\"mockSettings\", handler=\"mockHandler\", object=\"testObject\")]", "input_token_count": 554, "output_token_count": 403, "latency": 2.8722145557403564}
+{"id": "simple_java_44", "result": null, "input_token_count": 547, "output_token_count": 62, "latency": 0.7125453948974609}
+{"id": "simple_java_45", "result": null, "input_token_count": 485, "output_token_count": 64, "latency": 0.6851198673248291}
+{"id": "simple_java_46", "result": "[MethodInvokeTest.checkInjectedInvoker(csm=\"csmInstance\", expected=\"MyExpectedClass.class\")]", "input_token_count": 530, "output_token_count": 269, "latency": 1.9973111152648926}
+{"id": "simple_java_47", "result": null, "input_token_count": 524, "output_token_count": 901, "latency": 6.0187389850616455}
+{"id": "simple_java_48", "result": null, "input_token_count": 555, "output_token_count": 98, "latency": 0.9394509792327881}
+{"id": "simple_java_49", "result": null, "input_token_count": 523, "output_token_count": 118, "latency": 1.0486643314361572}
+{"id": "simple_java_50", "result": null, "input_token_count": 538, "output_token_count": 276, "latency": 2.055940866470337}
+{"id": "simple_java_51", "result": "[CCRUsageTransportAction.masterOperation(task=\"MasterTask\", request=usageRequest, state=clusterState, listener=actionListener)]", "input_token_count": 616, "output_token_count": 272, "latency": 2.0837934017181396}
+{"id": "simple_java_52", "result": null, "input_token_count": 510, "output_token_count": 110, "latency": 0.9921298027038574}
+{"id": "simple_java_53", "result": null, "input_token_count": 512, "output_token_count": 69, "latency": 0.7368202209472656}
+{"id": "simple_java_54", "result": "[AbstractTransportSearchableSnapshotsAction.shardOperation(request=\"snapshotRequest\", shardRouting=\"shardRouteInfo\", task=\"snapshotTask\", listener=\"operationListener\")]", "input_token_count": 624, "output_token_count": 128, "latency": 1.1608905792236328}
+{"id": "simple_java_55", "result": null, "input_token_count": 871, "output_token_count": 364, "latency": 2.830416679382324}
+{"id": "simple_java_56", "result": "[CCSDuelIT.parseEntity(entity=\"httpResponseEntity\", entityParser=\"responseParser\", parserConfig=\"defaultParserConfig\")]", "input_token_count": 567, "output_token_count": 165, "latency": 1.3581607341766357}
+{"id": "simple_java_57", "result": null, "input_token_count": 518, "output_token_count": 96, "latency": 0.9084885120391846}
+{"id": "simple_java_58", "result": null, "input_token_count": 594, "output_token_count": 209, "latency": 1.6684134006500244}
+{"id": "simple_java_59", "result": null, "input_token_count": 638, "output_token_count": 311, "latency": 2.3203890323638916}
+{"id": "simple_java_60", "result": null, "input_token_count": 538, "output_token_count": 247, "latency": 1.866532802581787}
+{"id": "simple_java_61", "result": null, "input_token_count": 660, "output_token_count": 146, "latency": 1.3111751079559326}
+{"id": "simple_java_62", "result": null, "input_token_count": 695, "output_token_count": 104, "latency": 1.0571799278259277}
+{"id": "simple_java_63", "result": null, "input_token_count": 633, "output_token_count": 127, "latency": 1.1698694229125977}
+{"id": "simple_java_64", "result": null, "input_token_count": 651, "output_token_count": 243, "latency": 1.9147121906280518}
+{"id": "simple_java_65", "result": "[RootObjectMapper.doXContent(builder=\"xContentBuilderInstance\", params=\"['includeDefaults',true,'skipRuntimeFields',true]\")]", "input_token_count": 530, "output_token_count": 475, "latency": 3.3097827434539795}
+{"id": "simple_java_66", "result": null, "input_token_count": 622, "output_token_count": 269, "latency": 2.056631565093994}
+{"id": "simple_java_67", "result": null, "input_token_count": 537, "output_token_count": 271, "latency": 2.0165231227874756}
+{"id": "simple_java_68", "result": "MacBaseInstallerBundler.validateAppImageAndBundeler(params='{\"appImagePath\":\"/Applications/MyApp.app\",\"applicationName\":\"MyApp\"}')", "input_token_count": 483, "output_token_count": 482, "latency": 3.3281829357147217}
+{"id": "simple_java_69", "result": null, "input_token_count": 580, "output_token_count": 391, "latency": 2.808750867843628}
+{"id": "simple_java_70", "result": null, "input_token_count": 540, "output_token_count": 158, "latency": 1.305643081665039}
+{"id": "simple_java_71", "result": null, "input_token_count": 572, "output_token_count": 225, "latency": 1.743302345275879}
+{"id": "simple_java_72", "result": "I\u2019m not able to invoke the function because I don\u2019t have the actual content of the character array `textBuffer` to pass as the `ch` parameter. Please provide the array contents so I can complete the operation.", "input_token_count": 576, "output_token_count": 536, "latency": 3.7179620265960693}
+{"id": "simple_java_73", "result": null, "input_token_count": 488, "output_token_count": 121, "latency": 1.0480899810791016}
+{"id": "simple_java_74", "result": null, "input_token_count": 554, "output_token_count": 265, "latency": 1.996065616607666}
+{"id": "simple_java_75", "result": "[JdkXmlFeatures.getSystemProperty(feature='XML_SECURITY', sysPropertyName='enableXmlSecurityFeature')]", "input_token_count": 508, "output_token_count": 317, "latency": 2.2882795333862305}
+{"id": "simple_java_76", "result": null, "input_token_count": 474, "output_token_count": 101, "latency": 0.9062914848327637}
+{"id": "simple_java_77", "result": null, "input_token_count": 518, "output_token_count": 103, "latency": 0.9537420272827148}
+{"id": "simple_java_78", "result": null, "input_token_count": 505, "output_token_count": 164, "latency": 1.3266918659210205}
+{"id": "simple_java_79", "result": null, "input_token_count": 530, "output_token_count": 141, "latency": 1.197486400604248}
+{"id": "simple_java_80", "result": null, "input_token_count": 500, "output_token_count": 123, "latency": 1.0574250221252441}
+{"id": "simple_java_81", "result": "I don't have the contents of **humongous-test-case.json** (the `testcaseData` parameter) that are required to call `TestObjectGraphAfterGC.doTesting`. Please provide the JSON data as a string so I can proceed.", "input_token_count": 781, "output_token_count": 536, "latency": 3.849834442138672}
+{"id": "simple_java_82", "result": null, "input_token_count": 542, "output_token_count": 333, "latency": 2.407360792160034}
+{"id": "simple_java_83", "result": null, "input_token_count": 570, "output_token_count": 205, "latency": 1.6173076629638672}
+{"id": "simple_java_84", "result": null, "input_token_count": 519, "output_token_count": 59, "latency": 0.675318717956543}
+{"id": "simple_java_85", "result": "[classfloadhk005.runIt(argv=\"['/path/to/classes', '60']\", out=\"logStream\")]", "input_token_count": 562, "output_token_count": 574, "latency": 3.95151424407959}
+{"id": "simple_java_86", "result": null, "input_token_count": 537, "output_token_count": 340, "latency": 2.4513635635375977}
+{"id": "simple_java_87", "result": null, "input_token_count": 508, "output_token_count": 438, "latency": 3.0534698963165283}
+{"id": "simple_java_88", "result": null, "input_token_count": 617, "output_token_count": 175, "latency": 1.4652540683746338}
+{"id": "simple_java_89", "result": null, "input_token_count": 556, "output_token_count": 331, "latency": 2.407071828842163}
+{"id": "simple_java_90", "result": null, "input_token_count": 529, "output_token_count": 742, "latency": 5.003405809402466}
+{"id": "simple_java_91", "result": "[invokemethod007.runIt(args=\"['suspend', 'log']\", out=\"debugLog\")]", "input_token_count": 526, "output_token_count": 416, "latency": 2.932523488998413}
+{"id": "simple_java_92", "result": null, "input_token_count": 510, "output_token_count": 80, "latency": 0.7944483757019043}
+{"id": "simple_java_93", "result": null, "input_token_count": 518, "output_token_count": 168, "latency": 1.3567662239074707}
+{"id": "simple_java_94", "result": null, "input_token_count": 487, "output_token_count": 119, "latency": 1.0334787368774414}
+{"id": "simple_java_95", "result": "[ExportNodeTest.doGeneric(receiver='ExportInlinedObject1Instance', argument='HelloWorld', node='InlinableNodeInstance', library='NodeLibraryInstance')]", "input_token_count": 621, "output_token_count": 196, "latency": 1.5986378192901611}
+{"id": "simple_java_96", "result": null, "input_token_count": 577, "output_token_count": 85, "latency": 0.8641829490661621}
+{"id": "simple_java_97", "result": null, "input_token_count": 505, "output_token_count": 69, "latency": 0.718374490737915}
+{"id": "simple_java_98", "result": null, "input_token_count": 497, "output_token_count": 56, "latency": 0.642646312713623}
+{"id": "simple_java_99", "result": null, "input_token_count": 515, "output_token_count": 169, "latency": 1.3637335300445557}

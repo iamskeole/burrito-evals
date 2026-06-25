@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": "", "input_token_count": 489, "output_token_count": 119, "latency": 1.0359036922454834}
+{"id": "simple_javascript_1", "result": "", "input_token_count": 578, "output_token_count": 104, "latency": 0.9932923316955566}
+{"id": "simple_javascript_2", "result": "[extractLastTransactionId(filepath='/var/log/db.log', status=\"['completed', 'failed']\", encoding='utf-8', processFunction=\"(transactionId) => console.log('Processing ID:', transactionId)\")]]", "input_token_count": 643, "output_token_count": 804, "latency": 5.483085632324219}
+{"id": "simple_javascript_3", "result": "", "input_token_count": 580, "output_token_count": 171, "latency": 1.4109392166137695}
+{"id": "simple_javascript_4", "result": "", "input_token_count": 500, "output_token_count": 107, "latency": 0.9601736068725586}
+{"id": "simple_javascript_5", "result": "[manageReactState(store=\"{initialState: initialStateObject, reducers: reducersMap, middlewares: [loggerMiddleware], enhancers: [applyMiddleware('myMiddleWare')]}\", context=\"{}\", hooks=\"{selectorHook: useStateSelectorHook, dispatchHook: useDispatchActionHook}\")]", "input_token_count": 774, "output_token_count": 706, "latency": 4.9311888217926025}
+{"id": "simple_javascript_6", "result": "[mapTransitions(category='transition', limit='4')]", "input_token_count": 515, "output_token_count": 83, "latency": 0.8229203224182129}
+{"id": "simple_javascript_7", "result": "", "input_token_count": 549, "output_token_count": 194, "latency": 1.547942876815796}
+{"id": "simple_javascript_8", "result": "", "input_token_count": 494, "output_token_count": 262, "latency": 1.9355132579803467}
+{"id": "simple_javascript_9", "result": "", "input_token_count": 583, "output_token_count": 269, "latency": 2.0363759994506836}
+{"id": "simple_javascript_10", "result": "[fetchSalesDepartmentRecords(databaseName=\"employeeRecords\", queryFunction=\"getSales\")]", "input_token_count": 544, "output_token_count": 351, "latency": 2.527808904647827}
+{"id": "simple_javascript_11", "result": "", "input_token_count": 587, "output_token_count": 489, "latency": 3.4303579330444336}
+{"id": "simple_javascript_12", "result": "[performDataFetch(apiEndpoint=\"https://api.example.com/data\", requestConfig='{\"method\":\"GET\"}', expectedResponse='{\"key\":\"value\"}', handleErrors=\"true\")]", "input_token_count": 722, "output_token_count": 329, "latency": 2.494866132736206}
+{"id": "simple_javascript_13", "result": "The request requires the actual contents of `userDataArray` to be provided. Please supply the array data so it can be passed to `DynamicChartGenerator`.", "input_token_count": 622, "output_token_count": 625, "latency": 4.31857705116272}
+{"id": "simple_javascript_14", "result": "", "input_token_count": 672, "output_token_count": 461, "latency": 3.3000612258911133}
+{"id": "simple_javascript_15", "result": "[ChartSeriesGenerator(labels=\"axisLabelsArray\", data=\"dataPointsArray\", color=\"defaultColor\", chartLayout=\"chartLayoutObject\")]", "input_token_count": 630, "output_token_count": 265, "latency": 2.0376787185668945}
+{"id": "simple_javascript_16", "result": "", "input_token_count": 590, "output_token_count": 267, "latency": 2.033370018005371}
+{"id": "simple_javascript_17", "result": "", "input_token_count": 628, "output_token_count": 166, "latency": 1.4161443710327148}
+{"id": "simple_javascript_18", "result": "", "input_token_count": 553, "output_token_count": 1176, "latency": 7.79956579208374}
+{"id": "simple_javascript_19", "result": "", "input_token_count": 581, "output_token_count": 215, "latency": 1.6935923099517822}
+{"id": "simple_javascript_20", "result": "", "input_token_count": 568, "output_token_count": 212, "latency": 1.6622929573059082}
+{"id": "simple_javascript_21", "result": "", "input_token_count": 505, "output_token_count": 224, "latency": 1.697756052017212}
+{"id": "simple_javascript_22", "result": "", "input_token_count": 435, "output_token_count": 81, "latency": 0.7599413394927979}
+{"id": "simple_javascript_23", "result": "", "input_token_count": 631, "output_token_count": 254, "latency": 1.9628877639770508}
+{"id": "simple_javascript_24", "result": "", "input_token_count": 478, "output_token_count": 182, "latency": 1.4195401668548584}
+{"id": "simple_javascript_25", "result": "", "input_token_count": 544, "output_token_count": 417, "latency": 2.9396708011627197}
+{"id": "simple_javascript_26", "result": "", "input_token_count": 552, "output_token_count": 103, "latency": 0.9710714817047119}
+{"id": "simple_javascript_27", "result": "", "input_token_count": 558, "output_token_count": 245, "latency": 1.8723101615905762}
+{"id": "simple_javascript_28", "result": "", "input_token_count": 517, "output_token_count": 289, "latency": 2.12190318107605}
+{"id": "simple_javascript_29", "result": "", "input_token_count": 578, "output_token_count": 566, "latency": 3.924337387084961}
+{"id": "simple_javascript_30", "result": "", "input_token_count": 538, "output_token_count": 120, "latency": 1.067229986190796}
+{"id": "simple_javascript_31", "result": "", "input_token_count": 496, "output_token_count": 125, "latency": 1.0828208923339844}
+{"id": "simple_javascript_32", "result": "[pollQueue(queue=\"fileWatchQueue\", pollingInterval=\"500\", pollIndex=\"0\", chunkSize=\"10\")]", "input_token_count": 619, "output_token_count": 204, "latency": 1.6583271026611328}
+{"id": "simple_javascript_33", "result": "", "input_token_count": 611, "output_token_count": 444, "latency": 3.1542482376098633}
+{"id": "simple_javascript_34", "result": "", "input_token_count": 529, "output_token_count": 207, "latency": 1.6121346950531006}
+{"id": "simple_javascript_35", "result": "", "input_token_count": 533, "output_token_count": 574, "latency": 3.9292116165161133}
+{"id": "simple_javascript_36", "result": "I need the specific break node (in string form)\n\nto determine whether its label needs updating.", "input_token_count": 512, "output_token_count": 1145, "latency": 7.5578553676605225}
+{"id": "simple_javascript_37", "result": "", "input_token_count": 584, "output_token_count": 335, "latency": 2.4536728858947754}
+{"id": "simple_javascript_38", "result": "", "input_token_count": 525, "output_token_count": 474, "latency": 3.2966597080230713}
+{"id": "simple_javascript_39", "result": "The function requires concrete string representations of the declaration and parameters. Since only the variable names were provided and no stringified content is available, I cannot invoke `maybeAddJsSyntheticRestParameter`.", "input_token_count": 547, "output_token_count": 330, "latency": 2.3987858295440674}
+{"id": "simple_javascript_40", "result": "[assignOwnDefaults(objectValue=\"undefined\", sourceValue=\"10\", key=\"maxItems\", object=\"{}\")]", "input_token_count": 626, "output_token_count": 292, "latency": 2.200746774673462}
+{"id": "simple_javascript_41", "result": "", "input_token_count": 569, "output_token_count": 148, "latency": 1.2624976634979248}
+{"id": "simple_javascript_42", "result": "", "input_token_count": 584, "output_token_count": 421, "latency": 2.9997167587280273}
+{"id": "simple_javascript_43", "result": "", "input_token_count": 553, "output_token_count": 249, "latency": 1.8915128707885742}
+{"id": "simple_javascript_44", "result": "[skipThrough(node='currentNode', st='nodeState', c='processNode')]", "input_token_count": 561, "output_token_count": 134, "latency": 1.1673192977905273}
+{"id": "simple_javascript_45", "result": "", "input_token_count": 574, "output_token_count": 399, "latency": 2.854841947555542}
+{"id": "simple_javascript_46", "result": "", "input_token_count": 570, "output_token_count": 161, "latency": 1.3442625999450684}
+{"id": "simple_javascript_47", "result": "", "input_token_count": 535, "output_token_count": 124, "latency": 1.0890066623687744}
+{"id": "simple_javascript_48", "result": "[updateDOMListeners(oldVnode=\"oldVirtualNode\", vnode=\"newVirtualNode\")]", "input_token_count": 529, "output_token_count": 210, "latency": 1.6302928924560547}
+{"id": "simple_javascript_49", "result": "", "input_token_count": 511, "output_token_count": 244, "latency": 1.8284294605255127}

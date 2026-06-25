@@ -1,0 +1,2 @@
+Rank,Model,Multi Turn Overall Acc,Base,Miss Func,Miss Param,Long Context
+1,gpt-oss:20b (Responses API - FC),9.38%,37.50%,N/A,N/A,N/A

@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": null, "input_token_count": 487, "output_token_count": 148, "latency": 1.2273242473602295}
+{"id": "simple_javascript_1", "result": null, "input_token_count": 576, "output_token_count": 115, "latency": 1.0541577339172363}
+{"id": "simple_javascript_2", "result": "[extractLastTransactionId(filepath=\"/var/log/db.log\", status=[\"completed\",\"failed\"], encoding=\"utf-8\", processFunction=\"function processID(id) { /* processing logic */ }\")]", "input_token_count": 641, "output_token_count": 447, "latency": 3.2081377506256104}
+{"id": "simple_javascript_3", "result": "[submitAtCoordinate(action='submit', formId='loginForm', coordinates='[60,30]')]", "input_token_count": 578, "output_token_count": 143, "latency": 1.2462968826293945}
+{"id": "simple_javascript_4", "result": null, "input_token_count": 498, "output_token_count": 107, "latency": 0.9686911106109619}
+{"id": "simple_javascript_5", "result": "[manageReactState(store='{\"initialState\": initialStateObject, \"reducers\": reducersMap, \"middlewares\": [\"loggerMiddleware\"], \"enhancers\": [\"applyMiddleware(\\\\\\'myMiddleWare\\\\\\')\" ]}', context='{}', hooks='{\"useSelector\": useStateSelectorHook, \"useDispatch\": useDispatchActionHook}')]\\", "input_token_count": 772, "output_token_count": 461, "latency": 3.3887057304382324}
+{"id": "simple_javascript_6", "result": "[mapTransitions(category='transition', limit='4')]", "input_token_count": 513, "output_token_count": 115, "latency": 1.0229620933532715}
+{"id": "simple_javascript_7", "result": null, "input_token_count": 547, "output_token_count": 130, "latency": 1.1457393169403076}
+{"id": "simple_javascript_8", "result": "[doesEmailInputExist(formElem='emailForm', inputName='emailAddress')]", "input_token_count": 492, "output_token_count": 95, "latency": 0.8950090408325195}
+{"id": "simple_javascript_9", "result": null, "input_token_count": 581, "output_token_count": 304, "latency": 2.2722971439361572}
+{"id": "simple_javascript_10", "result": "[fetchSalesDepartmentRecords(databaseName=\"employeeRecords\", queryFunction=\"getSales\")]", "input_token_count": 542, "output_token_count": 375, "latency": 2.6885247230529785}
+{"id": "simple_javascript_11", "result": null, "input_token_count": 585, "output_token_count": 550, "latency": 3.837393045425415}
+{"id": "simple_javascript_12", "result": "[performDataFetch(apiEndpoint=\"https://api.example.com/data\", requestConfig='{\"method\":\"GET\"}', expectedResponse='{\"key\":\"value\"}')]", "input_token_count": 720, "output_token_count": 222, "latency": 1.8234186172485352}
+{"id": "simple_javascript_13", "result": null, "input_token_count": 620, "output_token_count": 350, "latency": 2.575068235397339}
+{"id": "simple_javascript_14", "result": null, "input_token_count": 670, "output_token_count": 295, "latency": 2.252788543701172}
+{"id": "simple_javascript_15", "result": null, "input_token_count": 628, "output_token_count": 512, "latency": 3.6119141578674316}
+{"id": "simple_javascript_16", "result": null, "input_token_count": 588, "output_token_count": 148, "latency": 1.2839040756225586}
+{"id": "simple_javascript_17", "result": "[generateNotificationHandler(app=\"app\", priorityLevel=\"3\", messagingService=\"messagingSvc\", notificationType=\"2\")]", "input_token_count": 626, "output_token_count": 146, "latency": 1.2878799438476562}
+{"id": "simple_javascript_18", "result": "The final velocity after 5\u202fs of free fall (starting from rest) is \\(v = g \\times 5\\).", "input_token_count": 551, "output_token_count": 1114, "latency": 7.430196285247803}
+{"id": "simple_javascript_19", "result": "[configureShaderMaterial(property=\"materialProps\", textures=\"textureList\", object3D=\"meshObject\")]", "input_token_count": 579, "output_token_count": 236, "latency": 1.8307921886444092}
+{"id": "simple_javascript_20", "result": null, "input_token_count": 566, "output_token_count": 207, "latency": 1.6394376754760742}
+{"id": "simple_javascript_21", "result": null, "input_token_count": 503, "output_token_count": 359, "latency": 2.560335874557495}
+{"id": "simple_javascript_22", "result": null, "input_token_count": 433, "output_token_count": 60, "latency": 0.633152961730957}
+{"id": "simple_javascript_23", "result": "[createAuthToken(username='johndoe', validity='3600', options='{\"issuer\":\"myapp.net\",\"role\":\"admin\",\"algorithm\":\"HS256\"}')]", "input_token_count": 629, "output_token_count": 267, "latency": 2.05301570892334}
+{"id": "simple_javascript_24", "result": null, "input_token_count": 476, "output_token_count": 236, "latency": 1.7701952457427979}
+{"id": "simple_javascript_25", "result": null, "input_token_count": 542, "output_token_count": 425, "latency": 2.9969139099121094}
+{"id": "simple_javascript_26", "result": null, "input_token_count": 550, "output_token_count": 127, "latency": 1.1244990825653076}
+{"id": "simple_javascript_27", "result": "[validateReactProp(obj='serviceProvider', componentName='UserProfile')]", "input_token_count": 556, "output_token_count": 124, "latency": 1.1153650283813477}
+{"id": "simple_javascript_28", "result": null, "input_token_count": 515, "output_token_count": 332, "latency": 2.413770914077759}
+{"id": "simple_javascript_29", "result": null, "input_token_count": 576, "output_token_count": 717, "latency": 4.8841681480407715}
+{"id": "simple_javascript_30", "result": null, "input_token_count": 536, "output_token_count": 175, "latency": 1.4182589054107666}
+{"id": "simple_javascript_31", "result": "[transformAllDecoratorsOfDeclaration(node=\"myNode\", container=\"myContainer\")]", "input_token_count": 494, "output_token_count": 95, "latency": 0.8862366676330566}
+{"id": "simple_javascript_32", "result": "[pollQueue(queue=\"fileWatchQueue\", pollingInterval=\"500\", pollIndex=\"0\", chunkSize=\"10\")]", "input_token_count": 617, "output_token_count": 237, "latency": 1.8658385276794434}
+{"id": "simple_javascript_33", "result": null, "input_token_count": 609, "output_token_count": 249, "latency": 1.932676076889038}
+{"id": "simple_javascript_34", "result": null, "input_token_count": 527, "output_token_count": 206, "latency": 1.6144075393676758}
+{"id": "simple_javascript_35", "result": null, "input_token_count": 531, "output_token_count": 825, "latency": 5.548274517059326}
+{"id": "simple_javascript_36", "result": "I can\u2019t perform the update because the specific break node (`node`) is not provided. Please supply the node you want to update.", "input_token_count": 510, "output_token_count": 277, "latency": 2.0457675457000732}
+{"id": "simple_javascript_37", "result": null, "input_token_count": 582, "output_token_count": 447, "latency": 3.1795716285705566}
+{"id": "simple_javascript_38", "result": null, "input_token_count": 523, "output_token_count": 496, "latency": 3.4524247646331787}
+{"id": "simple_javascript_39", "result": "I need the actual string representations of `funcDeclaration` and `funcParameters` to be able to call `maybeAddJsSyntheticRestParameter`.", "input_token_count": 545, "output_token_count": 827, "latency": 5.571689128875732}
+{"id": "simple_javascript_40", "result": null, "input_token_count": 624, "output_token_count": 290, "latency": 2.2001893520355225}
+{"id": "simple_javascript_41", "result": null, "input_token_count": 567, "output_token_count": 106, "latency": 1.001903772354126}
+{"id": "simple_javascript_42", "result": null, "input_token_count": 582, "output_token_count": 197, "latency": 1.5931997299194336}
+{"id": "simple_javascript_43", "result": null, "input_token_count": 551, "output_token_count": 170, "latency": 1.3892505168914795}
+{"id": "simple_javascript_44", "result": "[skipThrough(node='currentNode', st='nodeState', c='processNode')]", "input_token_count": 559, "output_token_count": 203, "latency": 1.612617015838623}
+{"id": "simple_javascript_45", "result": null, "input_token_count": 572, "output_token_count": 135, "latency": 1.180891513824463}
+{"id": "simple_javascript_46", "result": null, "input_token_count": 568, "output_token_count": 354, "latency": 2.577226161956787}
+{"id": "simple_javascript_47", "result": null, "input_token_count": 533, "output_token_count": 111, "latency": 1.0107622146606445}
+{"id": "simple_javascript_48", "result": null, "input_token_count": 527, "output_token_count": 369, "latency": 2.648012399673462}
+{"id": "simple_javascript_49", "result": null, "input_token_count": 509, "output_token_count": 864, "latency": 5.780180215835571}

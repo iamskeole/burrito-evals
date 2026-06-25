@@ -1,0 +1,16 @@
+{"id": "live_relevance_0-0-0", "result": null, "input_token_count": 1247, "output_token_count": 263, "latency": 2.3941564559936523}
+{"id": "live_relevance_1-1-0", "result": null, "input_token_count": 1765, "output_token_count": 412, "latency": 3.6793248653411865}
+{"id": "live_relevance_2-2-0", "result": null, "input_token_count": 555, "output_token_count": 121, "latency": 1.0896754264831543}
+{"id": "live_relevance_3-3-0", "result": null, "input_token_count": 517, "output_token_count": 103, "latency": 0.9608933925628662}
+{"id": "live_relevance_4-4-0", "result": null, "input_token_count": 642, "output_token_count": 98, "latency": 1.0031142234802246}
+{"id": "live_relevance_5-5-0", "result": null, "input_token_count": 712, "output_token_count": 237, "latency": 1.924001932144165}
+{"id": "live_relevance_6-6-0", "result": null, "input_token_count": 1672, "output_token_count": 125, "latency": 1.7691195011138916}
+{"id": "live_relevance_7-7-0", "result": "I need a few more details to help you:  \n- Check\u2011in date (format: MM/DD/YYYY)  \n- Check\u2011out date (format: MM/DD/YYYY)  \n- Number of adults (you mentioned 4, but confirming helps)\n\nOnce you provide those, I can search for or book a suitable house in London.", "input_token_count": 874, "output_token_count": 528, "latency": 3.8770217895507812}
+{"id": "live_relevance_8-8-0", "result": null, "input_token_count": 1119, "output_token_count": 154, "latency": 1.625443935394287}
+{"id": "live_relevance_9-9-0", "result": null, "input_token_count": 1339, "output_token_count": 223, "latency": 2.192164182662964}
+{"id": "live_relevance_10-10-0", "result": "I need to know which movie you\u2019d like to see. Which movie would you like to purchase tickets for?", "input_token_count": 1338, "output_token_count": 89, "latency": 1.337792158126831}
+{"id": "live_relevance_11-11-0", "result": null, "input_token_count": 1140, "output_token_count": 147, "latency": 1.6033153533935547}
+{"id": "live_relevance_12-12-0", "result": null, "input_token_count": 1015, "output_token_count": 214, "latency": 1.9463746547698975}
+{"id": "live_relevance_13-13-0", "result": "I need the movie title and the number of tickets you\u2019d like to purchase to proceed.", "input_token_count": 2198, "output_token_count": 419, "latency": 3.972327947616577}
+{"id": "live_relevance_14-14-0", "result": null, "input_token_count": 1892, "output_token_count": 86, "latency": 1.6424181461334229}
+{"id": "live_relevance_15-15-0", "result": null, "input_token_count": 890, "output_token_count": 1147, "latency": 7.848405361175537}

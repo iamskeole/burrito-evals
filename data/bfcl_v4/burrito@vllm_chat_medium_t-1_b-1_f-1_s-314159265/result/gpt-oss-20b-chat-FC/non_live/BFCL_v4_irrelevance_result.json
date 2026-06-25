@@ -1,0 +1,240 @@
+{"id": "irrelevance_0", "result": [], "input_token_count": 191, "output_token_count": 193, "latency": 1.5251672267913818}
+{"id": "irrelevance_1", "result": [], "input_token_count": 189, "output_token_count": 436, "latency": 2.8457248210906982}
+{"id": "irrelevance_2", "result": [], "input_token_count": 190, "output_token_count": 385, "latency": 2.5277326107025146}
+{"id": "irrelevance_3", "result": [], "input_token_count": 209, "output_token_count": 138, "latency": 0.9968311786651611}
+{"id": "irrelevance_4", "result": [], "input_token_count": 205, "output_token_count": 179, "latency": 1.2563128471374512}
+{"id": "irrelevance_5", "result": [], "input_token_count": 221, "output_token_count": 111, "latency": 0.8281440734863281}
+{"id": "irrelevance_6", "result": [], "input_token_count": 197, "output_token_count": 99, "latency": 0.745490312576294}
+{"id": "irrelevance_7", "result": [], "input_token_count": 207, "output_token_count": 258, "latency": 1.7535507678985596}
+{"id": "irrelevance_8", "result": [], "input_token_count": 156, "output_token_count": 336, "latency": 2.2122206687927246}
+{"id": "irrelevance_9", "result": [], "input_token_count": 214, "output_token_count": 275, "latency": 1.8628919124603271}
+{"id": "irrelevance_10", "result": [], "input_token_count": 203, "output_token_count": 144, "latency": 1.0318844318389893}
+{"id": "irrelevance_11", "result": [], "input_token_count": 183, "output_token_count": 62, "latency": 0.5041229724884033}
+{"id": "irrelevance_12", "result": [], "input_token_count": 195, "output_token_count": 1051, "latency": 6.765254735946655}
+{"id": "irrelevance_13", "result": [], "input_token_count": 251, "output_token_count": 103, "latency": 0.797309160232544}
+{"id": "irrelevance_14", "result": [], "input_token_count": 220, "output_token_count": 214, "latency": 1.4783155918121338}
+{"id": "irrelevance_15", "result": [], "input_token_count": 217, "output_token_count": 1002, "latency": 6.46086859703064}
+{"id": "irrelevance_16", "result": [], "input_token_count": 248, "output_token_count": 1550, "latency": 10.009367942810059}
+{"id": "irrelevance_17", "result": [], "input_token_count": 209, "output_token_count": 223, "latency": 1.53071928024292}
+{"id": "irrelevance_18", "result": [{"calculate_vector_angle": "{\"X_component\": 3, \"Y_component\": 4, \"use_degrees\": true}"}], "input_token_count": 221, "output_token_count": 368, "latency": 2.444363832473755}
+{"id": "irrelevance_19", "result": [], "input_token_count": 206, "output_token_count": 347, "latency": 2.3083317279815674}
+{"id": "irrelevance_20", "result": [], "input_token_count": 192, "output_token_count": 170, "latency": 1.1811490058898926}
+{"id": "irrelevance_21", "result": [], "input_token_count": 248, "output_token_count": 496, "latency": 3.27406907081604}
+{"id": "irrelevance_22", "result": [], "input_token_count": 247, "output_token_count": 546, "latency": 3.6292083263397217}
+{"id": "irrelevance_23", "result": [], "input_token_count": 237, "output_token_count": 119, "latency": 0.8963627815246582}
+{"id": "irrelevance_24", "result": [], "input_token_count": 202, "output_token_count": 130, "latency": 0.9439671039581299}
+{"id": "irrelevance_25", "result": [], "input_token_count": 211, "output_token_count": 797, "latency": 5.160693645477295}
+{"id": "irrelevance_26", "result": [{"thermodynamics_calc_gas_pressure": "{\"volume\":2,\"initial_temperature\":25,\"final_temperature\":100}"}], "input_token_count": 257, "output_token_count": 430, "latency": 2.871847152709961}
+{"id": "irrelevance_27", "result": [{"calculate_heat": "{\"mass\":3,\"specific_heat\":4.184,\"change_in_temp\":4}"}], "input_token_count": 241, "output_token_count": 403, "latency": 2.686009645462036}
+{"id": "irrelevance_28", "result": [], "input_token_count": 186, "output_token_count": 38, "latency": 0.35247325897216797}
+{"id": "irrelevance_29", "result": [], "input_token_count": 185, "output_token_count": 505, "latency": 3.2880144119262695}
+{"id": "irrelevance_30", "result": [], "input_token_count": 216, "output_token_count": 376, "latency": 2.492999315261841}
+{"id": "irrelevance_31", "result": [], "input_token_count": 200, "output_token_count": 1053, "latency": 6.787096738815308}
+{"id": "irrelevance_32", "result": [], "input_token_count": 217, "output_token_count": 324, "latency": 2.1651384830474854}
+{"id": "irrelevance_33", "result": [{"identify_species": "{\"sequence\":\"ATCG\"}"}], "input_token_count": 177, "output_token_count": 95, "latency": 0.7053146362304688}
+{"id": "irrelevance_34", "result": [], "input_token_count": 172, "output_token_count": 562, "latency": 3.6453168392181396}
+{"id": "irrelevance_35", "result": [], "input_token_count": 188, "output_token_count": 828, "latency": 5.337001800537109}
+{"id": "irrelevance_36", "result": [], "input_token_count": 213, "output_token_count": 749, "latency": 4.856503248214722}
+{"id": "irrelevance_37", "result": [], "input_token_count": 196, "output_token_count": 282, "latency": 1.8959386348724365}
+{"id": "irrelevance_38", "result": [], "input_token_count": 210, "output_token_count": 464, "latency": 3.050764799118042}
+{"id": "irrelevance_39", "result": [], "input_token_count": 205, "output_token_count": 1366, "latency": 8.792075872421265}
+{"id": "irrelevance_40", "result": [], "input_token_count": 208, "output_token_count": 229, "latency": 1.5757954120635986}
+{"id": "irrelevance_41", "result": [], "input_token_count": 182, "output_token_count": 1084, "latency": 6.968595504760742}
+{"id": "irrelevance_42", "result": [], "input_token_count": 229, "output_token_count": 1372, "latency": 8.892008066177368}
+{"id": "irrelevance_43", "result": [], "input_token_count": 225, "output_token_count": 2523, "latency": 16.341907262802124}
+{"id": "irrelevance_44", "result": [], "input_token_count": 241, "output_token_count": 1095, "latency": 7.082537412643433}
+{"id": "irrelevance_45", "result": [], "input_token_count": 200, "output_token_count": 124, "latency": 0.912968635559082}
+{"id": "irrelevance_46", "result": [], "input_token_count": 164, "output_token_count": 615, "latency": 3.9792940616607666}
+{"id": "irrelevance_47", "result": [], "input_token_count": 192, "output_token_count": 912, "latency": 5.878801107406616}
+{"id": "irrelevance_48", "result": [], "input_token_count": 201, "output_token_count": 517, "latency": 3.3827602863311768}
+{"id": "irrelevance_49", "result": [], "input_token_count": 157, "output_token_count": 320, "latency": 2.1048824787139893}
+{"id": "irrelevance_50", "result": [], "input_token_count": 188, "output_token_count": 1036, "latency": 6.664511203765869}
+{"id": "irrelevance_51", "result": [], "input_token_count": 183, "output_token_count": 156, "latency": 1.103025197982788}
+{"id": "irrelevance_52", "result": [], "input_token_count": 198, "output_token_count": 34, "latency": 0.3403592109680176}
+{"id": "irrelevance_53", "result": [], "input_token_count": 232, "output_token_count": 88, "latency": 0.6951541900634766}
+{"id": "irrelevance_54", "result": [], "input_token_count": 182, "output_token_count": 354, "latency": 2.3363935947418213}
+{"id": "irrelevance_55", "result": [], "input_token_count": 204, "output_token_count": 332, "latency": 2.211653470993042}
+{"id": "irrelevance_56", "result": [], "input_token_count": 184, "output_token_count": 241, "latency": 1.6235086917877197}
+{"id": "irrelevance_57", "result": [], "input_token_count": 214, "output_token_count": 408, "latency": 2.7438724040985107}
+{"id": "irrelevance_58", "result": [], "input_token_count": 242, "output_token_count": 359, "latency": 2.4136903285980225}
+{"id": "irrelevance_59", "result": [], "input_token_count": 163, "output_token_count": 59, "latency": 0.4786064624786377}
+{"id": "irrelevance_60", "result": [], "input_token_count": 254, "output_token_count": 191, "latency": 1.3543739318847656}
+{"id": "irrelevance_61", "result": [], "input_token_count": 230, "output_token_count": 101, "latency": 0.7794392108917236}
+{"id": "irrelevance_62", "result": [], "input_token_count": 243, "output_token_count": 2155, "latency": 14.004292011260986}
+{"id": "irrelevance_63", "result": [{"probability_calculator": "{\"total_outcomes\": 8, \"event_outcomes\": 1, \"return_decimal\": false}"}], "input_token_count": 198, "output_token_count": 209, "latency": 1.4409325122833252}
+{"id": "irrelevance_64", "result": [], "input_token_count": 241, "output_token_count": 316, "latency": 2.154045820236206}
+{"id": "irrelevance_65", "result": [{"probability_determine_population": "{\"probability\":0.3,\"sample_size\":20}"}], "input_token_count": 212, "output_token_count": 143, "latency": 1.0279486179351807}
+{"id": "irrelevance_66", "result": [], "input_token_count": 186, "output_token_count": 99, "latency": 0.7379229068756104}
+{"id": "irrelevance_67", "result": [], "input_token_count": 292, "output_token_count": 303, "latency": 2.0893874168395996}
+{"id": "irrelevance_68", "result": [], "input_token_count": 279, "output_token_count": 422, "latency": 2.835379123687744}
+{"id": "irrelevance_69", "result": [], "input_token_count": 207, "output_token_count": 625, "latency": 4.073175668716431}
+{"id": "irrelevance_70", "result": [], "input_token_count": 236, "output_token_count": 341, "latency": 2.295879364013672}
+{"id": "irrelevance_71", "result": [], "input_token_count": 222, "output_token_count": 332, "latency": 2.218352794647217}
+{"id": "irrelevance_72", "result": [{"calculate_internal_rate_of_return": "{\"cash_flows\":[-100,40,60,80,120]}"}], "input_token_count": 220, "output_token_count": 167, "latency": 1.1829447746276855}
+{"id": "irrelevance_73", "result": [], "input_token_count": 205, "output_token_count": 609, "latency": 3.966374397277832}
+{"id": "irrelevance_74", "result": [], "input_token_count": 225, "output_token_count": 451, "latency": 2.9917380809783936}
+{"id": "irrelevance_75", "result": [], "input_token_count": 206, "output_token_count": 82, "latency": 0.6451125144958496}
+{"id": "irrelevance_76", "result": [], "input_token_count": 206, "output_token_count": 622, "latency": 4.047262907028198}
+{"id": "irrelevance_77", "result": [], "input_token_count": 241, "output_token_count": 965, "latency": 6.258400201797485}
+{"id": "irrelevance_78", "result": [], "input_token_count": 233, "output_token_count": 135, "latency": 0.9952554702758789}
+{"id": "irrelevance_79", "result": [], "input_token_count": 191, "output_token_count": 901, "latency": 5.807420015335083}
+{"id": "irrelevance_80", "result": [], "input_token_count": 218, "output_token_count": 80, "latency": 0.6340184211730957}
+{"id": "irrelevance_81", "result": [], "input_token_count": 199, "output_token_count": 1033, "latency": 6.66165828704834}
+{"id": "irrelevance_82", "result": [], "input_token_count": 2332, "output_token_count": 1189, "latency": 8.94849419593811}
+{"id": "irrelevance_83", "result": [], "input_token_count": 200, "output_token_count": 357, "latency": 2.3724632263183594}
+{"id": "irrelevance_84", "result": [], "input_token_count": 175, "output_token_count": 201, "latency": 1.3704586029052734}
+{"id": "irrelevance_85", "result": [], "input_token_count": 198, "output_token_count": 78, "latency": 0.6192450523376465}
+{"id": "irrelevance_86", "result": [{"law_info_get_penalty": "{\"crime\":\"burglary\",\"state\":\"California\"}"}], "input_token_count": 170, "output_token_count": 80, "latency": 0.6126086711883545}
+{"id": "irrelevance_87", "result": [], "input_token_count": 182, "output_token_count": 381, "latency": 2.5055043697357178}
+{"id": "irrelevance_88", "result": [], "input_token_count": 211, "output_token_count": 2174, "latency": 14.003819942474365}
+{"id": "irrelevance_89", "result": [], "input_token_count": 214, "output_token_count": 1135, "latency": 7.315237283706665}
+{"id": "irrelevance_90", "result": [], "input_token_count": 197, "output_token_count": 785, "latency": 5.079475402832031}
+{"id": "irrelevance_91", "result": [{"get_law_categories": "{\"law_type\":\"Noise\",\"country\":\"USA\",\"specific_category\":\"City Ordinance\"}"}], "input_token_count": 197, "output_token_count": 115, "latency": 0.8466682434082031}
+{"id": "irrelevance_92", "result": [], "input_token_count": 215, "output_token_count": 985, "latency": 6.360526084899902}
+{"id": "irrelevance_93", "result": [], "input_token_count": 191, "output_token_count": 162, "latency": 1.1308319568634033}
+{"id": "irrelevance_94", "result": [], "input_token_count": 198, "output_token_count": 336, "latency": 2.2376785278320312}
+{"id": "irrelevance_95", "result": [], "input_token_count": 201, "output_token_count": 225, "latency": 1.5388238430023193}
+{"id": "irrelevance_96", "result": [], "input_token_count": 202, "output_token_count": 1096, "latency": 7.064558982849121}
+{"id": "irrelevance_97", "result": [], "input_token_count": 198, "output_token_count": 137, "latency": 0.9853994846343994}
+{"id": "irrelevance_98", "result": [], "input_token_count": 206, "output_token_count": 955, "latency": 6.17018723487854}
+{"id": "irrelevance_99", "result": [], "input_token_count": 190, "output_token_count": 1526, "latency": 9.803068399429321}
+{"id": "irrelevance_100", "result": [], "input_token_count": 211, "output_token_count": 190, "latency": 1.323336124420166}
+{"id": "irrelevance_101", "result": [{"get_average_monthly_temperature": "{\"location\":\"Hawaii\",\"month\":\"May\"}"}], "input_token_count": 177, "output_token_count": 444, "latency": 2.903393268585205}
+{"id": "irrelevance_102", "result": [], "input_token_count": 212, "output_token_count": 717, "latency": 4.653405666351318}
+{"id": "irrelevance_103", "result": [], "input_token_count": 193, "output_token_count": 421, "latency": 2.767066478729248}
+{"id": "irrelevance_104", "result": [], "input_token_count": 200, "output_token_count": 261, "latency": 1.7673943042755127}
+{"id": "irrelevance_105", "result": [], "input_token_count": 198, "output_token_count": 2218, "latency": 14.287080764770508}
+{"id": "irrelevance_106", "result": [], "input_token_count": 201, "output_token_count": 1353, "latency": 8.716248273849487}
+{"id": "irrelevance_107", "result": [], "input_token_count": 211, "output_token_count": 218, "latency": 1.498966932296753}
+{"id": "irrelevance_108", "result": [], "input_token_count": 236, "output_token_count": 1760, "latency": 11.352039337158203}
+{"id": "irrelevance_109", "result": [], "input_token_count": 223, "output_token_count": 240, "latency": 1.6411693096160889}
+{"id": "irrelevance_110", "result": [], "input_token_count": 201, "output_token_count": 291, "latency": 1.9824528694152832}
+{"id": "irrelevance_111", "result": [], "input_token_count": 229, "output_token_count": 213, "latency": 1.48451828956604}
+{"id": "irrelevance_112", "result": [], "input_token_count": 199, "output_token_count": 485, "latency": 3.1821656227111816}
+{"id": "irrelevance_113", "result": [{"find_pois": "{\"location\":\"London\",\"category\":\"Restaurants\"}"}], "input_token_count": 204, "output_token_count": 79, "latency": 0.6221249103546143}
+{"id": "irrelevance_114", "result": [], "input_token_count": 199, "output_token_count": 1285, "latency": 8.287305116653442}
+{"id": "irrelevance_115", "result": [], "input_token_count": 225, "output_token_count": 454, "latency": 2.997971296310425}
+{"id": "irrelevance_116", "result": [], "input_token_count": 172, "output_token_count": 313, "latency": 2.076439619064331}
+{"id": "irrelevance_117", "result": [], "input_token_count": 246, "output_token_count": 494, "latency": 3.2610270977020264}
+{"id": "irrelevance_118", "result": [], "input_token_count": 184, "output_token_count": 62, "latency": 0.5004909038543701}
+{"id": "irrelevance_119", "result": [], "input_token_count": 177, "output_token_count": 56, "latency": 0.4632604122161865}
+{"id": "irrelevance_120", "result": [], "input_token_count": 210, "output_token_count": 1018, "latency": 6.571894645690918}
+{"id": "irrelevance_121", "result": [{"medical_records_get_disease_info": "{\"disease_name\":\"motor neuron diseases\",\"include_statistics\":true}"}], "input_token_count": 176, "output_token_count": 75, "latency": 0.5805931091308594}
+{"id": "irrelevance_122", "result": [], "input_token_count": 219, "output_token_count": 205, "latency": 1.4187262058258057}
+{"id": "irrelevance_123", "result": [], "input_token_count": 215, "output_token_count": 210, "latency": 1.4509429931640625}
+{"id": "irrelevance_124", "result": [{"get_social_trends": "{\"category\":\"technology\",\"region\":\"worldwide\"}"}], "input_token_count": 170, "output_token_count": 55, "latency": 0.45512914657592773}
+{"id": "irrelevance_125", "result": [], "input_token_count": 185, "output_token_count": 513, "latency": 3.3411831855773926}
+{"id": "irrelevance_126", "result": [], "input_token_count": 235, "output_token_count": 991, "latency": 6.416854381561279}
+{"id": "irrelevance_127", "result": [{"sentiment_analysis_twitter": "{\"topic\":\"new iPhone release\",\"language\":\"en\"}"}], "input_token_count": 193, "output_token_count": 92, "latency": 0.6969223022460938}
+{"id": "irrelevance_128", "result": [], "input_token_count": 181, "output_token_count": 414, "latency": 2.7226154804229736}
+{"id": "irrelevance_129", "result": [], "input_token_count": 221, "output_token_count": 287, "latency": 1.93607497215271}
+{"id": "irrelevance_130", "result": [{"calculate_big_five_traits": "{\"answers\":[1,2,3,4,5],\"calculate_percentile\":false}"}], "input_token_count": 216, "output_token_count": 372, "latency": 2.474114179611206}
+{"id": "irrelevance_131", "result": [], "input_token_count": 203, "output_token_count": 1576, "latency": 10.197981834411621}
+{"id": "irrelevance_132", "result": [], "input_token_count": 173, "output_token_count": 407, "latency": 2.668137550354004}
+{"id": "irrelevance_133", "result": [], "input_token_count": 196, "output_token_count": 97, "latency": 0.734961986541748}
+{"id": "irrelevance_134", "result": [], "input_token_count": 198, "output_token_count": 95, "latency": 0.7215583324432373}
+{"id": "irrelevance_135", "result": [], "input_token_count": 185, "output_token_count": 243, "latency": 1.6385931968688965}
+{"id": "irrelevance_136", "result": [], "input_token_count": 177, "output_token_count": 331, "latency": 2.1887402534484863}
+{"id": "irrelevance_137", "result": [], "input_token_count": 201, "output_token_count": 584, "latency": 3.804790496826172}
+{"id": "irrelevance_138", "result": [], "input_token_count": 180, "output_token_count": 167, "latency": 1.160116195678711}
+{"id": "irrelevance_139", "result": [], "input_token_count": 179, "output_token_count": 1132, "latency": 7.311276912689209}
+{"id": "irrelevance_140", "result": [], "input_token_count": 217, "output_token_count": 771, "latency": 5.002503395080566}
+{"id": "irrelevance_141", "result": [], "input_token_count": 184, "output_token_count": 1460, "latency": 9.621638059616089}
+{"id": "irrelevance_142", "result": [], "input_token_count": 165, "output_token_count": 59, "latency": 0.4798920154571533}
+{"id": "irrelevance_143", "result": [], "input_token_count": 203, "output_token_count": 1048, "latency": 6.756832599639893}
+{"id": "irrelevance_144", "result": [], "input_token_count": 188, "output_token_count": 1065, "latency": 6.848195314407349}
+{"id": "irrelevance_145", "result": [{"religion_history_get_event_year": "{\"event_name\":\"Protestant Reformation\",\"period\":\"16th century\",\"location\":\"Germany\"}"}], "input_token_count": 187, "output_token_count": 117, "latency": 0.8463599681854248}
+{"id": "irrelevance_146", "result": [], "input_token_count": 207, "output_token_count": 418, "latency": 2.7583792209625244}
+{"id": "irrelevance_147", "result": [], "input_token_count": 209, "output_token_count": 710, "latency": 4.610432147979736}
+{"id": "irrelevance_148", "result": [{"color_complimentary": "{\"color\":\"blue\",\"color_format\":\"RGB\"}"}], "input_token_count": 198, "output_token_count": 201, "latency": 1.388056993484497}
+{"id": "irrelevance_149", "result": [], "input_token_count": 196, "output_token_count": 591, "latency": 3.8491721153259277}
+{"id": "irrelevance_150", "result": [], "input_token_count": 218, "output_token_count": 204, "latency": 1.4141030311584473}
+{"id": "irrelevance_151", "result": [], "input_token_count": 186, "output_token_count": 110, "latency": 0.8015284538269043}
+{"id": "irrelevance_152", "result": [], "input_token_count": 193, "output_token_count": 1053, "latency": 6.780226230621338}
+{"id": "irrelevance_153", "result": [], "input_token_count": 208, "output_token_count": 453, "latency": 2.980499029159546}
+{"id": "irrelevance_154", "result": [], "input_token_count": 196, "output_token_count": 171, "latency": 1.2011699676513672}
+{"id": "irrelevance_155", "result": [], "input_token_count": 200, "output_token_count": 59, "latency": 0.4966163635253906}
+{"id": "irrelevance_156", "result": [], "input_token_count": 216, "output_token_count": 99, "latency": 0.753401517868042}
+{"id": "irrelevance_157", "result": [], "input_token_count": 181, "output_token_count": 1681, "latency": 10.796244144439697}
+{"id": "irrelevance_158", "result": [], "input_token_count": 221, "output_token_count": 852, "latency": 5.514278411865234}
+{"id": "irrelevance_159", "result": [], "input_token_count": 201, "output_token_count": 141, "latency": 1.0117177963256836}
+{"id": "irrelevance_160", "result": [{"most_frequent_visitor": "{\"museum_name\":\"Museum of Modern Art\",\"start_date\":\"2022-01-01\",\"end_date\":\"2022-12-31\"}"}], "input_token_count": 221, "output_token_count": 193, "latency": 1.3465089797973633}
+{"id": "irrelevance_161", "result": [], "input_token_count": 191, "output_token_count": 841, "latency": 5.42112398147583}
+{"id": "irrelevance_162", "result": [], "input_token_count": 210, "output_token_count": 1677, "latency": 10.7961106300354}
+{"id": "irrelevance_163", "result": [], "input_token_count": 198, "output_token_count": 1610, "latency": 10.370312213897705}
+{"id": "irrelevance_164", "result": [], "input_token_count": 196, "output_token_count": 667, "latency": 4.3325536251068115}
+{"id": "irrelevance_165", "result": [{"get_instrument_info": "{\"instrument_name\":\"cello\",\"detail\":\"type\"}"}], "input_token_count": 189, "output_token_count": 67, "latency": 0.5331063270568848}
+{"id": "irrelevance_166", "result": [], "input_token_count": 189, "output_token_count": 1225, "latency": 7.908092260360718}
+{"id": "irrelevance_167", "result": [], "input_token_count": 191, "output_token_count": 225, "latency": 1.5269014835357666}
+{"id": "irrelevance_168", "result": [], "input_token_count": 187, "output_token_count": 173, "latency": 1.1976191997528076}
+{"id": "irrelevance_169", "result": [], "input_token_count": 209, "output_token_count": 497, "latency": 3.257225513458252}
+{"id": "irrelevance_170", "result": [], "input_token_count": 173, "output_token_count": 1252, "latency": 8.081667184829712}
+{"id": "irrelevance_171", "result": [], "input_token_count": 186, "output_token_count": 750, "latency": 4.8959503173828125}
+{"id": "irrelevance_172", "result": [], "input_token_count": 194, "output_token_count": 103, "latency": 0.7693386077880859}
+{"id": "irrelevance_173", "result": [], "input_token_count": 179, "output_token_count": 334, "latency": 2.215439796447754}
+{"id": "irrelevance_174", "result": [{"music_theory_primary_triads": "{\"key_signature\":\"C major\",\"include_inversions\":false}"}], "input_token_count": 185, "output_token_count": 313, "latency": 2.083204507827759}
+{"id": "irrelevance_175", "result": [], "input_token_count": 180, "output_token_count": 84, "latency": 0.6449637413024902}
+{"id": "irrelevance_176", "result": [], "input_token_count": 187, "output_token_count": 810, "latency": 5.254519939422607}
+{"id": "irrelevance_177", "result": [], "input_token_count": 198, "output_token_count": 593, "latency": 3.863790988922119}
+{"id": "irrelevance_178", "result": [], "input_token_count": 206, "output_token_count": 529, "latency": 3.462555170059204}
+{"id": "irrelevance_179", "result": [], "input_token_count": 197, "output_token_count": 1182, "latency": 7.609983444213867}
+{"id": "irrelevance_180", "result": [{"sports_analyzer_get_schedule": "{\"date\":\"2026-05-25\",\"sport\":\"cricket\"}"}], "input_token_count": 204, "output_token_count": 156, "latency": 1.107579231262207}
+{"id": "irrelevance_181", "result": [], "input_token_count": 188, "output_token_count": 789, "latency": 5.093814134597778}
+{"id": "irrelevance_182", "result": [{"get_nba_player_stats": "{\"player_name\":\"Michael Jordan\",\"stat_type\":\"championships\"}"}], "input_token_count": 212, "output_token_count": 49, "latency": 0.4361090660095215}
+{"id": "irrelevance_183", "result": [], "input_token_count": 218, "output_token_count": 75, "latency": 0.5998702049255371}
+{"id": "irrelevance_184", "result": [], "input_token_count": 206, "output_token_count": 164, "latency": 1.1602253913879395}
+{"id": "irrelevance_185", "result": [{"player_stats_average_scoring": "{\"player_name\":\"LeBron James\",\"season\":\"2022-23\"}"}], "input_token_count": 190, "output_token_count": 176, "latency": 1.2163705825805664}
+{"id": "irrelevance_186", "result": [], "input_token_count": 188, "output_token_count": 220, "latency": 1.4915897846221924}
+{"id": "irrelevance_187", "result": [], "input_token_count": 209, "output_token_count": 432, "latency": 2.8464291095733643}
+{"id": "irrelevance_188", "result": [{"sports_ranking_get_champion": "{\"event\":\"World Series\",\"year\":2020}"}], "input_token_count": 173, "output_token_count": 98, "latency": 0.7256448268890381}
+{"id": "irrelevance_189", "result": [], "input_token_count": 187, "output_token_count": 409, "latency": 2.6857542991638184}
+{"id": "irrelevance_190", "result": [], "input_token_count": 204, "output_token_count": 433, "latency": 2.851940631866455}
+{"id": "irrelevance_191", "result": [], "input_token_count": 194, "output_token_count": 150, "latency": 1.0668628215789795}
+{"id": "irrelevance_192", "result": [], "input_token_count": 199, "output_token_count": 1026, "latency": 6.617518424987793}
+{"id": "irrelevance_193", "result": [], "input_token_count": 192, "output_token_count": 209, "latency": 1.4279096126556396}
+{"id": "irrelevance_194", "result": [], "input_token_count": 199, "output_token_count": 223, "latency": 1.5269477367401123}
+{"id": "irrelevance_195", "result": [], "input_token_count": 233, "output_token_count": 1095, "latency": 7.081737041473389}
+{"id": "irrelevance_196", "result": [], "input_token_count": 286, "output_token_count": 517, "latency": 3.4395976066589355}
+{"id": "irrelevance_197", "result": [], "input_token_count": 207, "output_token_count": 128, "latency": 0.9329235553741455}
+{"id": "irrelevance_198", "result": [], "input_token_count": 193, "output_token_count": 1451, "latency": 9.338775396347046}
+{"id": "irrelevance_199", "result": [], "input_token_count": 190, "output_token_count": 521, "latency": 3.3945679664611816}
+{"id": "irrelevance_200", "result": [], "input_token_count": 191, "output_token_count": 237, "latency": 1.6021983623504639}
+{"id": "irrelevance_201", "result": [], "input_token_count": 203, "output_token_count": 328, "latency": 2.1887879371643066}
+{"id": "irrelevance_202", "result": [], "input_token_count": 203, "output_token_count": 256, "latency": 1.735311508178711}
+{"id": "irrelevance_203", "result": [{"get_player_score": "{\"player\":\"A\",\"game\":\"Halo\"}"}], "input_token_count": 167, "output_token_count": 331, "latency": 2.187603712081909}
+{"id": "irrelevance_204", "result": [], "input_token_count": 206, "output_token_count": 393, "latency": 2.597585439682007}
+{"id": "irrelevance_205", "result": [], "input_token_count": 215, "output_token_count": 59, "latency": 0.5008373260498047}
+{"id": "irrelevance_206", "result": [], "input_token_count": 210, "output_token_count": 402, "latency": 2.6577649116516113}
+{"id": "irrelevance_207", "result": [], "input_token_count": 204, "output_token_count": 466, "latency": 3.0597221851348877}
+{"id": "irrelevance_208", "result": [], "input_token_count": 204, "output_token_count": 1828, "latency": 11.772220373153687}
+{"id": "irrelevance_209", "result": [], "input_token_count": 196, "output_token_count": 2625, "latency": 16.93331217765808}
+{"id": "irrelevance_210", "result": [], "input_token_count": 216, "output_token_count": 141, "latency": 1.0142107009887695}
+{"id": "irrelevance_211", "result": [{"recipe_calculator_calculate_time": "{\"weight\":1.5,\"per_unit_time\":20,\"unit_of_time\":\"minutes\"}"}], "input_token_count": 205, "output_token_count": 363, "latency": 2.4152274131774902}
+{"id": "irrelevance_212", "result": [{"get_cooking_time": "{\"ingredient_type\":\"egg\",\"ingredient_size\":\"medium\",\"cooking_method\":\"boiling\"}"}], "input_token_count": 212, "output_token_count": 208, "latency": 1.4363205432891846}
+{"id": "irrelevance_213", "result": [{"restaurant_finder": "{\"cuisine\":\"pizza\",\"location\":\"Boston\"}"}], "input_token_count": 188, "output_token_count": 75, "latency": 0.5844612121582031}
+{"id": "irrelevance_214", "result": [], "input_token_count": 198, "output_token_count": 1191, "latency": 7.673448085784912}
+{"id": "irrelevance_215", "result": [], "input_token_count": 212, "output_token_count": 449, "latency": 2.957460641860962}
+{"id": "irrelevance_216", "result": [], "input_token_count": 183, "output_token_count": 165, "latency": 1.1489746570587158}
+{"id": "irrelevance_217", "result": [], "input_token_count": 194, "output_token_count": 640, "latency": 4.15869140625}
+{"id": "irrelevance_218", "result": [], "input_token_count": 196, "output_token_count": 1020, "latency": 6.5774242877960205}
+{"id": "irrelevance_219", "result": [], "input_token_count": 222, "output_token_count": 1304, "latency": 8.40703821182251}
+{"id": "irrelevance_220", "result": [], "input_token_count": 194, "output_token_count": 595, "latency": 3.880124092102051}
+{"id": "irrelevance_221", "result": [], "input_token_count": 213, "output_token_count": 1304, "latency": 8.40020489692688}
+{"id": "irrelevance_222", "result": [{"grocery_store_item_details": "{\"item_name\":\"tomato\",\"store_location\":\"generic\"}"}], "input_token_count": 211, "output_token_count": 181, "latency": 1.2664687633514404}
+{"id": "irrelevance_223", "result": [{"grocery_shop_find_specific_product": "{\"city\":\"Chicago\",\"product\":\"sourdough bread\"}"}], "input_token_count": 204, "output_token_count": 63, "latency": 0.5217161178588867}
+{"id": "irrelevance_224", "result": [], "input_token_count": 219, "output_token_count": 159, "latency": 1.1310756206512451}
+{"id": "irrelevance_225", "result": [], "input_token_count": 242, "output_token_count": 237, "latency": 1.6501219272613525}
+{"id": "irrelevance_226", "result": [{"get_local_time": "{\"timezone\":\"Europe/London\",\"date_format\":\"YYYY-MM-DD HH:mm:ss\"}"}], "input_token_count": 185, "output_token_count": 148, "latency": 1.0415832996368408}
+{"id": "irrelevance_227", "result": [], "input_token_count": 227, "output_token_count": 313, "latency": 2.1153554916381836}
+{"id": "irrelevance_228", "result": [{"get_local_time": "{\"location\":\"Sydney, Australia\",\"format\":\"24\"}"}], "input_token_count": 215, "output_token_count": 55, "latency": 0.4750547409057617}
+{"id": "irrelevance_229", "result": [], "input_token_count": 212, "output_token_count": 1039, "latency": 6.708436012268066}
+{"id": "irrelevance_230", "result": [], "input_token_count": 204, "output_token_count": 1216, "latency": 7.835815906524658}
+{"id": "irrelevance_231", "result": [], "input_token_count": 214, "output_token_count": 1062, "latency": 6.852809190750122}
+{"id": "irrelevance_232", "result": [], "input_token_count": 196, "output_token_count": 532, "latency": 3.477604389190674}
+{"id": "irrelevance_233", "result": [], "input_token_count": 186, "output_token_count": 270, "latency": 1.8197448253631592}
+{"id": "irrelevance_234", "result": [], "input_token_count": 186, "output_token_count": 134, "latency": 0.954157829284668}
+{"id": "irrelevance_235", "result": [], "input_token_count": 192, "output_token_count": 676, "latency": 4.378535270690918}
+{"id": "irrelevance_236", "result": [{"get_flight_duration": "{\"start_city\":\"London\",\"destination_city\":\"Tokyo\",\"flight_type\":\"non-stop\"}"}], "input_token_count": 204, "output_token_count": 152, "latency": 1.0824787616729736}
+{"id": "irrelevance_237", "result": [], "input_token_count": 210, "output_token_count": 453, "latency": 2.9798810482025146}
+{"id": "irrelevance_238", "result": [], "input_token_count": 285, "output_token_count": 159, "latency": 1.1712486743927002}
+{"id": "irrelevance_239", "result": [{"get_date": "{\"location_1\":\"San Francisco\",\"location_2\":\"Los Angeles\",\"unit\":\"kilometers\"}"}], "input_token_count": 190, "output_token_count": 62, "latency": 0.5029559135437012}

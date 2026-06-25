@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": "", "input_token_count": 489, "output_token_count": 99, "latency": 0.9019415378570557}
+{"id": "simple_javascript_1", "result": "", "input_token_count": 578, "output_token_count": 176, "latency": 1.4369056224822998}
+{"id": "simple_javascript_2", "result": "[extractLastTransactionId(filepath=\"/var/log/db.log\", status=[\"completed\",\"failed\"], encoding=\"utf-8\", processFunction=\"(id)=>{ console.log('Processed ID:', id); }\")]", "input_token_count": 643, "output_token_count": 341, "latency": 2.5184485912323}
+{"id": "simple_javascript_3", "result": "", "input_token_count": 580, "output_token_count": 323, "latency": 2.369875192642212}
+{"id": "simple_javascript_4", "result": "", "input_token_count": 500, "output_token_count": 75, "latency": 0.7538502216339111}
+{"id": "simple_javascript_5", "result": "[manageReactState(store=\"{'initialState': initialStateObject, 'reducers': reducersMap, 'middlewares': [loggerMiddleware], 'enhancers': [applyMiddleware('myMiddleWare')]}\", context=\"AppContext\", hooks=\"{'useStateSelectorHook': useStateSelectorHook, 'useDispatchActionHook': useDispatchActionHook}\")]", "input_token_count": 774, "output_token_count": 547, "latency": 3.900620937347412}
+{"id": "simple_javascript_6", "result": "", "input_token_count": 515, "output_token_count": 300, "latency": 2.184945821762085}
+{"id": "simple_javascript_7", "result": "I cannot execute the function because the `ctx` parameter (the JSON object to analyze) is not provided.", "input_token_count": 549, "output_token_count": 660, "latency": 4.481667995452881}
+{"id": "simple_javascript_8", "result": "", "input_token_count": 494, "output_token_count": 109, "latency": 0.9645252227783203}
+{"id": "simple_javascript_9", "result": "", "input_token_count": 583, "output_token_count": 928, "latency": 6.200773477554321}
+{"id": "simple_javascript_10", "result": "", "input_token_count": 544, "output_token_count": 282, "latency": 2.0769102573394775}
+{"id": "simple_javascript_11", "result": "[prioritizeAndSort(items=\"myItemList\", priorityStatus=\"urgent\", ascending=\"true\")]", "input_token_count": 587, "output_token_count": 389, "latency": 2.789607048034668}
+{"id": "simple_javascript_12", "result": "", "input_token_count": 722, "output_token_count": 230, "latency": 1.8556976318359375}
+{"id": "simple_javascript_13", "result": "[DynamicChartGenerator(userData=\"userDataArray\", scalingFactor=\"3\", dashboard=\"dashboardElement\", options=\"{}\")]", "input_token_count": 622, "output_token_count": 393, "latency": 2.8271355628967285}
+{"id": "simple_javascript_14", "result": "", "input_token_count": 672, "output_token_count": 331, "latency": 2.455073833465576}
+{"id": "simple_javascript_15", "result": "[ChartSeriesGenerator(labels=\"axisLabelsArray\", data=\"dataPointsArray\", color=\"defaultColor\", chartLayout=\"chartLayoutObject\")]", "input_token_count": 630, "output_token_count": 185, "latency": 1.5166280269622803}
+{"id": "simple_javascript_16", "result": "", "input_token_count": 590, "output_token_count": 149, "latency": 1.2712280750274658}
+{"id": "simple_javascript_17", "result": "", "input_token_count": 628, "output_token_count": 94, "latency": 0.9461658000946045}
+{"id": "simple_javascript_18", "result": "", "input_token_count": 553, "output_token_count": 150, "latency": 1.2653379440307617}
+{"id": "simple_javascript_19", "result": "[configureShaderMaterial(property='materialProps', textures='textureList', object3D='meshObject')]", "input_token_count": 581, "output_token_count": 185, "latency": 1.4980127811431885}
+{"id": "simple_javascript_20", "result": "[buttonAddClickHandler(element=\"myButton\", callback=\"handleButtonClick\", options='{\"stopProgation\":true}')]", "input_token_count": 568, "output_token_count": 216, "latency": 1.670469045639038}
+{"id": "simple_javascript_21", "result": "I need an explicit list of product objects (each with a `productId` property) to search through.", "input_token_count": 505, "output_token_count": 230, "latency": 1.7291202545166016}
+{"id": "simple_javascript_22", "result": "", "input_token_count": 435, "output_token_count": 69, "latency": 0.6786565780639648}
+{"id": "simple_javascript_23", "result": "", "input_token_count": 631, "output_token_count": 333, "latency": 2.4484057426452637}
+{"id": "simple_javascript_24", "result": "", "input_token_count": 478, "output_token_count": 248, "latency": 1.8235437870025635}
+{"id": "simple_javascript_25", "result": "[trackSubmitWithValidation(obj=\"formHandler\", validationFlags=\"['isRequired', 'isValidEmail']\")]", "input_token_count": 544, "output_token_count": 302, "latency": 2.2010867595672607}
+{"id": "simple_javascript_26", "result": "", "input_token_count": 552, "output_token_count": 96, "latency": 0.9193663597106934}
+{"id": "simple_javascript_27", "result": "I need the actual `serviceProvider` object to validate it. Please provide its JSON or JavaScript literal representation.", "input_token_count": 558, "output_token_count": 124, "latency": 1.1016395092010498}
+{"id": "simple_javascript_28", "result": "", "input_token_count": 517, "output_token_count": 316, "latency": 2.2936370372772217}
+{"id": "simple_javascript_29", "result": "[EventScheduler(events='{\"setupStage\":\"setupStageFunction\",\"cleanupStage\":[\"cleanupStage\",\"setupStage\"]}', concurrencyLimit='3')]", "input_token_count": 578, "output_token_count": 389, "latency": 2.7791123390197754}
+{"id": "simple_javascript_30", "result": "", "input_token_count": 538, "output_token_count": 105, "latency": 0.9640815258026123}
+{"id": "simple_javascript_31", "result": "[transformAllDecoratorsOfDeclaration(node=\"myNode\", container=\"myContainer\")]", "input_token_count": 496, "output_token_count": 96, "latency": 0.8896808624267578}
+{"id": "simple_javascript_32", "result": "", "input_token_count": 619, "output_token_count": 279, "latency": 2.1132049560546875}
+{"id": "simple_javascript_33", "result": "[emitNewLineBeforeLeadingComments(lineMap='tsLineMap', writer='tsWriter', node='42')]", "input_token_count": 611, "output_token_count": 199, "latency": 1.6112818717956543}
+{"id": "simple_javascript_34", "result": "", "input_token_count": 529, "output_token_count": 202, "latency": 1.570972204208374}
+{"id": "simple_javascript_35", "result": "I need the two declaration objects (as string representations) to compare them.", "input_token_count": 533, "output_token_count": 383, "latency": 2.7146754264831543}
+{"id": "simple_javascript_36", "result": "", "input_token_count": 512, "output_token_count": 90, "latency": 0.8509130477905273}
+{"id": "simple_javascript_37", "result": "", "input_token_count": 584, "output_token_count": 393, "latency": 2.8036041259765625}
+{"id": "simple_javascript_38", "result": "", "input_token_count": 525, "output_token_count": 272, "latency": 2.006502866744995}
+{"id": "simple_javascript_39", "result": "", "input_token_count": 547, "output_token_count": 382, "latency": 2.719209671020508}
+{"id": "simple_javascript_40", "result": "", "input_token_count": 626, "output_token_count": 495, "latency": 3.474656820297241}
+{"id": "simple_javascript_41", "result": "[queue_1(worker=\"myWorkerFunction\", concurrency=\"5\")]", "input_token_count": 569, "output_token_count": 188, "latency": 1.502715826034546}
+{"id": "simple_javascript_42", "result": "", "input_token_count": 584, "output_token_count": 717, "latency": 4.862297058105469}
+{"id": "simple_javascript_43", "result": "", "input_token_count": 553, "output_token_count": 143, "latency": 1.2119629383087158}
+{"id": "simple_javascript_44", "result": "", "input_token_count": 561, "output_token_count": 271, "latency": 2.0259487628936768}
+{"id": "simple_javascript_45", "result": "[Sde(t='https://github.com/yarnpkg/berry', e='{\"startingCwd\":\"/home/user/projects\"}')]", "input_token_count": 574, "output_token_count": 161, "latency": 1.3383259773254395}
+{"id": "simple_javascript_46", "result": "[vOe(r='{\"name\":\"examplePackage\",\"version\":\"1.0.0\"}', e='version', t='1.2.3')]", "input_token_count": 570, "output_token_count": 279, "latency": 2.0695910453796387}
+{"id": "simple_javascript_47", "result": "", "input_token_count": 535, "output_token_count": 100, "latency": 0.9331157207489014}
+{"id": "simple_javascript_48", "result": "I need the actual `oldVirtualNode` and `newVirtualNode` data (in JSON/JavaScript object format) so I can call `updateDOMListeners` with the required parameters.", "input_token_count": 529, "output_token_count": 244, "latency": 1.8341715335845947}
+{"id": "simple_javascript_49", "result": "", "input_token_count": 511, "output_token_count": 220, "latency": 1.6676223278045654}

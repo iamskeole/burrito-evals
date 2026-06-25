@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": "", "input_token_count": 489, "output_token_count": 112, "latency": 0.9804353713989258}
+{"id": "simple_javascript_1", "result": "", "input_token_count": 578, "output_token_count": 186, "latency": 1.5021507740020752}
+{"id": "simple_javascript_2", "result": "[extractLastTransactionId(filepath=\"/var/log/db.log\", status=\"['completed', 'failed']\", encoding=\"utf-8\", processFunction=\"function process(id){ console.log('Processing ID:', id); }\")]", "input_token_count": 643, "output_token_count": 604, "latency": 4.190968751907349}
+{"id": "simple_javascript_3", "result": "", "input_token_count": 580, "output_token_count": 406, "latency": 2.8970553874969482}
+{"id": "simple_javascript_4", "result": "", "input_token_count": 500, "output_token_count": 65, "latency": 0.6973555088043213}
+{"id": "simple_javascript_5", "result": "[manageReactState(store='{\"initialState\": initialStateObject, \"reducers\": reducersMap, \"middlewares\": [\"loggerMiddleware\"], \"enhancers\": [\"applyMiddleware(\\'myMiddleWare\\')\"]}', context='{}', hooks='{\"useStateSelectorHook\": useStateSelectorHook, \"useDispatchActionHook\": useDispatchActionHook}')]", "input_token_count": 774, "output_token_count": 571, "latency": 4.059167385101318}
+{"id": "simple_javascript_6", "result": "", "input_token_count": 515, "output_token_count": 95, "latency": 0.8963191509246826}
+{"id": "simple_javascript_7", "result": "", "input_token_count": 549, "output_token_count": 459, "latency": 3.2135722637176514}
+{"id": "simple_javascript_8", "result": "[doesEmailInputExist(formElem='emailForm', inputName='emailAddress')]", "input_token_count": 494, "output_token_count": 158, "latency": 1.2831995487213135}
+{"id": "simple_javascript_9", "result": "", "input_token_count": 583, "output_token_count": 109, "latency": 1.0186338424682617}
+{"id": "simple_javascript_10", "result": "[fetchSalesDepartmentRecords(databaseName=\"employeeRecords\", queryFunction=\"getSales\")]", "input_token_count": 544, "output_token_count": 328, "latency": 2.3772172927856445}
+{"id": "simple_javascript_11", "result": "[prioritizeAndSort(items=myItemList, priorityStatus='urgent', ascending='true')]", "input_token_count": 587, "output_token_count": 85, "latency": 0.8709397315979004}
+{"id": "simple_javascript_12", "result": "", "input_token_count": 722, "output_token_count": 560, "latency": 3.95562481880188}
+{"id": "simple_javascript_13", "result": "[DynamicChartGenerator(userData=\"userDataArray\", scalingFactor=\"3\", dashboard=\"dashboardElement\", options=\"{}\")]", "input_token_count": 622, "output_token_count": 203, "latency": 1.6377527713775635}
+{"id": "simple_javascript_14", "result": "[chartDataAccessorFactory(chart={\\\"nm\\\":\\\"BarChart\\\",\\\"mn\\\":\\\"chartModule\\\"}, library=\\\"visualizationLibrary\\\", configObject=\\\"config\\\")]", "input_token_count": 672, "output_token_count": 166, "latency": 1.4214019775390625}
+{"id": "simple_javascript_15", "result": "[ChartSeriesGenerator(labels='axisLabelsArray', data='dataPointsArray', color='defaultColor', chartLayout='chartLayoutObject')]", "input_token_count": 630, "output_token_count": 163, "latency": 1.3859755992889404}
+{"id": "simple_javascript_16", "result": "[rotateVertices(vertices='[[10,15],[20,25]]', pivot='[12,17]', angle='30')]", "input_token_count": 590, "output_token_count": 152, "latency": 1.2938854694366455}
+{"id": "simple_javascript_17", "result": "", "input_token_count": 628, "output_token_count": 123, "latency": 1.1297192573547363}
+{"id": "simple_javascript_18", "result": "", "input_token_count": 553, "output_token_count": 240, "latency": 1.8405163288116455}
+{"id": "simple_javascript_19", "result": "", "input_token_count": 581, "output_token_count": 117, "latency": 1.0712356567382812}
+{"id": "simple_javascript_20", "result": "[buttonAddClickHandler(element='myButton', callback='handleButtonClick', options='{\"stopPropagation\":true}')]", "input_token_count": 568, "output_token_count": 172, "latency": 1.4143881797790527}
+{"id": "simple_javascript_21", "result": "I need a list of product objects that includes their `productId` values to search for the product with `productId` 123. Could you provide that data?", "input_token_count": 505, "output_token_count": 261, "latency": 1.9243931770324707}
+{"id": "simple_javascript_22", "result": "", "input_token_count": 435, "output_token_count": 64, "latency": 0.649341344833374}
+{"id": "simple_javascript_23", "result": "", "input_token_count": 631, "output_token_count": 248, "latency": 1.9194509983062744}
+{"id": "simple_javascript_24", "result": "", "input_token_count": 478, "output_token_count": 551, "latency": 3.746445417404175}
+{"id": "simple_javascript_25", "result": "", "input_token_count": 544, "output_token_count": 212, "latency": 1.636446237564087}
+{"id": "simple_javascript_26", "result": "", "input_token_count": 552, "output_token_count": 100, "latency": 0.9457130432128906}
+{"id": "simple_javascript_27", "result": "I need the string representation of `serviceProvider` to proceed with the validation.", "input_token_count": 558, "output_token_count": 387, "latency": 2.7644472122192383}
+{"id": "simple_javascript_28", "result": "", "input_token_count": 517, "output_token_count": 311, "latency": 2.253946542739868}
+{"id": "simple_javascript_29", "result": "[EventScheduler(events='{\"setupStage\": [], \"cleanupStage\": [\"setupStage\"]}', concurrencyLimit='3', callback='null')]", "input_token_count": 578, "output_token_count": 685, "latency": 4.669100999832153}
+{"id": "simple_javascript_30", "result": "", "input_token_count": 538, "output_token_count": 108, "latency": 0.9854111671447754}
+{"id": "simple_javascript_31", "result": "", "input_token_count": 496, "output_token_count": 175, "latency": 1.390326738357544}
+{"id": "simple_javascript_32", "result": "", "input_token_count": 619, "output_token_count": 157, "latency": 1.343111515045166}
+{"id": "simple_javascript_33", "result": "", "input_token_count": 611, "output_token_count": 316, "latency": 2.34102725982666}
+{"id": "simple_javascript_34", "result": "", "input_token_count": 529, "output_token_count": 256, "latency": 1.914440631866455}
+{"id": "simple_javascript_35", "result": "", "input_token_count": 533, "output_token_count": 74, "latency": 0.770035982131958}
+{"id": "simple_javascript_36", "result": "<Missing parameter: node>", "input_token_count": 512, "output_token_count": 181, "latency": 1.4247462749481201}
+{"id": "simple_javascript_37", "result": "", "input_token_count": 584, "output_token_count": 241, "latency": 1.8548221588134766}
+{"id": "simple_javascript_38", "result": "", "input_token_count": 525, "output_token_count": 383, "latency": 2.7194461822509766}
+{"id": "simple_javascript_39", "result": "I need the actual values of `funcDeclaration` and `funcParameters` to determine whether a synthetic rest parameter should be added.", "input_token_count": 547, "output_token_count": 511, "latency": 3.537811517715454}
+{"id": "simple_javascript_40", "result": "[assignOwnDefaults(objectValue=\"undefined\", sourceValue=\"10\", key=\"maxItems\", object=\"{}\")]", "input_token_count": 626, "output_token_count": 835, "latency": 5.646244287490845}
+{"id": "simple_javascript_41", "result": "", "input_token_count": 569, "output_token_count": 329, "latency": 2.3994126319885254}
+{"id": "simple_javascript_42", "result": "", "input_token_count": 584, "output_token_count": 1007, "latency": 6.724022626876831}
+{"id": "simple_javascript_43", "result": "", "input_token_count": 553, "output_token_count": 47, "latency": 0.614788293838501}
+{"id": "simple_javascript_44", "result": "", "input_token_count": 561, "output_token_count": 67, "latency": 0.7409262657165527}
+{"id": "simple_javascript_45", "result": "", "input_token_count": 574, "output_token_count": 246, "latency": 1.871896505355835}
+{"id": "simple_javascript_46", "result": "", "input_token_count": 570, "output_token_count": 436, "latency": 3.0703423023223877}
+{"id": "simple_javascript_47", "result": "", "input_token_count": 535, "output_token_count": 119, "latency": 1.0609712600708008}
+{"id": "simple_javascript_48", "result": "I need the JSON representations of the old virtual node (`oldVnode`) and the new virtual node (`vnode`) to call the `updateDOMListeners` function.", "input_token_count": 529, "output_token_count": 186, "latency": 1.4842019081115723}
+{"id": "simple_javascript_49", "result": "", "input_token_count": 511, "output_token_count": 203, "latency": 1.5599310398101807}

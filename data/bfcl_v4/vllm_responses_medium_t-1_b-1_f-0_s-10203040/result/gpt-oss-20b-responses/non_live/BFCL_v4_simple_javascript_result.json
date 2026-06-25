@@ -1,0 +1,50 @@
+{"id": "simple_javascript_0", "result": "", "input_token_count": 489, "output_token_count": 123, "latency": 1.0516445636749268}
+{"id": "simple_javascript_1", "result": "", "input_token_count": 578, "output_token_count": 130, "latency": 1.149282693862915}
+{"id": "simple_javascript_2", "result": "", "input_token_count": 643, "output_token_count": 350, "latency": 2.5794925689697266}
+{"id": "simple_javascript_3", "result": "", "input_token_count": 580, "output_token_count": 209, "latency": 1.6463260650634766}
+{"id": "simple_javascript_4", "result": "", "input_token_count": 500, "output_token_count": 69, "latency": 0.7175579071044922}
+{"id": "simple_javascript_5", "result": "", "input_token_count": 774, "output_token_count": 606, "latency": 4.279291391372681}
+{"id": "simple_javascript_6", "result": "", "input_token_count": 515, "output_token_count": 374, "latency": 2.653287887573242}
+{"id": "simple_javascript_7", "result": "I need the actual JSON representation of the `dataAnalysisContext` object in order to call `getNextKeyValues`. Please provide that object (or at least a sample so I can illustrate the function call).", "input_token_count": 549, "output_token_count": 673, "latency": 4.562964200973511}
+{"id": "simple_javascript_8", "result": "", "input_token_count": 494, "output_token_count": 93, "latency": 0.8675212860107422}
+{"id": "simple_javascript_9", "result": "", "input_token_count": 583, "output_token_count": 260, "latency": 1.9702832698822021}
+{"id": "simple_javascript_10", "result": "", "input_token_count": 544, "output_token_count": 290, "latency": 2.132939338684082}
+{"id": "simple_javascript_11", "result": "I need the array of items (myItemList) to perform the sorting.", "input_token_count": 587, "output_token_count": 782, "latency": 5.288111925125122}
+{"id": "simple_javascript_12", "result": "[performDataFetch(apiEndpoint='https://api.example.com/data', requestConfig='{\"method\":\"GET\"}', expectedResponse='{\"key\":\"value\"}')]", "input_token_count": 722, "output_token_count": 483, "latency": 3.458725929260254}
+{"id": "simple_javascript_13", "result": "", "input_token_count": 622, "output_token_count": 114, "latency": 1.0723741054534912}
+{"id": "simple_javascript_14", "result": "", "input_token_count": 672, "output_token_count": 80, "latency": 0.8844997882843018}
+{"id": "simple_javascript_15", "result": "", "input_token_count": 630, "output_token_count": 244, "latency": 1.8930861949920654}
+{"id": "simple_javascript_16", "result": "", "input_token_count": 590, "output_token_count": 117, "latency": 1.0734331607818604}
+{"id": "simple_javascript_17", "result": "", "input_token_count": 628, "output_token_count": 315, "latency": 2.351398468017578}
+{"id": "simple_javascript_18", "result": "", "input_token_count": 553, "output_token_count": 166, "latency": 1.367966890335083}
+{"id": "simple_javascript_19", "result": "", "input_token_count": 581, "output_token_count": 304, "latency": 2.2411675453186035}
+{"id": "simple_javascript_20", "result": "[buttonAddClickHandler(element=\"document.getElementById('myButton')\", callback=\"handleButtonClick\", options=\"{\\\"stopPropagation\\\": true}\")]", "input_token_count": 568, "output_token_count": 186, "latency": 1.490290641784668}
+{"id": "simple_javascript_21", "result": "", "input_token_count": 505, "output_token_count": 536, "latency": 3.660088062286377}
+{"id": "simple_javascript_22", "result": "", "input_token_count": 435, "output_token_count": 63, "latency": 0.6427311897277832}
+{"id": "simple_javascript_23", "result": "[createAuthToken(username='johndoe', validity='3600', options=\"{'issuer':'myapp.net','role':'admin','algorithm':'HS256'}\")]", "input_token_count": 631, "output_token_count": 380, "latency": 2.7476418018341064}
+{"id": "simple_javascript_24", "result": "", "input_token_count": 478, "output_token_count": 211, "latency": 1.5912351608276367}
+{"id": "simple_javascript_25", "result": "", "input_token_count": 544, "output_token_count": 181, "latency": 1.4402048587799072}
+{"id": "simple_javascript_26", "result": "", "input_token_count": 552, "output_token_count": 69, "latency": 0.7517633438110352}
+{"id": "simple_javascript_27", "result": "I need the object representation (as a string) to validate it.", "input_token_count": 558, "output_token_count": 148, "latency": 1.249075174331665}
+{"id": "simple_javascript_28", "result": "[filterBooksByAuthor(library=\"library\", author=\"J.K. Rowling\")]", "input_token_count": 517, "output_token_count": 182, "latency": 1.441542387008667}
+{"id": "simple_javascript_29", "result": "", "input_token_count": 578, "output_token_count": 515, "latency": 3.583747625350952}
+{"id": "simple_javascript_30", "result": "", "input_token_count": 538, "output_token_count": 44, "latency": 0.5816411972045898}
+{"id": "simple_javascript_31", "result": "", "input_token_count": 496, "output_token_count": 125, "latency": 1.066910982131958}
+{"id": "simple_javascript_32", "result": "", "input_token_count": 619, "output_token_count": 171, "latency": 1.4345788955688477}
+{"id": "simple_javascript_33", "result": "", "input_token_count": 611, "output_token_count": 148, "latency": 1.277282476425171}
+{"id": "simple_javascript_34", "result": "", "input_token_count": 529, "output_token_count": 260, "latency": 1.935417890548706}
+{"id": "simple_javascript_35", "result": "", "input_token_count": 533, "output_token_count": 660, "latency": 4.468799114227295}
+{"id": "simple_javascript_36", "result": "I need the JavaScript representation of the break node you want to update (the value for the **node** parameter) in order to call `updateBreak`.", "input_token_count": 512, "output_token_count": 313, "latency": 2.252312660217285}
+{"id": "simple_javascript_37", "result": "[addInitializedPropertyStatements(statements=\"shapeStatements\", property=\"['width', 'height']\", receiver=\"shape\")]", "input_token_count": 584, "output_token_count": 323, "latency": 2.3658881187438965}
+{"id": "simple_javascript_38", "result": "", "input_token_count": 525, "output_token_count": 251, "latency": 1.8758494853973389}
+{"id": "simple_javascript_39", "result": "", "input_token_count": 547, "output_token_count": 231, "latency": 1.7654049396514893}
+{"id": "simple_javascript_40", "result": "", "input_token_count": 626, "output_token_count": 364, "latency": 2.648188829421997}
+{"id": "simple_javascript_41", "result": "", "input_token_count": 569, "output_token_count": 105, "latency": 0.9779942035675049}
+{"id": "simple_javascript_42", "result": "", "input_token_count": 584, "output_token_count": 745, "latency": 5.043462753295898}
+{"id": "simple_javascript_43", "result": "[invokeCallback(callback='processResult', error=null, value='Operation successful')]", "input_token_count": 553, "output_token_count": 551, "latency": 3.793668508529663}
+{"id": "simple_javascript_44", "result": "", "input_token_count": 561, "output_token_count": 137, "latency": 1.1795451641082764}
+{"id": "simple_javascript_45", "result": "[Sde(t='https://github.com/yarnpkg/berry', e='{\"startingCwd\":\"/home/user/projects\"}')]", "input_token_count": 574, "output_token_count": 153, "latency": 1.293182611465454}
+{"id": "simple_javascript_46", "result": "", "input_token_count": 570, "output_token_count": 101, "latency": 0.9550657272338867}
+{"id": "simple_javascript_47", "result": "", "input_token_count": 535, "output_token_count": 103, "latency": 0.9564876556396484}
+{"id": "simple_javascript_48", "result": "I need the string representations of `oldVirtualNode` and `newVirtualNode` to call `updateDOMListeners`. Please provide those as the `oldVnode` and `vnode` parameters.", "input_token_count": 529, "output_token_count": 300, "latency": 2.1932129859924316}
+{"id": "simple_javascript_49", "result": "[convertEnumeratedValue(key='contenteditable', value='plaintext-only')]", "input_token_count": 511, "output_token_count": 245, "latency": 1.8290369510650635}
