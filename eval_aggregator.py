@@ -44,6 +44,8 @@ COLUMN_ORDER: list[str] = [
     "latency",
     "is_error",
     "correct",
+    "n_tool_calls_browser",
+    "n_tool_calls_python",
 ]
 
 
@@ -144,6 +146,8 @@ class BFCLAggregator(EvalAggregator):
             "browser_enabled": 0,
             "python_enabled": 0,
             "is_error": 0,
+            "n_tool_calls_browser": 0,
+            "n_tool_calls_python": 0,
         }
 
     def collect_rows(self):
@@ -241,6 +245,9 @@ class BFCLAggregator(EvalAggregator):
                                     "test_name": test_name,
                                     "is_error": int(obj["latency"] is None)
                                 }
+                                # handle irrelevance artifacts where no answer can be a good answer
+                                if row["is_error"]:
+                                    row["correct"] = 0
                                 data_rows.append(row)
         return data_rows
 
@@ -280,6 +287,8 @@ class GPTOSSAggregator(EvalAggregator):
             "seed": seed,
             "fc_model": 1,  # as per requirement
             "is_error": 0,
+            "n_tool_calls_browser": 0,
+            "n_tool_calls_python": 0,
         }
 
     def collect_rows(self):
@@ -339,11 +348,17 @@ class GPTOSSAggregator(EvalAggregator):
                         else:
                             model_name_val = "gpt-oss-20b-responses-FC"
                         row["model_name"] = model_name_val
+                        row["is_error"] = 1 if ex["n_errors"] else 0
+                        row["n_tool_calls_browser"] = ex["n_tool_calls_browser"]
+                        row["n_tool_calls_python"] = ex["n_tool_calls_python"]
                         # Keep only expected columns
                         filtered_row = {
                             k: v for k, v in row.items() if k in COLUMN_ORDER
                         }
                         rows.append(filtered_row)
+                        # should not happen for aime / gpqa but defending for consistency
+                        if row["is_error"]:
+                            row["correct"] = 0
                 except Exception:
                     # If any issue reading/parsing this file, skip it
                     continue
