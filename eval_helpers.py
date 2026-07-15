@@ -28,13 +28,13 @@ from IPython.display import display, Markdown
 
 def display_pivoted_results(
     df, index_cols, col_cols, metric_col, precision=4, 
-    title=None, body=None, caption=None, return_styler=False
+    title=None, body=None, caption=None, rag=None, return_styler=False
 ):
     """Pivots a flat evaluation DataFrame into a structured academic leaderboard.
 
     Groups configuration dimensions into nested row headers, places tasks along
     the columns, and bolds the best-performing configuration per column.
-    Supports a top title, an explanatory body description, and a bottom caption.
+    Supports standard bolding or automatic Red-Amber-Green (RAG) error alerting.
     """
     # 1. Normalize input structures
     index_cols = [index_cols] if isinstance(index_cols, str) else index_cols
@@ -125,31 +125,16 @@ def display_pivoted_results(
             ('border-bottom', '1px solid #000000 !important')
         ]},
         # Clean data cells (No gridlines, right-aligned)
+        # FIXED: Removed 'color' and 'background-color' properties to prevent CSS specificity clash
         {'selector': 'td', 'props': [
             ('padding', '6px 16px'),
             ('border', 'none !important'),
-            ('color', '#111111'),
-            ('background-color', '#ffffff'),
             ('text-align', 'right')
         ]},
         # Booktabs Bottom Rule (Thick bottom border)
         {'selector': 'tbody', 'props': [
             ('border-bottom', '2.5px solid #000000 !important'),
             ('background-color', '#ffffff')
-        ]},
-        # Force table rows to stay white
-        {'selector': 'tr', 'props': [
-            ('background-color', '#ffffff'),
-            ('color', '#000000')
-        ]},
-        # Bottom-aligned table footnote
-        {'selector': 'caption', 'props': [
-            ('caption-side', 'bottom !important'),  # Forces caption below the table
-            ('font-size', '10px !important'),
-            ('color', '#7f8c8d !important'),        # Muted gray color
-            ('text-align', 'left !important'),      # Left-align with booktabs margins
-            ('margin-top', '12px !important'),      # Space under the bottom rule
-            ('font-family', '"SF Mono", Consolas, monospace !important')
         ]}
     ]
 
@@ -172,35 +157,67 @@ def display_pivoted_results(
                 else:
                     border_style = '0.5px solid #8c8c8d !important'
                     
+                # Target the cells in the row directly using '.row{idx_num}' class
                 table_styles.append({
-                    'selector': f'.row{idx_num} td, tr.row{idx_num} th',
+                    'selector': f'.row{idx_num}',
                     'props': [('border-top', border_style)]
                 })
 
     styler = styler.set_table_styles(table_styles)
 
-    # 7. Under-the-Hood Numeric Bolding (axis=None)
-    def highlight_best_numeric(data):
-        css_df = pd.DataFrame("", index=data.index, columns=data.columns)
+    # 7. Dynamic Formatting / Color Coding
+    is_error_metric = any(word in metric_col for word in ["error", "fail", "failure"])
+    use_rag = rag if rag is not None else is_error_metric
 
-        for col in data.columns:
-            if any(word in metric_col for word in ["mean", "correct", "accuracy", "success"]):
-                best_val = numeric_pivoted_mean[col].max()
-                best_indices = numeric_pivoted_mean[
-                    numeric_pivoted_mean[col] == best_val
-                ].index
-            elif any(word in metric_col for word in ["std", "var", "error", "latency", "cv"]):
-                best_val = numeric_pivoted_mean[col].min()
-                best_indices = numeric_pivoted_mean[
-                    numeric_pivoted_mean[col] == best_val
-                ].index
+    if use_rag:
+        # --- RED-AMBER-GREEN (RAG) CONDITIONAL STYLING ---
+        # FIXED: Added !important declarations to bypass global CSS override rules
+        def highlight_rag(data):
+            css_df = pd.DataFrame("", index=data.index, columns=data.columns)
 
-            css_df.loc[best_indices, col] = "font-weight: bold; color: #000000;"
+            for col in data.columns:
+                for idx in data.index:
+                    m = numeric_pivoted_mean.loc[idx, col]
+                    if pd.isna(m):
+                        css_df.loc[idx, col] = "color: #7f8c8d !important; background-color: #ffffff !important;"
+                    elif m == 0.0:
+                        # Visual Silence: keep no-error cells clean white with muted gray text
+                        css_df.loc[idx, col] = "color: #a0a0a0 !important; background-color: #ffffff !important;"
+                    elif m <= 0.05:
+                        # Low/Moderate Errors: Soft Cream/Amber background, Dark Gold text
+                        css_df.loc[idx, col] = "background-color: #fef9e7 !important; color: #b7791f !important; font-weight: bold !important;"
+                    else:
+                        # High Errors: Soft Pastel Red background, Dark Red text
+                        css_df.loc[idx, col] = "background-color: #fce4e4 !important; color: #c0392b !important; font-weight: bold !important;"
+            return css_df
 
-        return css_df
+        styler = styler.apply(highlight_rag, axis=None)
+    else:
+        # --- STANDARD ACADEMIC BEST-VALUE BOLDING ---
+        # FIXED: Added !important declarations to bypass global CSS override rules
+        def highlight_best_numeric(data):
+            css_df = pd.DataFrame("", index=data.index, columns=data.columns)
 
-    # Apply the mathematical bolding rule over our formatted string table
-    styler = styler.apply(highlight_best_numeric, axis=None)
+            for col in data.columns:
+                if any(word in metric_col for word in ["mean", "correct", "accuracy", "success"]):
+                    best_val = numeric_pivoted_mean[col].max()
+                    best_indices = numeric_pivoted_mean[
+                        numeric_pivoted_mean[col] == best_val
+                    ].index
+                elif any(word in metric_col for word in [
+                    "std", "var", "error", "latency", "cv",
+                    "input_token_count", "output_token_count", "reasoning_token_count", "response_token_count"
+                ]):
+                    best_val = numeric_pivoted_mean[col].min()
+                    best_indices = numeric_pivoted_mean[
+                        numeric_pivoted_mean[col] == best_val
+                    ].index
+
+                css_df.loc[best_indices, col] = "font-weight: bold !important; color: #000000 !important;"
+
+            return css_df
+
+        styler = styler.apply(highlight_best_numeric, axis=None)
 
     # Apply caption if provided
     if caption is not None:
