@@ -3,3 +3,4 @@ __pycache__/
 .env
 .~lock*
 .file_locks/
+venv/

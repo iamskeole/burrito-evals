@@ -285,7 +285,6 @@ class BFCLAggregator(BaseAggregator):
                     "error_type": "server:inference_error",
                     "error_message": "Unknown server error has occured."
                 }
-            x = 1
 
         elif isinstance(entry_error, list): # sometimes for single turn
             entry_error = {
@@ -313,6 +312,7 @@ class BFCLAggregator(BaseAggregator):
         ]:
             result["is_error"] = 1
 
+        # not always an error, model tends to end turns with "here's what you asked, kthx bye"
         elif error_type == "multi_turn:empty_turn_model_response":
             result["is_error"] = 0
         else:
@@ -401,9 +401,10 @@ class BFCLAggregator(BaseAggregator):
 
         # defensive where in some instances irrelevance flags even 
         # server errors as correct answers as they don't call a function
-        if correct and error["is_error"] == 1:
-            correct = 0
-            failure_mode = "infra"
+        # disabling the override for clean data reporting
+        # if correct and error["is_error"] == 1:
+        #     correct = 0
+        #     failure_mode = "infra"
 
         row = {
             **metadata,
