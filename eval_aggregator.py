@@ -4,7 +4,7 @@ import re
 import json
 import csv
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 
 # =========================
@@ -12,6 +12,27 @@ from typing import Any, Dict, List
 # =========================
 
 MODEL_NAME_ROOT = "gpt-oss-20b"
+
+# mt_failed_turn_idx semantics
+# ----------------------------
+# 0-based index of the *first failed* turn, or empty/None when the trajectory
+# completed successfully (no failure).
+#
+#   single-turn pass  → None   (correct=1)
+#   single-turn fail  → 0      (the only turn failed)
+#   multi-turn pass   → None   (all turns succeeded)
+#   multi-turn fail   → k      (turns 0..k-1 passed, turn k failed)
+#   empty / crash     → 0      (nothing usable completed)
+#
+# Why not -1 for success?
+#   -1 survives into CSV as an integer, pollutes min/mean, and is easy to
+#   mistake for "last turn". Empty → NaN in pandas is the safe sentinel.
+#
+# Companion fields (already present):
+#   mt_num_turns_total   — planned / observed turn count
+#   mt_num_turns_success — count of turns that passed (= failed_idx if failed,
+#                          else total)
+#   mt_num_turns_success_pct — 100 * success / total
 
 COLUMN_ORDER = [
     "run_name",
@@ -49,6 +70,7 @@ COLUMN_ORDER = [
     "mt_num_turns_total",
     "mt_num_turns_success",
     "mt_num_turns_success_pct",
+    "mt_failed_turn_idx",
 
     "is_error",
     "error_type",
@@ -56,24 +78,30 @@ COLUMN_ORDER = [
     "failure_mode",
 ]
 
+
 def safe_json_load(path: Path):
-    with open(path, "r", encoding="utf-8") as f:
-        try:
-            return json.load(f)
-        except json.JSONDecodeError:
-            f.seek(0)
-            lines = f.read().splitlines()
-            loaded = []
-            for l in lines:
-                try:
-                    loaded.append(json.loads(l))
-                except Exception as e:
-                    print(f"Error loading {l}:\n{e}")
-                    continue
-            return loaded
-        except Exception as e:
-            print(f"Error loading {path}:\n{e}")
-            return None
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                f.seek(0)
+                lines = f.read().splitlines()
+                loaded = []
+                for l in lines:
+                    try:
+                        loaded.append(json.loads(l))
+                    except Exception as e:
+                        print(f"Error loading {l}:\n{e}")
+                        continue
+                return loaded
+            except Exception as e:
+                print(f"Error loading {path}:\n{e}")
+                return None
+    except Exception as e:
+        # eval probably still running, no score file yet
+        print(f"Error loading {path}:\n{e}")
+        return None
 
 
 class BaseAggregator:
@@ -88,7 +116,7 @@ class BaseAggregator:
 
     def write_csv(self, rows: List[Dict[str, Any]], out_path: Path):
         with open(out_path, "w", newline="", encoding="utf-8") as f:
-            # We use extrasaction='ignore' so internal tracking keys don't blow up the writer
+            # extrasaction='ignore' so internal tracking keys don't blow up the writer
             writer = csv.DictWriter(f, fieldnames=COLUMN_ORDER, extrasaction='ignore')
             writer.writeheader()
             writer.writerows(rows)
@@ -140,6 +168,7 @@ class BFCLAggregator(BaseAggregator):
             "mt_num_turns_total": 0,
             "mt_num_turns_success": 0,
             "mt_num_turns_success_pct": 0.0,
+            "mt_failed_turn_idx": None,
 
             "reasoning_token_count": 0,
             "response_token_count": 0,
@@ -158,71 +187,96 @@ class BFCLAggregator(BaseAggregator):
             "mt_num_turns_total": 0,
             "mt_num_turns_success": 0,
             "mt_num_turns_success_pct": 0.0,
+            # None = full success (no failure). Integer = first failed turn (0-based).
+            "mt_failed_turn_idx": None,
         }
 
         # 1. Determine if it was a complete success, or find the failure turn
         entry_error = entry.get("score", {}).get("error") if entry.get("score") else {}
         is_success = False if entry_error else True
 
-        # Removed the early return for multi_turn:inference_error here!
-        # Even if it force terminated, we still want to count the partial tokens/latency 
-        # it consumed *before* it crashed.
+        # Even if force-terminated, still count partial tokens/latency before crash.
 
-        failed_turn_idx = None
+        failed_turn_idx: Optional[int] = None
         if not is_success:
-            # The length of 'execution_result' tells us how many turns were evaluated before failing.
-            # Length 1 = Failed on Turn 0 (Index 0). Length 2 = Failed on Turn 1 (Index 1).
-            details = entry_error.get("details", {})
-            exec_results = details.get("execution_result") or entry_error.get("execution_result", [])
+            # Length of 'execution_result' = turns evaluated before failing.
+            # Length 1 → failed on turn 0; length 2 → failed on turn 1; etc.
+            details = entry_error.get("details", {}) if isinstance(entry_error, dict) else {}
+            exec_results = (
+                details.get("execution_result")
+                or (entry_error.get("execution_result") if isinstance(entry_error, dict) else None)
+                or []
+            )
 
             if exec_results:
                 failed_turn_idx = len(exec_results) - 1
             else:
-                # Fallback: Sometimes BFCL just puts the turn in the error message
-                msg = str(entry_error.get("error_message", ""))
+                msg = str(
+                    entry_error.get("error_message", "")
+                    if isinstance(entry_error, dict) else ""
+                )
                 match = re.search(r"turn (\d+)", msg, re.IGNORECASE)
                 if match:
                     failed_turn_idx = int(match.group(1))
                 else:
-                    failed_turn_idx = 0 # Worst case fallback
+                    failed_turn_idx = 0  # nothing usable completed
 
         # 2. Extract nested metric lists from result payload
-        entry_result = entry.get("result", {})
-        input_tokens = entry_result.get("input_token_count", [])
-        output_tokens = entry_result.get("output_token_count", [])
-        latencies = entry_result.get("latency", [])
+        entry_result = entry.get("result", {}) or {}
+        input_tokens = entry_result.get("input_token_count", []) or []
+        output_tokens = entry_result.get("output_token_count", []) or []
+        latencies = entry_result.get("latency", []) or []
 
         total_turns = len(input_tokens)
         if total_turns == 0:
-            return result # Failsafe for completely empty runs
+            # Completely empty run — treat as failure at turn 0
+            if not is_success:
+                result["mt_failed_turn_idx"] = 0
+            return result
 
         result["mt_num_turns_total"] = total_turns
 
-        # 3. Iterate through turns and assign partial credit
+        # 3. Iterate turns and assign partial credit
         for turn_idx in range(total_turns):
-            turn_in_toks = sum(input_tokens[turn_idx]) if isinstance(input_tokens[turn_idx], list) else input_tokens[turn_idx]
-            turn_out_toks = sum(output_tokens[turn_idx]) if turn_idx < len(output_tokens) else 0
-            turn_lat = sum(latencies[turn_idx]) if turn_idx < len(latencies) else 0
+            turn_in_toks = (
+                sum(input_tokens[turn_idx])
+                if isinstance(input_tokens[turn_idx], list)
+                else input_tokens[turn_idx]
+            )
+            turn_out_toks = (
+                sum(output_tokens[turn_idx])
+                if turn_idx < len(output_tokens) and isinstance(output_tokens[turn_idx], list)
+                else (output_tokens[turn_idx] if turn_idx < len(output_tokens) else 0)
+            )
+            turn_lat = (
+                sum(latencies[turn_idx])
+                if turn_idx < len(latencies) and isinstance(latencies[turn_idx], list)
+                else (latencies[turn_idx] if turn_idx < len(latencies) else 0)
+            )
 
-            # Always add to total overarching metrics
-            result["input_token_count"] += turn_in_toks
-            result["output_token_count"] += turn_out_toks
-            result["latency"] += turn_lat
+            result["input_token_count"] += turn_in_toks or 0
+            result["output_token_count"] += turn_out_toks or 0
+            result["latency"] += turn_lat or 0
 
-            # Add to success buckets ONLY IF this specific turn passed
-            is_turn_successful = is_success or (failed_turn_idx is not None and turn_idx < failed_turn_idx)
+            # Turn passed if overall success, or it is strictly before the failure turn
+            is_turn_successful = is_success or (
+                failed_turn_idx is not None and turn_idx < failed_turn_idx
+            )
 
             if is_turn_successful:
                 result["mt_num_turns_success"] += 1
-                result["mt_input_token_count_success"] += turn_in_toks
-                result["mt_output_token_count_success"] += turn_out_toks
-                result["mt_latency_success"] += turn_lat
+                result["mt_input_token_count_success"] += turn_in_toks or 0
+                result["mt_output_token_count_success"] += turn_out_toks or 0
+                result["mt_latency_success"] += turn_lat or 0
 
-        # 4. Calculate a percentage completion score (e.g. 50% if it passed 2 out of 4 turns)
-        result["mt_num_turns_success_pct"] = (result["mt_num_turns_success"] / total_turns) * 100.0
+        result["mt_num_turns_success_pct"] = (
+            (result["mt_num_turns_success"] / total_turns) * 100.0
+        )
+        # None on full success; otherwise the first failed turn index
+        result["mt_failed_turn_idx"] = None if is_success else failed_turn_idx
 
         return result
-    
+
     def map_error(self, entry, metadata):
         result = {
             "is_error": 0,
@@ -286,7 +340,7 @@ class BFCLAggregator(BaseAggregator):
                     "error_message": "Unknown server error has occured."
                 }
 
-        elif isinstance(entry_error, list): # sometimes for single turn
+        elif isinstance(entry_error, list):  # sometimes for single turn
             entry_error = {
                 "error_type": entry["score"]["error_type"],
                 "error_message": " | ".join(entry["score"]["error"])
@@ -321,15 +375,14 @@ class BFCLAggregator(BaseAggregator):
         result["error_type"] = error_type
         result["error_message"] = error_message
         return result
-    
+
     def map_stats_single(self, entry, metadata):
-        # We define the mt_ keys so that unpacking doesn't break, 
-        # but logically a single turn either completely succeeds (1 turn passed) or fails.
+        # Single-turn: either the one turn passes or it fails at index 0.
         result = {
             "input_token_count": 0,
             "output_token_count": 0,
             "latency": 0,
-            
+
             "mt_input_token_count_success": 0,
             "mt_output_token_count_success": 0,
             "mt_latency_success": 0,
@@ -337,11 +390,11 @@ class BFCLAggregator(BaseAggregator):
             "mt_num_turns_total": 1,
             "mt_num_turns_success": 0,
             "mt_num_turns_success_pct": 0.0,
+            "mt_failed_turn_idx": 0,  # assume fail until proven otherwise
         }
-        
+
         entry_result = entry.get("result", {})
         if isinstance(entry_result, dict):
-            # Helper to extract safely (sometimes BFCL wraps these in lists even in single-turn)
             def _get_val(key):
                 val = entry_result.get(key, 0)
                 return sum(val) if isinstance(val, list) else val
@@ -350,16 +403,16 @@ class BFCLAggregator(BaseAggregator):
             result["output_token_count"] = _get_val("output_token_count")
             result["latency"] = _get_val("latency")
 
-            # Check success condition for single turn
+            # No score object ⇒ graded as correct
             if not entry.get("score"):
                 result["mt_num_turns_success"] = 1
                 result["mt_num_turns_success_pct"] = 100.0
                 result["mt_input_token_count_success"] = result["input_token_count"]
                 result["mt_output_token_count_success"] = result["output_token_count"]
                 result["mt_latency_success"] = result["latency"]
-                
-        return result
+                result["mt_failed_turn_idx"] = None  # success → no failure
 
+        return result
 
     def map_result(self, entry, metadata):
         entry_score = entry.get("score")
@@ -399,20 +452,13 @@ class BFCLAggregator(BaseAggregator):
         if error["error_type"] is not None:
             failure_mode = "infra" if "server" in error["error_type"] else "model"
 
-        # defensive where in some instances irrelevance flags even 
-        # server errors as correct answers as they don't call a function
-        # disabling the override for clean data reporting
-        # if correct and error["is_error"] == 1:
-        #     correct = 0
-        #     failure_mode = "infra"
-
         row = {
             **metadata,
             "test_id": tid,
             "correct": correct,
-            **stats, 
+            **stats,
             **error,
-            "failure_mode": failure_mode
+            "failure_mode": failure_mode,
         }
         return row
 
@@ -430,9 +476,6 @@ class BFCLAggregator(BaseAggregator):
             metadata = self._parse_run(run_dir.name)
 
             for result_file in run_dir.rglob("*_result.json"):
-                # REMOVED: if "multi_turn" not in result_file.name: continue
-                # We want to process single-turn files too!
-
                 score_file = Path(
                     str(result_file)
                     .replace("/result/", "/score/")
@@ -454,14 +497,12 @@ class BFCLAggregator(BaseAggregator):
                 if not score_data or not result_data:
                     continue
 
-                # Ensure we are dealing with lists
                 if isinstance(score_data, dict):
                     score_data = [score_data]
                 if isinstance(result_data, dict):
                     result_data = [result_data]
 
-                # STRICT FILTERING: Keep only dictionaries that contain an "id".
-                # This drops garbage strings AND naturally removes the BFCL {"accuracy": ...} header!
+                # Keep only dicts with an "id" (drops accuracy header + garbage)
                 score_data = [i for i in score_data if isinstance(i, dict) and "id" in i]
                 result_data = [i for i in result_data if isinstance(i, dict) and "id" in i]
 
@@ -469,12 +510,12 @@ class BFCLAggregator(BaseAggregator):
                     print(f"Missing result data for {result_file.name}")
                     continue
 
-                id_list = sorted(list(set([
-                    i["id"] for i in score_data] + [i["id"] for i in result_data
-                ])))
+                id_list = sorted(list(set(
+                    [i["id"] for i in score_data] + [i["id"] for i in result_data]
+                )))
 
                 entries = {i: {"score": None, "result": None} for i in id_list}
-                
+
                 for i in score_data:
                     entries[i["id"]]["score"] = i
 
@@ -499,7 +540,7 @@ class GPTOSSAggregator(BaseAggregator):
         r"b-(?P<batch_size>\d+)_"
         r"be-(?P<browser_enabled>\d+)_"
         r"pe-(?P<python_enabled>\d+)_"
-        r"s-(?P<seed>-?\d+)$"  # Handles optional negative seeds
+        r"s-(?P<seed>-?\d+)$"
     )
 
     def _parse_run(self, dirname: str):
@@ -539,12 +580,13 @@ class GPTOSSAggregator(BaseAggregator):
             "mt_num_turns_total": 0,
             "mt_num_turns_success": 0,
             "mt_num_turns_success_pct": 0.0,
+            "mt_failed_turn_idx": None,
         }
 
     def collect(self):
         rows = []
         root = self.base_dir / "gpt_oss"
-        
+
         if not root.exists():
             return rows
 
@@ -587,6 +629,9 @@ class GPTOSSAggregator(BaseAggregator):
                     toks_response = obj.get("n_response_tokens", 0)
                     latency = obj.get("latency", 0)
 
+                    # Single-turn GPT-OSS: success → no failure; fail → turn 0
+                    mt_failed = None if correct else 0
+
                     row = {
                         **meta,
                         "model_name": model_name,
@@ -607,13 +652,14 @@ class GPTOSSAggregator(BaseAggregator):
                         "reasoning_token_count": toks_reasoning,
                         "response_token_count": toks_response,
 
-                        "mt_input_token_count_success": toks_in,
-                        "mt_output_token_count_success": toks_out,
-                        "mt_latency_success": latency,
+                        "mt_input_token_count_success": toks_in if correct else 0,
+                        "mt_output_token_count_success": toks_out if correct else 0,
+                        "mt_latency_success": latency if correct else 0,
 
                         "mt_num_turns_total": 1,
                         "mt_num_turns_success": correct,
-                        "mt_num_turns_success_pct": correct,
+                        "mt_num_turns_success_pct": 100.0 if correct else 0.0,
+                        "mt_failed_turn_idx": mt_failed,
                     }
 
                     rows.append(row)
