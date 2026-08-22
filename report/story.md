@@ -1,0 +1,309 @@
+# Not All Reasoning Is Created Equal
+
+What 320,000 model runs reveal about the hidden architecture of test-time compute.
+
+A quick recap before the data, for readers arriving from the post. gpt-oss-20b is OpenAI's open-weight 20-billion-parameter model; the model itself was capable, but the infrastructure around it was broken. On the vanilla llama.cpp and vLLM backends, the prompt templates were broken, the wire APIs were mismatched, and the tool schemas were ignored, so the model could not be evaluated correctly. burrito is the harness built to fix that, and every number in this story comes from the burrito backends. The post put the model through four evaluation dimensions: reasoning benchmarks, multi-turn workflows, preserved thinking, and effort levels — the model's low/medium/high setting for how hard to think, which controls how much thinking a run does before it answers. This story follows those runs — AIME25, GPQA, multi-turn, and BFCL — with the focus on the effort dimension; preserved thinking is covered in the full report (report.md, Finding 5: Preserved Thinking).
+
+---
+
+## The Assumption
+
+Reasoning effort controls how many tokens a model spends thinking before answering. More effort means more thinking tokens. More thinking tokens means better answers. This is the working model for anyone deploying reasoning-capable models in production.
+
+The data from 320,192 evaluation runs rejects that working model entirely.
+
+Reasoning effort does more than control token budget. It changes the quality of reasoning at any given token count. Give the model the same question and the same number of reasoning tokens, and low, medium, and high effort produce entirely different answers with dramatically different accuracy. The effort setting is not a volume knob. It is a switch between reasoning strategies.
+
+This story comes from evaluating gpt-oss-20b across three benchmarks — AIME25 (mathematical problem solving), GPQA (graduate-level science questions), and the Big Function Calling Leaderboard (agentic tool use) — plus the multi-turn task suite, on two inference backends and three effort levels. The model is not the point. The pattern is.
+
+## The Experiment
+
+The evaluation ran on a single RTX 3090 over 1,062 GPU hours. Two inference backends: burrito with llama.cpp and burrito with vLLM — the harness's backends, not the vanilla versions, which were broken on this model. Three reasoning effort levels: low, medium, high. Three benchmarks — AIME25 (mathematical problem solving), GPQA (graduate-level science questions), and the Big Function Calling Leaderboard (agentic tool use) — plus the multi-turn task suite. Temperature 1.0, the documented default recommended by the producer, OpenAI. Eight random seeds per configuration for statistical reliability. 320,192 total runs.
+
+The two burrito backends are interchangeable for this story. The curves are identical on burrito's llama.cpp and vLLM backends, which means the pattern is a property of the model's reasoning architecture, not an artifact of a particular inference engine.
+
+## The Matched-Length Revelation
+
+The standard way to compare effort levels is to look at accuracy and token counts side by side. Low effort uses fewer tokens and gets lower accuracy. Medium uses more and gets better. High uses the most and gets the best. The conclusion is obvious: effort buys tokens, tokens buy accuracy.
+
+This conclusion is wrong because it confuses correlation with causation. The effort setting changes both the token count and the reasoning strategy at the same time. You cannot tell which one drives accuracy.
+
+The fix is to hold token count constant and vary only effort.
+
+Bin the data by reasoning-token count. Compare accuracy within each bin across effort levels. The result is unambiguous.
+
+### AIME25 at matched reasoning length
+
+At approximately 1,448 reasoning tokens, pooled across backends:
+
+| Effort | Accuracy |
+|--------|:--------:|
+| Low | 38.3% |
+| Medium | 97.1% |
+| High | 100.0% |
+
+Fifty-nine percentage points between low and medium at the same token budget. The model uses the same number of tokens. Low effort gets 38% correct. Medium effort gets 97% correct. These are not the same answers with different amounts of explanation. The effort setting changes what the model does with those tokens, and different reasoning strategies produce different answers on the same questions.
+
+The gap persists across the full range of overlapping bins. At approximately 2,896 tokens: low averages 19%, medium averages 91%, high is 100%. At approximately 5,793 tokens: low averages 21%, medium averages 84%, high is 100%. The hierarchy is stable. Higher effort always produces better accuracy at the same reasoning budget.
+
+The split by backend confirms this is not a llama.cpp or vLLM artifact:
+
+| Reasoning tokens | Low / llama | Low / vLLM | Medium / llama | Medium / vLLM | High / llama | High / vLLM |
+|:-----------------|:-----------:|:----------:|:--------------:|:-------------:|:------------:|:-----------:|
+| ~1,448 | 28.7% | 23.2% | 96.9% | 97.5% | 100.0% | -- |
+| ~2,896 | 21.2% | 16.5% | 93.0% | 88.4% | 100.0% | 100.0% |
+| ~5,793 | 16.7% | 24.4% | 87.9% | 80.6% | 100.0% | 100.0% |
+
+The "--" in the High/vLLM cell at ~1,448 tokens marks a cell with no data: no high-effort vLLM runs landed in that reasoning-token bin, so no accuracy is reported there. The pooled table above pools across backends, so that bin still carries a value even where one backend's cell is empty.
+
+Both backends show the same hierarchy. Low effort is consistently below medium, which is below high, at every overlapping token bin. The variance between backends is noise. The ordering is signal.
+
+![Accuracy at matched reasoning length, pooled runs](../plots/phase_6-f15-reasoning_effort_matched_tokens-pooled.png)
+
+*Figure 1: At matched reasoning length, higher effort still yields higher accuracy. Pooled across all runs. Low effort (circles) is consistently below medium (diamonds) and high (squares) at every overlapping token bin. Left panel: AIME25. Right panel: GPQA.*
+
+### GPQA at matched reasoning length
+
+The same pattern on a different benchmark. At approximately 362 reasoning tokens:
+
+| Effort | Accuracy |
+|--------|:--------:|
+| Low | 55.7% |
+| Medium | 87.7% |
+| High | 100.0% |
+
+At approximately 724 tokens: low averages 45%, medium averages 85%, high averages 95%. At approximately 1,448 tokens: low averages 44%, medium averages 77%, high averages 93%.
+
+GPQA questions require less reasoning than AIME25 problems, so the absolute accuracy is higher across the board. The relative ordering is identical. High effort dominates at every token budget.
+
+The within-question analysis confirms the effect is not driven by a subset of easy or hard problems. Average per question first, then aggregate by bin. The same hierarchy holds.
+
+![Accuracy at matched reasoning length, within question](../plots/phase_6-f16-reasoning_effort_matched_tokens-within_question.png)
+
+*Figure 2: Same pattern holding within individual questions. Each question contributes equally inside a token bin, confirming the effect is not driven by a subset of easy or hard problems.*
+
+### What this means
+
+The effort setting changes the reasoning strategy. Low effort produces quick answers. Medium effort produces structured step-by-step reasoning. High effort explores multiple approaches and self-corrects. These strategies produce different answers on the same questions, and the accuracy differences come from which strategy matches the problem.
+
+At the same token budget, the model is not thinking longer or shorter. It is thinking differently.
+
+## The Degradation Curve
+
+A second pattern emerges when we look within each effort level. Accuracy does not increase monotonically with reasoning token count. Each effort level has an optimal zone. Push past it and accuracy crashes.
+
+### AIME25: each effort level peaks then degrades
+
+Accuracy by reasoning token bin within each effort level, pooled across backends:
+
+| Reasoning tokens | Low | Medium | High |
+|:-----------------|:---:|:------:|:----:|
+| ~181 | 100.0% | -- | -- |
+| ~362 | 78.1% | 100.0% | -- |
+| ~724 | 61.6% | 100.0% | -- |
+| ~1,448 | 38.3% | 97.1% | 100.0% |
+| ~2,896 | 18.8% | 90.7% | 100.0% |
+| ~5,793 | 20.5% | 84.3% | 100.0% |
+| ~11,585 | 0.0% | 63.3% | 96.9% |
+| ~23,170 | -- | 47.2% | 94.4% |
+| ~46,341 | -- | 30.2% | 90.6% |
+| ~92,682 | -- | 0.0% | 43.7% |
+
+Low effort starts at 100% at 181 tokens where the model answers quickly and correctly on the easy problems it can solve. Then it crashes to 18.8% at 2,896 tokens, and to 0% by the 8k–16k bin (~11,585). The model is forced to think longer than its effort level supports. It wanders and degrades.
+
+Medium effort holds near 100% from 362 through 1,448 tokens — 100% at 362 and 724, 97.1% at 1,448. Then it declines: 90.7% at 2,896, 84.3% at 5,793, down to 30% at 46,341 tokens and 0% at 92,682 tokens.
+
+High effort stays above 90% from 1,448 to 46,341 tokens. Then it drops to 44% at the extreme end.
+
+The pattern is clear. Each effort level has a sweet spot. Inside that zone, the model reasons effectively. Outside it, the model generates tokens without improving accuracy. Past a certain point, it actively degrades.
+
+### GPQA: the same degradation
+
+| Reasoning tokens | Low | Medium | High |
+|:-----------------|:---:|:------:|:----:|
+| ~23 | 72.9% | -- | -- |
+| ~45 | 64.1% | 100.0% | -- |
+| ~91 | 57.9% | 97.2% | -- |
+| ~181 | 61.1% | 95.3% | 100.0% |
+| ~362 | 55.7% | 87.7% | 100.0% |
+| ~724 | 45.3% | 85.1% | 95.4% |
+| ~1,448 | 43.7% | 77.2% | 93.2% |
+| ~2,896 | 0.0% | 57.9% | 93.7% |
+| ~5,793 | -- | 48.2% | 90.1% |
+| ~11,585 | -- | 44.8% | 81.1% |
+| ~23,170 | -- | 37.2% | 76.2% |
+| ~46,341 | -- | 66.7% | 55.0% |
+| ~92,682 | -- | -- | 38.3% |
+| ~185,364 | -- | -- | 0.0% |
+
+Low effort on GPQA starts at 73% and crashes to 0% at 2,896 tokens. The model cannot sustain reasoning beyond its effort level. Medium effort degrades from 100% to 37% across its range. High effort holds above 76% for much longer but still drops to 0% at 185,364 tokens.
+
+![Correct progression by reasoning token count](../plots/phase_6-f01-reasoning_effort_bins-non_bfcl.png)
+
+*Figure 3: Accuracy by reasoning token count within each effort level. Columns: Low, Medium, High. Rows: AIME25 (top), GPQA (bottom). Each effort level peaks then crashes as tokens increase. Shaded bands show variance across 8 seeds.*
+
+The degradation pattern holds on multi-turn tasks — runs of multi_turn_base, the agentic test in which the model must make a sequence of tool calls and keep the conversation on track across multiple turns — and across all BFCL tests.
+
+![Correct progression by output token count, multi-turn](../plots/phase_6-f02-reasoning_effort_bins-multiturn.png)
+
+*Figure 4: Same degradation pattern on multi-turn tasks by output token count.*
+
+![Correct progression across all BFCL tests](../plots/phase_6-f03-reasoning_effort_bins-all_bfcl.png)
+
+*Figure 5: The degradation pattern holds across all BFCL tests and effort levels.*
+
+### What this means
+
+Brute-forcing test-time compute by pushing the model to think longer than its effort level supports produces worse results. The model wanders, hallucinates, and loses track of the question. Each effort level has an optimal token zone. More tokens are not always better.
+
+This is the second half of the story. Effort changes reasoning quality at any token budget (the matched-length result). And within each effort level, there is a limit to how much reasoning the model can sustain before degrading (the degradation curve). Together they define a landscape where both the effort setting and the token count matter, and neither one alone tells the whole story.
+
+## Cross-Benchmark Consistency
+
+The pattern holds across every benchmark in the evaluation.
+
+### Standard effort-level comparisons
+
+All of the tables in this section use fc_model=0. fc is short for function calling: 0 is the mode without structured tool schemas, where the model's tool calls are parsed out of its plain text output (AST parsing); 1 is the mode with structured tool schemas.
+
+AIME25, burrito with llama.cpp, fc_model=0:
+
+| Effort | Accuracy | Median reasoning tokens | Median output tokens |
+|:-------|:--------:|:-----------------------:|:--------------------:|
+| Low | 38.3% | 1,362 | 2,169 |
+| Medium | 73.8% | 6,694 | 11,816 |
+| High | 83.8% | 29,574 | 38,971 |
+
+GPQA, burrito with llama.cpp, fc_model=0:
+
+| Effort | Accuracy | Median reasoning tokens | Median output tokens |
+|:-------|:--------:|:-----------------------:|:--------------------:|
+| Low | 55.4% | 251 | 374 |
+| Medium | 67.5% | 1,946 | 3,927 |
+| High | 71.9% | 16,938 | 30,511 |
+
+Multi-turn base, burrito with llama.cpp, fc_model=0:
+
+| Effort | Accuracy | Median output tokens |
+|:-------|:--------:|:--------------------:|
+| Low | 10.5% | 331 |
+| Medium | 17.2% | 1,502 |
+| High | 44.2% | 6,542 |
+
+BFCL pooled, burrito with llama.cpp, fc_model=0:
+
+| Effort | Accuracy | Median output tokens |
+|:-------|:--------:|:--------------------:|
+| Low | 51.4% | 53 |
+| Medium | 56.3% | 110 |
+| High | 74.9% | 271 |
+
+The same curves on vLLM:
+
+AIME25, burrito with vLLM, fc_model=0:
+
+| Effort | Accuracy | Median reasoning tokens | Median output tokens |
+|:-------|:--------:|:-----------------------:|:--------------------:|
+| Low | 35.4% | 1,855 | 2,385 |
+| Medium | 73.8% | 6,614 | 7,484 |
+| High | 87.5% | 40,502 | 41,224 |
+
+GPQA, burrito with vLLM, fc_model=0:
+
+| Effort | Accuracy | Median reasoning tokens | Median output tokens |
+|:-------|:--------:|:-----------------------:|:--------------------:|
+| Low | 56.3% | 357 | 380 |
+| Medium | 67.2% | 2,009 | 2,050 |
+| High | 73.0% | 29,736 | 29,777 |
+
+Multi-turn base, burrito with vLLM, fc_model=0:
+
+| Effort | Accuracy | Median output tokens |
+|:-------|:--------:|:--------------------:|
+| Low | 11.0% | 418 |
+| Medium | 17.8% | 1,921 |
+| High | 45.7% | 8,733 |
+
+BFCL pooled, burrito with vLLM, fc_model=0:
+
+| Effort | Accuracy | Median output tokens |
+|:-------|:--------:|:--------------------:|
+| Low | 55.8% | 51 |
+| Medium | 60.0% | 98 |
+| High | 75.9% | 289 |
+
+Llama.cpp and vLLM produce nearly identical accuracy curves at each effort level. The token counts vary slightly. The accuracy hierarchy is the same. Low is below medium, which is below or equal to high. The shape of the curve is a property of the model's reasoning architecture.
+
+![AIME25 effect-cost-tradeoff](../plots/phase_6-f09-reasoning_effort_story-aime25.png)
+
+*Figure 6: AIME25 reasoning effort story. Effect (left): accuracy jumps from low to medium, then plateaus. Cost (center): tokens increase exponentially. Tradeoff (right): medium effort with schema tools sits on the Pareto front.*
+
+![GPQA effect-cost-tradeoff](../plots/phase_6-f10-reasoning_effort_story-gpqa.png)
+
+*Figure 7: GPQA reasoning effort story. Effect (left): steady climb across effort levels. Cost (center): exponential token growth. Tradeoff (right): all three effort levels are close on the tradeoff curve.*
+
+## The Tradeoff Landscape
+
+The full picture across effort levels shows three phases.
+
+### Effect
+
+Accuracy increases from low to medium effort, then plateaus or grows slowly at high effort. On AIME25 with llama.cpp, low to medium gains 35.5 percentage points. Medium to high gains 10 points. On GPQA, low to medium gains 12.1 points. Medium to high gains 4.4 points. On BFCL, the picture depends on how tool calls are parsed: with structured tool schemas (fc_model=1), high effort slips slightly below medium — 76.1–76.7% at medium versus 74.3–75.9% at high — because the model overthinks tool-calling decisions, while with AST parsing (fc_model=0, the mode in the tables above) the climb continues to high effort, which is why the pooled tables show no reversal.
+
+### Cost
+
+Median token count increases exponentially from low to medium to high. On AIME25, low uses 2,169 output tokens. Medium uses 11,816. High uses 38,971. The share of each response devoted to internal reasoning grows with effort — on vLLM it rises from about 78% of output tokens at low to about 98% at high on AIME25, and from about 94% to nearly 100% on GPQA — but the accuracy gains do not scale with that investment.
+
+### Tradeoff
+
+Medium effort sits on the Pareto front for most tasks. It delivers the largest accuracy gains for the token cost. High effort reaches higher absolute accuracy on reasoning-heavy tasks but at disproportionate cost. Low effort is efficient but inaccurate.
+
+![BFCL pooled effect-cost-tradeoff](../plots/phase_6-f04-reasoning_effort_story-bfcl_pooled.png)
+
+*Figure 8: BFCL pooled. Effect (left): accuracy climbs then plateaus. Cost (center): exponential growth. Tradeoff (right): the Pareto front shows medium effort with schema tools as the efficiency sweet spot.*
+
+![AIME25+GPQA pooled effect-cost-tradeoff](../plots/phase_6-f08-reasoning_effort_story-non_bfcl.png)
+
+*Figure 9: AIME25 and GPQA pooled. Effect (left): steady climb. Cost (center): exponential growth. Tradeoff (right): high effort reaches higher accuracy but at much higher cost.*
+
+## Transferable Lessons
+
+Two lessons transfer to any model with configurable reasoning depth.
+
+### Effort changes answer quality at any token budget
+
+At the same reasoning token budget, higher effort produces better accuracy because the model uses those tokens differently. Low effort at 1,448 tokens gives 38.3% on AIME25. Medium effort at the same budget gives 97%. These are not the same answers with different amounts of explanation. The effort setting changes the reasoning strategy, and different strategies produce different answers on the same questions.
+
+The pattern holds across a wide range of accuracy levels, not just one. The same curves appear on llama.cpp and vLLM, and across AIME25, GPQA, multi-turn, and BFCL tests. The shape is a property of the model's reasoning architecture, not an artifact of a particular backend or benchmark.
+
+### More tokens are not always better
+
+Within each effort level, accuracy peaks and then degrades as reasoning token count increases. Brute-forcing test-time compute by pushing the model to think longer than its effort level supports produces worse results. The model wanders, hallucinates, and loses track of the question. Each effort level has an optimal token zone.
+
+Low effort on AIME25 starts at 100% at 181 tokens and crashes to 19% at 2,896 tokens. Medium effort holds near 100% from 362 to 768 tokens, still 88–93% at 2,896, then declines to 0% at 92,682 tokens. High effort stays above ~88% from 1,448 to 46,341 tokens then drops to 44%.
+
+The degradation pattern holds on GPQA, multi-turn tasks, and all BFCL tests. It is not a benchmark artifact. It is a property of the model's reasoning architecture.
+
+### Test empirically
+
+Do not assume more reasoning is always better. Do not assume the model is just giving you the same answer with more words. The effort setting changes the reasoning strategy. Each strategy has an optimal token zone. Outside that zone, the model degrades. Test your effort levels empirically on your actual workloads. The optimal setting depends on the task, the token budget, and the tolerance for variance.
+
+## Methodology
+
+This analysis draws from 320,192 evaluation runs of gpt-oss-20b on a single RTX 3090. The model runs in MXFP4 quantization (a 4-bit quantization format) with 131K context. All runs use temperature 1.0 and batch size 1. Eight random seeds per configuration.
+
+Two inference backends: llama.cpp (GGUF weights — the file format llama.cpp uses for quantized models) and vLLM (safetensors — Hugging Face's file format for PyTorch tensors — in the same MXFP4 quantization). Both backends produce identical accuracy curves, confirming the pattern is backend-independent.
+
+Three benchmarks: AIME25 (mathematical problem solving), GPQA Diamond (graduate-level science questions), and the Big Function Calling Leaderboard, version v4 — the benchmark the report defines as BFCL (function calling and agentic tool use).
+
+Scope of this story's tables: they cover only the two burrito backends (burrito on llama.cpp and burrito on vLLM), not the other five backends in the full evaluation, and they center on AIME25 and GPQA, with multi-turn and BFCL results where relevant. The wider cuts — all seven backends and all nine tests — live in the report and the 44-figure record in plots.md.
+
+The matched-length analysis bins runs by reasoning-token count using doubling bins (powers of 2). Within each bin, accuracy is averaged per seed then per backend. Only bins containing all three effort levels are shown. The within-question analysis averages per test_id first so each question contributes equally.
+
+The degradation analysis uses the same binning approach within each effort level. Accuracy is pooled across backends for clarity. Variance bands across 8 seeds are shown in the plots.
+
+All data, plots, and analysis helpers are available in the burrito-evals repository.
+
+---
+
+*This story was extracted from a broader evaluation covering 320K evaluations, 300K units (benchmark items), and 1,062 GPU hours of compute. An evaluation is one question × seed × configuration — one model attempt at one benchmark item under one configuration and one of the eight random seeds — so the two headline counts are two views of the same data: 300K units (benchmark items) and 320K evaluations (the individual question × seed × configuration attempts that evaluate them). The full report (report.md) covers seven findings: The Irrelevance Paradox, The Jinja Fix, Wire API Differences, Multi-Turn Base (Agentic Work), Preserved Thinking, Not All Reasoning is Created Equal, and Python Tool Impact. This story is Finding 6, the most transferable of the seven, presented here as a standalone analysis.*

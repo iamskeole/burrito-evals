@@ -1,6 +1,10 @@
 """
 eval_helpers.py
 Unified evaluation analysis, pivoting, and publication-ready visualization suite.
+
+Plot methods return ``(fig, axes, data)`` so charts and the underlying
+aggregates can be handed off together. Layout, encoding, and export polish
+iterated with Grok (xAI).
 """
 
 from __future__ import annotations
@@ -297,11 +301,86 @@ def shorten_label(name: str) -> str:
     return s
 
 
+# Marker shapes for reasoning-effort levels (shared by all plots).
+EFFORT_MARKERS: Dict[str, str] = {
+    'none': 'x',
+    'low': 'o',      # circle
+    'medium': 'D',   # diamond
+    'high': 's',     # square
+}
+
+
+def get_effort_marker(name_or_effort) -> str:
+    """Return matplotlib marker for a reasoning-effort level or label containing one."""
+    s = str(name_or_effort).lower()
+    for key, mk in EFFORT_MARKERS.items():
+        if key in s:
+            return mk
+    return 'o'
+
+
+def strip_fc_effort_label(name: str) -> str:
+    """Strip fc / effort tokens from a combined group label for clean backend legends.
+
+    Examples
+    --------
+    'b-vllm·fc0·lo' → 'b-vllm'
+    'burrito@vllm · 0' → 'b-vllm'
+    'burrito-llama (fc_model=1, reasoning_effort=high)' → 'burrito-llama'
+    """
+    s = shorten_label(str(name))
+    # Collapse common ultra-short stems first (same as _bar_tick_label)
+    s = (
+        s.replace('burrito-pt-llama', 'bp-llama')
+         .replace('burrito-pt-vllm', 'bp-vllm')
+         .replace('burrito-llama', 'b-llama')
+         .replace('burrito-vllm', 'b-vllm')
+         .replace('llama-default', 'l-def')
+         .replace('llama-fixed', 'l-fix')
+    )
+    # Parenthetical factors → ·tokens then strip
+    s = re.sub(r'wire_api\s*=\s*responses', 're', s, flags=re.I)
+    s = re.sub(r'wire_api\s*=\s*chat', 'ch', s, flags=re.I)
+    s = re.sub(r'fc_model\s*=\s*([01])', r'fc\1', s, flags=re.I)
+    s = re.sub(r'fc\s*=\s*([01])', r'fc\1', s, flags=re.I)
+    s = re.sub(
+        r'reasoning[_\s-]?(?:effort|level)?\s*=\s*(none|low|medium|high)',
+        r'\1', s, flags=re.I,
+    )
+    def _paren_to_dots(m):
+        inner = m.group(1)
+        parts = re.split(r'[,\s]+', inner.strip())
+        parts = [p for p in parts if p]
+        return '·' + '·'.join(parts) if parts else ''
+    s = re.sub(r'\(([^)]*)\)', _paren_to_dots, s)
+    # Normalize spaces around · and bare fc digits from multi-col joins
+    s = re.sub(r'\s*·\s*', '·', s)
+    s = re.sub(r'\s+', '·', s.strip())
+    # Strip fc / effort tokens (named and bare trailing 0/1)
+    s = re.sub(r'[·\s]*fc[_=]?[01]\b', '', s, flags=re.I)
+    s = re.sub(r'[·\s]*[01](?=[·\s]|$)', '', s)
+    s = re.sub(
+        r'[·\s]*(?:none|low|lo|medium|md|high|hi)\b',
+        '', s, flags=re.I,
+    )
+    s = re.sub(r'[·\s]+', '·', s).strip('· \t')
+    return s or shorten_label(name)
+
+
 def get_semantic_style(name) -> Tuple[str, str, str]:
     """
     Maps a group label to (color, linestyle, marker).
-    - Color = backend family identity (stable across the module).
-    - linestyle/marker = sub-mode (fc_model=1 renders dashed + square).
+
+    Contract (aligned across the module):
+      • color     = backend family identity (stable palette)
+      • linestyle = fc_model when present: dotted for fc=0, solid for fc=1
+                    (no fc factor → solid)
+      • marker    = default 'o' (effort-aware plots override via get_effort_marker)
+
+    Effort markers (○ low / ◇ medium / □ high) and fc fill (hollow / solid)
+    are handled by individual plot methods so legends stay non-duplicative:
+    backend legend shows family only (e.g. b-vllm), with separate entries
+    for effort shapes and fc0/fc1.
     """
     s = str(name).lower()
 
@@ -321,10 +400,42 @@ def get_semantic_style(name) -> Tuple[str, str, str]:
             digest = hashlib.md5(s.encode('utf-8')).hexdigest()
             color = FALLBACK_PALETTE[int(digest, 16) % len(FALLBACK_PALETTE)]
 
+    # Detect fc factor in many label forms:
+    #   "fc_model=1", "fc=0", "fc1", "· 1", trailing bare 0/1 from combined
+    #   group labels like "burrito@vllm · 0" (group_col=['backend','fc_model'])
     is_fc1 = bool(
-        re.search(r'fc[_=]?model\s*=\s*1|(?<![\d.])fc\s*=\s*1', s)
+        re.search(r'fc[_=]?model\s*=\s*1|(?<![\d.])fc\s*=\s*1|(?<![\w])fc1\b', s)
     ) or s in ('1', '1.0') or 'tool' in s
-    linestyle, marker = ('-', 's') if is_fc1 else ('dotted', 'o')
+    is_fc0 = bool(
+        re.search(r'fc[_=]?model\s*=\s*0|(?<![\d.])fc\s*=\s*0|(?<![\w])fc0\b', s)
+    ) or s in ('0', '0.0')
+    # Combined multi-factor labels from _prepare_data / plot helpers:
+    # "backend · 0" or "backend · 1" (last token is the fc value)
+    if not is_fc1 and not is_fc0:
+        m_bare = re.search(r'[·,\s]([01])(?:\s*$|\s*[·,])', s)
+        if m_bare:
+            if m_bare.group(1) == '1':
+                is_fc1 = True
+            else:
+                is_fc0 = True
+        elif re.search(r'(?:^|[·\s])1(?:\s*$)', s) and not re.search(
+            r'reasoning|effort|level|wire|chat|resp', s
+        ):
+            # lone trailing 1 that isn't an effort/wire token
+            is_fc1 = True
+        elif re.search(r'(?:^|[·\s])0(?:\s*$)', s) and not re.search(
+            r'reasoning|effort|level|wire|chat|resp', s
+        ):
+            is_fc0 = True
+
+    has_fc = is_fc1 or is_fc0 or bool(
+        re.search(r'fc[_=]?model\s*=|\bfc\s*=|(?<![\w])fc[01]\b', s)
+    )
+    if has_fc:
+        linestyle = '-' if is_fc1 else 'dotted'
+    else:
+        linestyle = '-'
+    marker = 'o'  # default; effort plots use get_effort_marker
 
     return color, linestyle, marker
 
@@ -419,14 +530,23 @@ def percent_axis_limit(data_max: float, headroom: float = 8.0) -> float:
     return min(130.0, base + headroom)
 
 def detect_encoding_factors(labels) -> tuple:
-    """Return (has_fc, has_wire) across a set of series labels."""
+    """Return (has_fc, has_wire) across a set of series labels.
+
+    Recognises explicit tokens (``fc_model=0``, ``fc=1``, ``fc0``) and the
+    bare trailing ``· 0`` / ``· 1`` form produced when ``group_col`` is a
+    multi-column list that includes ``fc_model``.
+    """
     has_fc = False
     has_wire = False
     for name in labels:
         s = str(name).lower()
-        if re.search(r'fc_model\s*=|\bfc\s*=', s):
+        if (
+            re.search(r'fc_model\s*=|\bfc\s*=|(?<![\w])fc[01]\b', s)
+            or re.search(r'[·,\s][01](?:\s*$|\s*[·,])', s)
+            or s.strip() in ('0', '1', '0.0', '1.0')
+        ):
             has_fc = True
-        if re.search(r'wire[_\s-]?api\s*=', s):
+        if re.search(r'wire[_\s-]?api\s*=|\bchat\b|\bresponses\b', s):
             has_wire = True
         if has_fc and has_wire:
             break
@@ -1623,7 +1743,15 @@ def pivot_evals(
 
 class EvalPlotter:
     """Publication-grade visualizer: quiet grids, aligned grouped bars,
-    stable color identity, honest axes."""
+    stable color identity, honest axes.
+
+    Return contract
+    ---------------
+    Every ``plot_*`` method returns ``(fig, ax_or_axes, data)`` where
+    ``data`` is a pandas DataFrame of the exact aggregates that were drawn
+    (means, stds, bin centers, survival rates, etc.). Use ``data`` for
+    numeric follow-up or agent handoff; the figure is for human inspection.
+    """
 
     # ---------------------------------------------------------------
     # shared internals
@@ -1986,21 +2114,42 @@ class EvalPlotter:
         cls._apply_paper_style(ax, grid_axis='y')
         max_top = 0.0
 
+        # Detect whether x is an effort axis → per-point effort markers
+        x_is_effort = bool(
+            x_col and re.search(
+                r'reasoning|effort|level', str(x_col), flags=re.I
+            )
+        )
+        from matplotlib.lines import Line2D
+        backend_proxies = []
+        effort_proxies_done = set()
+        effort_proxies = []
+        fc_proxies = []
+        seen_backend_labels = set()
+        has_fc_factor = False
+
         if grp_col:
             groups = cls._ordered_levels(df_proc, grp_col, across_seeds[grp_col])
             groups = cls._sort_hue_pairs(groups)
+            has_fc_factor, _ = detect_encoding_factors(groups)
             for grp in groups:
                 sub = across_seeds[across_seeds[grp_col] == grp].dropna(
                     subset=['mean']
                 )
                 if sub.empty:
                     continue
-                color, ls, marker = get_semantic_style(grp)
+                color, ls, _ = get_semantic_style(grp)
+                # Backend legend label strips fc/effort when those are encoded
+                # separately (avoids b-vllm-fc0 / b-vllm-fc1 duplicates).
+                leg_label = (
+                    strip_fc_effort_label(grp) if has_fc_factor
+                    else shorten_label(grp)
+                )
+                # Line without markers; markers added per-point when x is effort
                 ax.plot(
                     sub[x_col], sub['mean'],
-                    label=shorten_label(grp), color=color, linestyle=ls,
-                    marker=marker, markersize=markersize, linewidth=linewidth,
-                    markeredgecolor='white', markeredgewidth=1.0, zorder=3,
+                    color=color, linestyle=ls,
+                    marker=None, linewidth=linewidth, zorder=3,
                 )
                 std_vals = sub['std'].fillna(0.0)
                 ax.fill_between(
@@ -2009,6 +2158,35 @@ class EvalPlotter:
                     sub['mean'] + std_vals,
                     color=color, alpha=band_alpha, edgecolor='none', zorder=2,
                 )
+                # Per-point markers
+                for _, r in sub.iterrows():
+                    mk = (
+                        get_effort_marker(r[x_col]) if x_is_effort
+                        else 'o'
+                    )
+                    is_fc0 = ls in (':', 'dotted')
+                    if is_fc0 and has_fc_factor:
+                        ax.scatter(
+                            r[x_col], r['mean'], s=markersize ** 1.6,
+                            facecolors='none', edgecolors=color,
+                            marker=mk, linewidths=1.3, zorder=4,
+                        )
+                    else:
+                        ax.scatter(
+                            r[x_col], r['mean'], s=markersize ** 1.5,
+                            color=color, marker=mk, edgecolor='white',
+                            linewidth=1.0, zorder=4,
+                        )
+                    if x_is_effort:
+                        ek = str(r[x_col]).lower()
+                        if ek not in effort_proxies_done:
+                            effort_proxies.append(Line2D(
+                                [0], [0], color=SLATE, marker=get_effort_marker(ek),
+                                linestyle='None', markersize=7,
+                                markerfacecolor=SLATE, markeredgecolor='white',
+                                label=str(r[x_col]),
+                            ))
+                            effort_proxies_done.add(ek)
                 max_top = max(
                     max_top,
                     float((sub['mean'] + std_vals).max()),
@@ -2023,13 +2201,38 @@ class EvalPlotter:
                             fontsize=6.0, fontweight='bold', color=INK,
                             zorder=5,
                         )
+                if leg_label not in seen_backend_labels:
+                    seen_backend_labels.add(leg_label)
+                    backend_proxies.append(Line2D(
+                        [0], [0], color=color, linestyle=ls, marker='o',
+                        markersize=6, markeredgecolor='white', label=leg_label,
+                    ))
+            if has_fc_factor:
+                fc_proxies = [
+                    Line2D(
+                        [0], [0], color=SLATE, marker='o', linestyle='None',
+                        markersize=7, markerfacecolor='none',
+                        markeredgecolor=SLATE, markeredgewidth=1.4, label='fc0',
+                    ),
+                    Line2D(
+                        [0], [0], color=SLATE, marker='o', linestyle='None',
+                        markersize=7, markerfacecolor=SLATE,
+                        markeredgecolor='white', label='fc1',
+                    ),
+                ]
         else:
             sub = across_seeds.dropna(subset=['mean'])
             ax.plot(
-                sub[x_col], sub['mean'], color='#4f46e5', marker='o',
-                linewidth=linewidth, markersize=markersize,
-                markeredgecolor='white', markeredgewidth=1.0, zorder=3,
+                sub[x_col], sub['mean'], color='#4f46e5', marker=None,
+                linewidth=linewidth, zorder=3,
             )
+            for _, r in sub.iterrows():
+                mk = get_effort_marker(r[x_col]) if x_is_effort else 'o'
+                ax.scatter(
+                    r[x_col], r['mean'], s=markersize ** 1.5,
+                    color='#4f46e5', marker=mk, edgecolor='white',
+                    linewidth=1.0, zorder=4,
+                )
             std_vals = sub['std'].fillna(0.0)
             ax.fill_between(
                 sub[x_col],
@@ -2054,25 +2257,34 @@ class EvalPlotter:
             title_pad=(12 if subtitle else 8), subtitle_y=1.004,
         )
 
-        if grp_col:
-            n_grp = across_seeds[grp_col].nunique()
-            if n_grp >= 6:
-                handles, lbls = ax.get_legend_handles_labels()
-                ax.legend(
-                    handles, lbls,
-                    loc='upper center', bbox_to_anchor=(0.5, -0.14),
-                    ncol=min(n_grp, 4), frameon=False, fontsize=7.0,
-                    handlelength=1.6, columnspacing=1.2,
+        all_h = list(backend_proxies) + list(effort_proxies) + list(fc_proxies)
+        if all_h:
+            n = len(all_h)
+            if n >= 6:
+                fig.legend(
+                    all_h, [h.get_label() for h in all_h],
+                    loc='upper center', bbox_to_anchor=(0.5, -0.02),
+                    ncol=min(n, 8), frameon=False, fontsize=6.5,
+                    handlelength=1.6, columnspacing=1.1,
                 )
                 fig.tight_layout(rect=[0, 0.10, 1, 1])
             else:
-                cls._legend_outside_right(ax)
+                ax.legend(
+                    all_h, [h.get_label() for h in all_h],
+                    bbox_to_anchor=(1.02, 1.0), loc='upper left',
+                    frameon=False, fontsize=7.0, handlelength=1.6,
+                )
                 fig.tight_layout(rect=[0, 0.02, 0.82, 1])
         else:
             fig.tight_layout(rect=[0, 0.02, 1, 1])
 
-        cls._add_footer(fig, f"shaded band = ±1 std across n={n_seeds} seeds")
-        return fig, ax
+        notes = [f"shaded band = ±1 std across n={n_seeds} {_footer_n_label}"]
+        if x_is_effort:
+            notes.append("markers = effort (○ low · ◇ med · □ high)")
+        if has_fc_factor:
+            notes.append("dotted/hollow = fc0 · solid/filled = fc1")
+        cls._add_footer(fig, "  ·  ".join(notes))
+        return fig, ax, across_seeds
 
     # ---------------------------------------------------------------
     # grouped / clustered bar chart
@@ -2618,7 +2830,7 @@ class EvalPlotter:
             f"mean across n={n_seeds} seeds  ·  amber step = Pareto frontier",
         )
         fig.tight_layout(rect=[0, 0.02, 1, 1])
-        return fig, ax
+        return fig, ax, summary
 
     # ---------------------------------------------------------------
     # horizontal capability bars
@@ -2814,7 +3026,7 @@ class EvalPlotter:
                 else f"mean ± std across n={n_seeds} seeds"
             ),
         )
-        return fig, ax
+        return fig, ax, summary
 
     @classmethod
     def _capability_bars_expanded(
@@ -2954,7 +3166,7 @@ class EvalPlotter:
             ),
         )
         fig.tight_layout(rect=[0, 0.12, 0.98 if len(categories) > 1 else 1, 1])
-        return fig, ax
+        return fig, ax, summary
 
     @classmethod
     def plot_radar(
@@ -3072,7 +3284,7 @@ class EvalPlotter:
             ha='right', va='bottom', fontsize=6.5, color=FAINT, style='italic',
         )
         fig.tight_layout(rect=[0, 0.06, 1, 1])
-        return fig, ax
+        return fig, ax, pivot.reset_index()
 
     @classmethod
     def plot_turn_survival(
@@ -3120,9 +3332,13 @@ class EvalPlotter:
             if len(gcols) == 1:
                 return frame, gcols, gcols[0]
             frame = frame.copy()
-            frame['__group__'] = frame[gcols].astype(str).agg(
-                lambda r: ' · '.join(str(x) for x in r), axis=1
-            )
+            # Prefer "backend (fc_model=0)" so get_semantic_style / strip
+            # helpers parse factors reliably (not bare "backend · 0").
+            def _combine(row):
+                base = str(row[gcols[0]])
+                extras = [f"{c}={row[c]}" for c in gcols[1:]]
+                return f"{base} ({', '.join(extras)})"
+            frame['__group__'] = frame.apply(_combine, axis=1)
             return frame, ['__group__'], '__group__'
 
         # Faceted layout
@@ -3142,13 +3358,14 @@ class EvalPlotter:
 
             n_f = len(facet_levels)
             if figsize is None:
-                figsize = (min(4.2 * n_f, 16), 4.6)
+                figsize = (min(4.5 * n_f, 16), 4.6)
             fig, axes = plt.subplots(
                 1, n_f, figsize=figsize, dpi=dpi or DEFAULT_DPI, sharey=True,
             )
             if n_f == 1:
                 axes = [axes]
 
+            surv_parts = []
             for ax, fval in zip(axes, facet_levels):
                 sub_df = df[df[facet_col].astype(str) == str(fval)]
                 sub_df, gcols, plot_group = _prepare_groups(sub_df, group_col)
@@ -3156,14 +3373,26 @@ class EvalPlotter:
                     sub_df, group_cols=gcols, max_turn=max_turn,
                     min_reached=min_reached,
                 )
+                if not surv.empty:
+                    part = surv.copy()
+                    part[facet_col] = fval
+                    surv_parts.append(part)
                 cls._draw_survival_ax(
                     ax, surv, plot_group, show_cum=show_cum, title=str(fval),
                 )
+            plot_data = (
+                pd.concat(surv_parts, ignore_index=True) if surv_parts
+                else pd.DataFrame()
+            )
 
-            fig.suptitle(title, fontsize=12, fontweight='bold', color=INK, y=1.02)
+            fig.suptitle(title, fontsize=12, fontweight='bold', color=INK, y=1.04)
             if subtitle:
-                fig.text(0.5, 0.98, subtitle, ha='center', fontsize=8, color=FAINT)
-            # Merge legend entries across all facets (union of series)
+                fig.text(
+                    0.5, 0.975, subtitle, ha='center', fontsize=7.5,
+                    color=FAINT, style='italic',
+                )
+            # Merge legend entries across all facets (union of series).
+            # fc0/fc1 last so encoding keys aren't mixed into backend series.
             seen, h2, l2 = set(), [], []
             for ax in axes:
                 handles, labels = getattr(ax, '_survival_legend', (None, None))
@@ -3175,21 +3404,27 @@ class EvalPlotter:
                         h2.append(h)
                         l2.append(l)
             if h2:
-                ncol = min(len(h2), 8)
+                body = [(h, l) for h, l in zip(h2, l2) if l not in ('fc0', 'fc1')]
+                tail = [(h, l) for h, l in zip(h2, l2) if l in ('fc0', 'fc1')]
+                tail = sorted(tail, key=lambda x: 0 if x[1] == 'fc0' else 1)
+                h2, l2 = (
+                    map(list, zip(*(body + tail))) if (body or tail) else ([], [])
+                )
+                ncol = min(len(h2), 16)
                 fig.legend(
                     h2, l2, loc='upper center', bbox_to_anchor=(0.5, 0.0),
                     ncol=ncol, frameon=False, fontsize=6.5,
                     handlelength=2.2,
                 )
-                fig.tight_layout(rect=[0, 0.12, 1, 0.96])
+                fig.tight_layout(rect=[0, 0.12, 1, 0.93])
             else:
-                fig.tight_layout(rect=[0, 0.02, 1, 0.96])
+                fig.tight_layout(rect=[0, 0.02, 1, 0.93])
             mode = "cum. survival ∏ rates" if show_cum else "P(pass t | reached t)"
-            cls._add_footer(
-                fig,
-                f"{mode}  ·  turns with n<{min_reached} omitted",
-            )
-            return fig, axes
+            notes = [mode, f"turns with n<{min_reached} omitted"]
+            if any(getattr(ax, '_survival_has_fc', False) for ax in axes):
+                notes.append("dotted/hollow = fc0 · solid/filled = fc1")
+            cls._add_footer(fig, "  ·  ".join(notes))
+            return fig, axes, plot_data
 
         # Single-axis layout
         df, gcols, plot_group = _prepare_groups(df, group_col)
@@ -3217,27 +3452,34 @@ class EvalPlotter:
             if l not in seen:
                 seen.add(l); h2.append(h); l2.append(l)
         if h2:
+            body = [(h, l) for h, l in zip(h2, l2) if l not in ('fc0', 'fc1')]
+            tail = [(h, l) for h, l in zip(h2, l2) if l in ('fc0', 'fc1')]
+            tail = sorted(tail, key=lambda x: 0 if x[1] == 'fc0' else 1)
+            h2, l2 = (
+                map(list, zip(*(body + tail))) if (body or tail) else ([], [])
+            )
+        if h2:
             if n_series >= 8:
                 ax.legend(
                     h2, l2, loc='upper center', bbox_to_anchor=(0.5, -0.14),
-                    ncol=min(n_series, 8), frameon=False, fontsize=6.5,
+                    ncol=min(n_series, 16), frameon=False, fontsize=6.5,
                     handlelength=2.2,
                 )
                 fig.tight_layout(rect=[0, 0.14, 1, 1])
             else:
                 ax.legend(
-                    h2, l2, loc='upper left', bbox_to_anchor=(1.02, 1.0),
+                    h2, l2, ncol=16, loc='upper left', bbox_to_anchor=(1.02, 1.0),
                     frameon=False, fontsize=7.0, handlelength=2.2,
                 )
                 fig.tight_layout(rect=[0, 0.02, 0.78, 1])
         else:
             fig.tight_layout(rect=[0, 0.02, 1, 1])
         mode = "cum. survival ∏ rates" if show_cum else "P(pass t | reached t)"
-        cls._add_footer(
-            fig,
-            f"{mode}  ·  turns with n<{min_reached} omitted",
-        )
-        return fig, ax
+        notes = [mode, f"turns with n<{min_reached} omitted"]
+        if getattr(ax, '_survival_has_fc', False):
+            notes.append("dotted/hollow = fc0 · solid/filled = fc1")
+        cls._add_footer(fig, "  ·  ".join(notes))
+        return fig, ax, surv
 
     @classmethod
     def _draw_survival_ax(
@@ -3245,10 +3487,15 @@ class EvalPlotter:
     ):
         """Draw either step pass-rate OR cumulative survival (exclusive).
 
-        Wire API encoding matches bar charts:
-          responses → solid line
-          chat      → dotted line
+        Encoding (aligned with plot_effort_story / plot_compute_scaling):
+          • color     = backend family
+          • linestyle = fc (dotted=fc0, solid=fc1); falls back to wire_api
+            (chat→dotted, responses→solid) when no fc factor is present
+          • marker    = filled for fc1 / hollow for fc0 when fc is present
+          • legend    = stripped backend names + separate fc0/fc1 entries
         """
+        from matplotlib.lines import Line2D
+
         cls._apply_paper_style(ax, grid_axis='y')
         if title:
             ax.set_title(title, fontsize=10, fontweight=700, color=INK, pad=6)
@@ -3259,22 +3506,10 @@ class EvalPlotter:
             else 'P(pass turn t | reached t) (%)'
         )
 
-        def _line_style_for(label: str):
-            """Return (color, linestyle, marker); chat→dotted, responses→solid."""
-            color, _, marker = get_semantic_style(label)
-            s = str(label).lower()
-            tokens = [t for t in re.split(r'[·\s,=]+', s) if t]
-            ls = '-'  # solid default
-            if 'chat' in tokens or 'ch' in tokens:
-                ls = ':'
-            if 'responses' in tokens or (
-                're' in tokens and 'chat' not in tokens
-            ):
-                ls = '-'
-            return color, ls, marker
-
         legend_handles = []
         legend_labels = []
+        seen_labels = set()
+        has_fc = False
 
         if plot_group is None:
             sub = surv.dropna(subset=[y_col]).sort_values('turn')
@@ -3298,6 +3533,14 @@ class EvalPlotter:
         else:
             raw = [str(g) for g in surv[plot_group].dropna().unique()]
             groups = cls._sort_hue_pairs(raw)
+            has_fc, _ = detect_encoding_factors(groups)
+            # Also detect bare 0/1 combined labels
+            if not has_fc:
+                has_fc = any(
+                    bool(re.search(r'[·,\s][01](?:\s*$|\s*[·,])', str(g)))
+                    or str(g).strip() in ('0', '1', '0.0', '1.0')
+                    for g in groups
+                )
             n = len(groups)
             lw = 1.3 if n >= 10 else 1.8
             ms = 3.2 if n >= 10 else 5.0
@@ -3309,17 +3552,61 @@ class EvalPlotter:
                 )
                 if sub.empty:
                     continue
-                color, ls, marker = _line_style_for(grp)
-                short = cls._bar_tick_label(grp)
-                line, = ax.plot(
-                    sub['turn'], sub[y_col] * 100,
-                    color=color, linestyle=ls, marker=marker,
-                    linewidth=lw, markersize=ms, markeredgecolor='white',
-                    markeredgewidth=0.6,
-                    label=short, alpha=0.92, zorder=3,
+                color, ls, _ = get_semantic_style(grp)
+                # Fall back to wire_api linestyle only when no fc factor
+                if not has_fc:
+                    s = str(grp).lower()
+                    tokens = [t for t in re.split(r'[·\s,=]+', s) if t]
+                    if 'chat' in tokens or 'ch' in tokens:
+                        ls = ':'
+                    elif 'responses' in tokens or 're' in tokens:
+                        ls = '-'
+                short = (
+                    strip_fc_effort_label(grp) if has_fc
+                    else cls._bar_tick_label(grp)
                 )
-                legend_handles.append(line)
-                legend_labels.append(short)
+                is_fc0 = ls in (':', 'dotted')
+                # Line
+                ax.plot(
+                    sub['turn'], sub[y_col] * 100,
+                    color=color, linestyle=ls, marker=None,
+                    linewidth=lw, alpha=0.92, zorder=3,
+                )
+                # Markers: hollow for fc0, filled for fc1
+                if is_fc0 and has_fc:
+                    ax.scatter(
+                        sub['turn'], sub[y_col] * 100,
+                        s=ms ** 1.6, facecolors='none', edgecolors=color,
+                        marker='o', linewidths=1.2, zorder=4, alpha=0.95,
+                    )
+                else:
+                    ax.scatter(
+                        sub['turn'], sub[y_col] * 100,
+                        s=ms ** 1.5, color=color, marker='o',
+                        edgecolor='white', linewidth=0.7, zorder=4, alpha=0.95,
+                    )
+                if short not in seen_labels:
+                    seen_labels.add(short)
+                    proxy = Line2D(
+                        [0], [0], color=color, linestyle=ls, marker='o',
+                        markersize=6, markeredgecolor='white', label=short,
+                    )
+                    legend_handles.append(proxy)
+                    legend_labels.append(short)
+
+            if has_fc:
+                for lab, face in (('fc0', 'none'), ('fc1', SLATE)):
+                    if lab not in seen_labels:
+                        seen_labels.add(lab)
+                        legend_handles.append(Line2D(
+                            [0], [0], color=SLATE, marker='o', linestyle='None',
+                            markersize=6.5,
+                            markerfacecolor=face,
+                            markeredgecolor=SLATE,
+                            markeredgewidth=1.3 if face == 'none' else 0.8,
+                            label=lab,
+                        ))
+                        legend_labels.append(lab)
 
         ax.set_ylim(0, 105)
         ax.axhline(100, color=SPINE, linewidth=0.55, linestyle=':', zorder=1)
@@ -3331,8 +3618,8 @@ class EvalPlotter:
                 ax.set_xticks(valid_turns)
         ax.set_xlabel('Turn index (0-based)', fontsize=8.5, color=SLATE)
         ax.set_ylabel(y_label, fontsize=8.5, color=SLATE)
-        # Stash handles for faceted shared legend
         ax._survival_legend = (legend_handles, legend_labels)
+        ax._survival_has_fc = has_fc
 
     @classmethod
     def plot_pass_curves(
@@ -3379,9 +3666,11 @@ class EvalPlotter:
                 plot_group = gcols[0]
             else:
                 df = df.copy()
-                df['__group__'] = df[gcols].astype(str).agg(
-                    lambda r: ' · '.join(str(x) for x in r), axis=1
-                )
+                def _combine(row):
+                    base = str(row[gcols[0]])
+                    extras = [f"{c}={row[c]}" for c in gcols[1:]]
+                    return f"{base} ({', '.join(extras)})"
+                df['__group__'] = df.apply(_combine, axis=1)
                 gcols = ['__group__']
                 plot_group = '__group__'
 
@@ -3407,8 +3696,11 @@ class EvalPlotter:
             raise ValueError("No pass curves to plot (empty after filter).")
 
         def _draw(ax, sub, legend=False):
+            from matplotlib.lines import Line2D
             cls._apply_paper_style(ax, grid_axis='y')
             handles, labels = [], []
+            seen = set()
+            has_fc = False
             if plot_group is None or plot_group not in sub.columns:
                 s = sub.sort_values('k')
                 if show_at:
@@ -3430,29 +3722,68 @@ class EvalPlotter:
             else:
                 raw = [str(g) for g in sub[plot_group].unique()]
                 groups = cls._sort_hue_pairs(raw)
+                has_fc, _ = detect_encoding_factors(groups)
+                if not has_fc:
+                    has_fc = any(
+                        bool(re.search(r'[·,\s][01](?:\s*$|\s*[·,])', str(g)))
+                        or str(g).strip() in ('0', '1', '0.0', '1.0')
+                        for g in groups
+                    )
                 for grp in groups:
                     s = sub[sub[plot_group].astype(str) == str(grp)].sort_values('k')
                     if s.empty:
                         continue
-                    color, _, marker = get_semantic_style(grp)
-                    short = cls._bar_tick_label(grp)
-                    if show_at:
-                        line, = ax.plot(
-                            s['k'], s['pass_at'] * 100,
-                            color=color, linestyle=':', linewidth=1.6,
-                            marker=marker, markersize=4.0, markeredgecolor='white',
-                            markeredgewidth=0.5, label=short, zorder=3, alpha=0.95,
-                        )
-                        # only register one legend entry per series (not @k and ^k twice)
-                        if short not in labels:
-                            handles.append(line); labels.append(short)
-                    if show_hat:
+                    color, ls_fc, _ = get_semantic_style(grp)
+                    short = (
+                        strip_fc_effort_label(grp) if has_fc
+                        else cls._bar_tick_label(grp)
+                    )
+                    is_fc0 = ls_fc in (':', 'dotted')
+                    # pass@k always dotted, pass^k always solid (primary curve
+                    # encoding). fc is carried by marker fill (hollow/filled).
+                    for ycol, ls_curve, do_label in (
+                        ('pass_at', ':', show_at),
+                        ('pass_hat', '-', show_hat),
+                    ):
+                        if not do_label or ycol not in s.columns:
+                            continue
                         ax.plot(
-                            s['k'], s['pass_hat'] * 100,
-                            color=color, linestyle='-', linewidth=1.6,
-                            marker=marker, markersize=4.0, markeredgecolor='white',
-                            markeredgewidth=0.5, zorder=3, alpha=0.95,
+                            s['k'], s[ycol] * 100,
+                            color=color, linestyle=ls_curve, marker=None,
+                            linewidth=1.6, zorder=3, alpha=0.95,
                         )
+                        if is_fc0 and has_fc:
+                            ax.scatter(
+                                s['k'], s[ycol] * 100,
+                                s=22, facecolors='none', edgecolors=color,
+                                marker='o', linewidths=1.15, zorder=4, alpha=0.95,
+                            )
+                        else:
+                            ax.scatter(
+                                s['k'], s[ycol] * 100,
+                                s=20, color=color, marker='o',
+                                edgecolor='white', linewidth=0.6, zorder=4,
+                                alpha=0.95,
+                            )
+                    if short not in seen:
+                        seen.add(short)
+                        handles.append(Line2D(
+                            [0], [0], color=color, linestyle='-', marker='o',
+                            markersize=5.5, markeredgecolor='white', label=short,
+                        ))
+                        labels.append(short)
+                if has_fc:
+                    for lab, face in (('fc0', 'none'), ('fc1', SLATE)):
+                        if lab not in seen:
+                            seen.add(lab)
+                            handles.append(Line2D(
+                                [0], [0], color=SLATE, marker='o',
+                                linestyle='None', markersize=6.5,
+                                markerfacecolor=face, markeredgecolor=SLATE,
+                                markeredgewidth=1.3 if face == 'none' else 0.8,
+                                label=lab,
+                            ))
+                            labels.append(lab)
             ax.set_ylim(0, 105)
             ax.axhline(100, color=SPINE, linewidth=0.55, linestyle=':', zorder=1)
             ks = sorted(sub['k'].unique())
@@ -3460,6 +3791,7 @@ class EvalPlotter:
             ax.set_xlabel('k = #trials', fontsize=8.5, color=SLATE)
             ax.set_ylabel('Rate (%)', fontsize=8.5, color=SLATE)
             ax._pass_legend = (handles, labels)
+            ax._pass_has_fc = has_fc
 
         # ----- faceted -----
         if facet_col and facet_col in curves.columns:
@@ -3495,7 +3827,7 @@ class EvalPlotter:
                     if l not in seen:
                         seen.add(l); h2.append(h); l2.append(l)
             if h2:
-                ncol = min(len(h2), 8)
+                ncol = min(len(h2), 10)
                 fig.legend(
                     h2, l2, loc='upper center', bbox_to_anchor=(0.5, 0.0),
                     ncol=ncol, frameon=False, fontsize=6.5, handlelength=2.0,
@@ -3503,11 +3835,11 @@ class EvalPlotter:
                 fig.tight_layout(rect=[0, 0.10, 1, 0.94])
             else:
                 fig.tight_layout(rect=[0, 0.02, 1, 0.94])
-            cls._add_footer(
-                fig,
-                "dotted = pass@k (≥1 of k)  ·  solid = pass^k (all k)",
-            )
-            return fig, axes
+            notes = ["dotted = pass@k (≥1 of k)  ·  solid = pass^k (all k)"]
+            if any(getattr(ax, '_pass_has_fc', False) for ax in axes):
+                notes.append("hollow = fc0 · filled = fc1")
+            cls._add_footer(fig, "  ·  ".join(notes))
+            return fig, axes, curves
 
         # ----- single axis -----
         if figsize is None:
@@ -3534,11 +3866,11 @@ class EvalPlotter:
             fig.tight_layout(rect=[0, 0.02, 0.80, 1])
         else:
             fig.tight_layout()
-        cls._add_footer(
-            fig,
-            "dotted = pass@k (≥1 of k)  ·  solid = pass^k (all k)",
-        )
-        return fig, ax
+        notes = ["dotted = pass@k (≥1 of k)  ·  solid = pass^k (all k)"]
+        if getattr(ax, '_pass_has_fc', False):
+            notes.append("hollow = fc0 · filled = fc1")
+        cls._add_footer(fig, "  ·  ".join(notes))
+        return fig, ax, curves
 
     # ---------------------------------------------------------------
     # token-bin progression facets (rows × reasoning-effort cols)
@@ -3741,9 +4073,20 @@ class EvalPlotter:
             grp_levels = cls._sort_hue_pairs(
                 cls._ordered_levels(df_proc, final_group, summary[final_group])
             )
-            label_fn = cls._bar_tick_label if multi_group else shorten_label
+            has_fc_bins, _ = detect_encoding_factors(grp_levels)
+            if not has_fc_bins:
+                has_fc_bins = any(
+                    bool(re.search(r'[·,\s][01](?:\s*$|\s*[·,])', str(g)))
+                    or str(g).strip() in ('0', '1', '0.0', '1.0')
+                    for g in grp_levels
+                )
+            label_fn = (
+                strip_fc_effort_label if (multi_group or has_fc_bins)
+                else shorten_label
+            )
         else:
             grp_levels = [None]
+            has_fc_bins = False
             label_fn = lambda g: None  # noqa: E731
 
         if row_col:
@@ -3769,21 +4112,11 @@ class EvalPlotter:
         # Compact panel height: scale with row count so dense grids stay tight
         # and 1–2 row figures still have room for title/subtitle.
         if figsize is None:
-            if n_rows >= 7:
-                row_h = 1.95
-            elif n_rows >= 4:
-                row_h = 2.15
-            elif n_rows > 1:
-                row_h = 2.55
-            else:
-                row_h = 4.6
-            extra = 1.55 if n_rows > 1 else 0.9
-            figsize = (4.35 * n_plots, row_h * max(n_rows, 1) + extra)
-        hspace = (
-            0.32 if n_rows >= 7 else
-            0.28 if n_rows >= 4 else
-            0.24 if n_rows > 1 else 0.15
-        )
+            row_h = 2.6
+            chrome = 1.1
+            figsize = (4.35 * n_plots, row_h * max(n_rows, 1) + chrome)
+        hspace = 0.28 if n_rows > 1 else 0.15
+        hspace = 0.28 if n_rows > 1 else 0.15
         fig, axes2d = plt.subplots(
             n_rows, n_plots, figsize=figsize, dpi=dpi or DEFAULT_DPI,
             sharey=True, sharex=True, squeeze=False,
@@ -3843,17 +4176,12 @@ class EvalPlotter:
                     x_pos = log_pos if use_log else cat_pos
 
                     if final_group:
-                        # Color = backend; linestyle/marker = fc (fc0 dotted·circle,
-                        # fc1 solid·square) — same contract as plot_line_scaling /
-                        # get_semantic_style. Only fall back to wire_api linestyle
-                        # when the series label has no fc factor.
-                        color, ls, marker = get_semantic_style(grp)
+                        # Color = backend; linestyle = fc (dotted=fc0, solid=fc1).
+                        # Marker fill: hollow=fc0, filled=fc1. Effort is the
+                        # column facet so markers stay circular.
+                        color, ls, _ = get_semantic_style(grp)
                         s_low = str(grp).lower()
-                        has_fc = bool(
-                            re.search(r'fc[_=\s]?model\s*=|\bfc\s*=|(?<![\w])fc[01](?![\w])', s_low)
-                            or re.search(r'[\s·\-][01](?:[\s·\-]|$)', s_low)
-                        )
-                        if not has_fc:
+                        if not has_fc_bins:
                             toks = [
                                 t for t in re.split(r'[·\s,=()]+', s_low) if t
                             ]
@@ -3863,6 +4191,8 @@ class EvalPlotter:
                                 ls = '-'
                         label = label_fn(grp)
                         band_alpha = 0.08
+                        is_fc0 = ls in (':', 'dotted')
+                        marker = 'o'
                     else:
                         color = '#4f46e5'
                         for key, cc in reasoning_colors.items():
@@ -3870,6 +4200,7 @@ class EvalPlotter:
                                 color = cc
                                 break
                         ls, marker, label, band_alpha = '-', 'o', None, 0.12
+                        is_fc0 = False
 
                     # Break the line across empty bins (NaN) rather than
                     # interpolating through missing data.
@@ -3891,17 +4222,22 @@ class EvalPlotter:
                         )
                     if scale_markers:
                         sizes = 14.0 + 70.0 * (s_n[valid_mask].to_numpy() / n_max)
-                        ax.scatter(
-                            x_pos[valid_mask], y[valid_mask], s=sizes,
-                            color=color, marker=marker, edgecolor='white',
-                            linewidth=0.9, zorder=4, alpha=0.95,
-                        )
                     else:
-                        ax.scatter(
-                            x_pos[valid_mask], y[valid_mask], s=30,
-                            color=color, marker=marker, edgecolor='white',
-                            linewidth=0.9, zorder=4,
-                        )
+                        sizes = np.full(int(valid_mask.sum()), 30.0)
+                    if valid_mask.any():
+                        if is_fc0 and has_fc_bins:
+                            ax.scatter(
+                                x_pos[valid_mask], y[valid_mask], s=sizes,
+                                facecolors='none', edgecolors=color,
+                                marker=marker, linewidths=1.2, zorder=4,
+                                alpha=0.95,
+                            )
+                        else:
+                            ax.scatter(
+                                x_pos[valid_mask], y[valid_mask], s=sizes,
+                                color=color, marker=marker, edgecolor='white',
+                                linewidth=0.9, zorder=4, alpha=0.95,
+                            )
                     if label is not None:
                         proxies.append(Line2D(
                             [0], [0], color=color, linestyle=ls, marker=marker,
@@ -3986,8 +4322,14 @@ class EvalPlotter:
             title, fontsize=12.5, fontweight='bold', color=INK, y=0.995,
         )
         if has_subtitle:
+            if n_rows >= 5:
+                sub_y = 0.982
+            elif n_rows > 1:
+                sub_y = 0.955
+            else:
+                sub_y = 0.925
             fig.text(
-                0.5, 0.958, subtitle, ha='center', fontsize=7.5,
+                0.5, sub_y, subtitle, ha='center', fontsize=7.5,
                 color=FAINT, style='italic',
             )
 
@@ -4000,8 +4342,19 @@ class EvalPlotter:
                 if p.get_label() not in seen:
                     seen.add(p.get_label())
                     h2.append(p)
+            if has_fc_bins:
+                for lab, face in (('fc0', 'none'), ('fc1', SLATE)):
+                    if lab not in seen:
+                        seen.add(lab)
+                        h2.append(Line2D(
+                            [0], [0], color=SLATE, marker='o', linestyle='None',
+                            markersize=6.5, markerfacecolor=face,
+                            markeredgecolor=SLATE,
+                            markeredgewidth=1.3 if face == 'none' else 0.8,
+                            label=lab,
+                        ))
             n_legend = len(h2)
-            ncol = min(n_legend, 8)
+            ncol = min(n_legend, 10)
             fig.legend(
                 h2, [p.get_label() for p in h2],
                 loc='upper center', bbox_to_anchor=(0.5, 0.0),
@@ -4015,28 +4368,34 @@ class EvalPlotter:
             notes.append("marker area ~ #runs in bin")
         if n_filled:
             notes.append(f"{n_filled} rows w/ missing {token_col} -> 0")
-        has_fc_factor, has_wire_factor = (
-            detect_encoding_factors(grp_levels) if final_group else (False, False)
-        )
-        if has_fc_factor:
-            notes.append("dotted = fc=0 / solid = fc=1")
+        has_wire_factor = False
+        if final_group and not has_fc_bins:
+            _, has_wire_factor = detect_encoding_factors(grp_levels)
+        if has_fc_bins:
+            notes.append("dotted/hollow = fc0 · solid/filled = fc1")
         elif has_wire_factor:
             notes.append("dotted = chat / solid = responses")
         cls._add_footer(fig, "  ·  ".join(notes))
 
-        grid_mode = bool(row_col) and n_rows > 1
         # Top band must clear suptitle (+ subtitle) and the per-column titles.
         # Few-row figures need a larger *fraction* reserved at the top because
         # each panel is tall; many-row figures use a smaller fraction.
-        bottom = 0.06 if (has_legend and n_legend) else 0.025
-        if has_legend and n_legend > 8:
-            bottom = 0.085
-        if n_rows <= 2:
-            top = 0.82 if has_subtitle else 0.88
+        grid_mode = bool(row_col) and n_rows > 1
+        has_leg = bool(has_legend and n_legend)
+        if n_rows == 1:
+            bottom = 0.16 if has_leg else 0.10
+            top = 0.86 if has_subtitle else 0.91
+        elif n_rows == 2:
+            bottom = 0.10 if has_leg else 0.05
+            top = 0.90 if has_subtitle else 0.93
         elif n_rows <= 4:
-            top = 0.88 if has_subtitle else 0.92
+            bottom = 0.06 if has_leg else 0.03
+            top = 0.93 if has_subtitle else 0.95
         else:
-            top = 0.92 if has_subtitle else 0.95
+            bottom = 0.04 if has_leg else 0.02
+            top = 0.96 if has_subtitle else 0.97
+        if has_leg and n_legend > 8:
+            bottom = max(bottom, 0.07 if n_rows >= 3 else bottom)
         left = 0.055 if grid_mode else 0.06
         fig.subplots_adjust(
             left=left, right=0.99, top=top, bottom=bottom,
@@ -4054,7 +4413,7 @@ class EvalPlotter:
                     fontsize=8.5, fontweight=700, color=INK,
                 )
 
-        return fig, (axes2d if row_col else list(axes2d[0]))
+        return fig, (axes2d if row_col else list(axes2d[0])), summary
 
 
     # ---------------------------------------------------------------
@@ -4191,9 +4550,6 @@ class EvalPlotter:
             group_col=final_group, facet_col=facet_col,
         )
 
-        effort_marker = {
-            'none': 'x', 'low': 'o', 'medium': 'D', 'high': 's',
-        }
         effort_order = ['none', 'low', 'medium', 'high']
 
         def _effort_key(v):
@@ -4221,7 +4577,15 @@ class EvalPlotter:
             fig, ax = cls._new_figure(figsize, dpi=dpi)
             axes = [ax]
 
-        label_fn = cls._bar_tick_label if multi_group else shorten_label
+        # Strip fc from backend legend when fc is a factor
+        _groups_for_detect = (
+            list(summary[final_group].unique()) if final_group else []
+        )
+        has_fc_eff, _ = detect_encoding_factors(_groups_for_detect)
+        label_fn = (
+            strip_fc_effort_label if (multi_group or has_fc_eff)
+            else shorten_label
+        )
         max_top = 0.0
         proxies_backend = {}
         proxies_effort = {}
@@ -4234,23 +4598,26 @@ class EvalPlotter:
             for _, row in sub.iterrows():
                 grp = row[final_group] if final_group else None
                 effort = row[effort_col]
-                color, _, _ = (
+                color, ls, _ = (
                     get_semantic_style(grp) if grp is not None
                     else ('#4f46e5', '-', 'o')
                 )
-                mk = 'o'
-                for k, m in effort_marker.items():
-                    if k in str(effort).lower():
-                        mk = m
-                        break
+                mk = get_effort_marker(effort)
+                is_fc0 = ls in (':', 'dotted')
                 x = float(row['tokens'])
                 y = float(row['accuracy'])
                 if not np.isfinite(x) or not np.isfinite(y) or x <= 0:
                     continue
-                ax.scatter(
-                    x, y, s=70, color=color, marker=mk,
-                    edgecolor='white', linewidth=0.9, zorder=4, alpha=0.92,
-                )
+                if is_fc0 and has_fc_eff:
+                    ax.scatter(
+                        x, y, s=70, facecolors='none', edgecolors=color,
+                        marker=mk, linewidths=1.3, zorder=4, alpha=0.95,
+                    )
+                else:
+                    ax.scatter(
+                        x, y, s=70, color=color, marker=mk,
+                        edgecolor='white', linewidth=0.9, zorder=4, alpha=0.92,
+                    )
                 yerr = float(row['acc_std']) if pd.notna(row['acc_std']) else 0.0
                 if yerr > 0:
                     ax.errorbar(
@@ -4264,11 +4631,12 @@ class EvalPlotter:
                         (x, y), textcoords='offset points', xytext=(4, 4),
                         fontsize=6.0, color=SLATE, alpha=0.85,
                     )
-                if grp is not None and str(grp) not in proxies_backend:
-                    proxies_backend[str(grp)] = Line2D(
+                leg_key = label_fn(grp) if grp is not None else None
+                if leg_key is not None and leg_key not in proxies_backend:
+                    proxies_backend[leg_key] = Line2D(
                         [0], [0], color=color, marker='o', linestyle='None',
                         markersize=7, markeredgecolor='white',
-                        label=label_fn(grp),
+                        label=leg_key,
                     )
                 ek = str(effort).lower()
                 if ek not in proxies_effort:
@@ -4303,36 +4671,51 @@ class EvalPlotter:
                 color=FAINT, style='italic',
             )
 
-        # Dual legend: backends (color) + effort (marker)
+        # Legend: backends (color) + effort shapes + fc hollow/filled
         handles = list(proxies_backend.values())
-        # order effort proxies
         effort_handles = []
         for e in effort_order:
             for k, h in proxies_effort.items():
                 if e in k:
                     effort_handles.append(h)
                     break
-        all_h = handles + effort_handles
+        fc_handles = []
+        if has_fc_eff:
+            fc_handles = [
+                Line2D(
+                    [0], [0], color=SLATE, marker='o', linestyle='None',
+                    markersize=7, markerfacecolor='none',
+                    markeredgecolor=SLATE, markeredgewidth=1.4, label='fc0',
+                ),
+                Line2D(
+                    [0], [0], color=SLATE, marker='o', linestyle='None',
+                    markersize=7, markerfacecolor=SLATE,
+                    markeredgecolor='white', label='fc1',
+                ),
+            ]
+        all_h = handles + effort_handles + fc_handles
         if all_h:
             fig.legend(
                 all_h, [h.get_label() for h in all_h],
                 loc='upper center', bbox_to_anchor=(0.5, 0.0),
-                ncol=min(len(all_h), 8), frameon=False, fontsize=6.5,
+                ncol=min(len(all_h), 10), frameon=False, fontsize=6.5,
                 handlelength=1.6,
             )
 
-        cls._add_footer(
-            fig,
-            f"one point = config aggregate  ·  error bars = ±1 std across "
-            f"n={n_seeds} {_footer_n_label}  ·  x = median tokens",
-        )
+        notes = [
+            f"one point = config aggregate  ·  ±1 std across n={n_seeds} {_footer_n_label}",
+            "markers = effort (○ low · ◇ med · □ high)",
+        ]
+        if has_fc_eff:
+            notes.append("hollow = fc0 · filled = fc1")
+        cls._add_footer(fig, "  ·  ".join(notes))
         fig.subplots_adjust(
             left=0.08, right=0.98,
             top=0.88 if subtitle else 0.92,
             bottom=0.16 if all_h else 0.08,
             wspace=0.12,
         )
-        return fig, (axes if facet_col else axes[0])
+        return fig, (axes if facet_col else axes[0]), summary
 
     @classmethod
     def plot_effort_story(
@@ -4434,15 +4817,19 @@ class EvalPlotter:
 
         efforts = _sort_efforts(summary[effort_col].unique())
         effort_pos = {e: i for i, e in enumerate(efforts)}
-        effort_marker = {
-            'none': 'x', 'low': 'o', 'medium': 'D', 'high': 's',
-        }
+        # Use module-level EFFORT_MARKERS via get_effort_marker
 
         if final_group:
             groups = cls._sort_hue_pairs(
                 cls._ordered_levels(df_proc, final_group, summary[final_group])
             )
-            label_fn = cls._bar_tick_label if multi_group else shorten_label
+            # Always strip fc/effort from backend legend entries — they get
+            # their own legend rows (linestyle / hollow-fill + shape).
+            has_fc, _ = detect_encoding_factors(groups)
+            label_fn = (
+                strip_fc_effort_label if (multi_group or has_fc)
+                else shorten_label
+            )
         else:
             groups = [None]
             label_fn = lambda g: 'all'  # noqa: E731
@@ -4459,6 +4846,8 @@ class EvalPlotter:
                 )
             if not facets:
                 facets = list(summary[facet_col].dropna().unique())
+            else:
+                facets = sorted(facets)
         else:
             facets = [None]
 
@@ -4576,9 +4965,7 @@ class EvalPlotter:
                 )
                 for _, row in sub.iterrows():
                     ek = str(row[effort_col]).lower()
-                    mk = next(
-                        (m for k, m in effort_marker.items() if k in ek), 'o'
-                    )
+                    mk = get_effort_marker(ek)
                     t, a = float(row['tokens']), float(row['accuracy'])
                     if not (np.isfinite(t) and np.isfinite(a) and t > 0):
                         continue
@@ -4613,7 +5000,7 @@ class EvalPlotter:
                 ek = str(e).lower()
                 if ek in effort_proxies_done:
                     continue
-                mk = next((m for k, m in effort_marker.items() if k in ek), 'o')
+                mk = get_effort_marker(ek)
                 effort_proxies.append(Line2D(
                     [0], [0], color=SLATE, marker=mk, linestyle='None',
                     markersize=7, markerfacecolor=SLATE,
@@ -4861,4 +5248,953 @@ class EvalPlotter:
                     fontsize=8.5, fontweight=700, color=INK,
                 )
 
-        return fig, axes2d
+        return fig, axes2d, summary
+
+
+    @classmethod
+    def plot_compute_scaling(
+        cls,
+        data: Union[pd.DataFrame, 'EvalPivotResult'],
+        value_col: str = 'correct',
+        token_col: Optional[str] = None,
+        effort_col: str = 'reasoning_effort',
+        group_col: Optional[Union[str, List[str]]] = 'backend',
+        facet_col: Optional[str] = None,
+        facet_order: Optional[List[str]] = None,
+        filter_query: Optional[str] = None,
+        seed_col: Optional[str] = None,
+        title: str = "Test-time compute scaling",
+        subtitle: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: str = "Accuracy (%)",
+        figsize: Optional[Tuple[float, float]] = None,
+        dpi: Optional[float] = None,
+        consistency: Optional[str] = None,
+        unit_col: Optional[str] = None,
+        pass_threshold: float = 1.0,
+        min_turns: Optional[int] = None,
+        pass_k: Optional[int] = None,
+        log_x: bool = True,
+        human_token_ticks: bool = True,
+        show_values: bool = False,
+        connect_efforts: bool = True,
+        max_cols: int = 4,
+        markersize: float = 20.0,
+        linewidth: float = 1.8,
+    ):
+        """OpenAI-style test-time compute curves.
+
+        One point per (series × reasoning effort):
+          x = median CoT+answer tokens used at that effort
+          y = mean accuracy
+        Points for the same series are connected low → medium → high so the
+        path is the intentional budget schedule (not observational length bins).
+
+        Token column
+        ------------
+        Default resolves ``reasoning_token_count + response_token_count``
+        (CoT + answer). Falls back to ``output_token_count`` when reasoning
+        tokens are missing/zero.
+
+        Layout
+        ------
+        ``facet_col`` panels wrap into a grid with at most ``max_cols`` columns
+        (default 4) so many tests stay readable.
+        """
+        from matplotlib.lines import Line2D
+        import matplotlib.ticker as mticker
+
+        raw_cols = (
+            data.filtered_df.columns if isinstance(data, EvalPivotResult)
+            else data.columns
+        )
+        if isinstance(group_col, str):
+            group_col = [group_col]
+        if group_col:
+            group_col = [c for c in group_col if c in raw_cols] or None
+        multi_group = bool(group_col and len(group_col) > 1)
+
+        df_proc, seed_col, final_group = cls._prepare_data(
+            data, filter_query, group_col, seed_col, value_col=value_col,
+            consistency=consistency, unit_col=unit_col,
+            pass_threshold=pass_threshold, min_turns=min_turns, pass_k=pass_k,
+        )
+        n_seeds = df_proc[seed_col].nunique()
+        _footer_n_label = (
+            'units' if '_consistency_mode' in df_proc.columns else 'seeds'
+        )
+        _is_pct = is_percent_metric(value_col, ylabel)
+        df_proc = df_proc.dropna(subset=[effort_col]).copy()
+
+        # ---- resolve CoT + answer token column --------------------------
+        tok_label = 'CoT + answer tokens'
+        if token_col is not None:
+            if token_col not in df_proc.columns:
+                raise KeyError(f"token_col {token_col!r} not in data.")
+            df_proc['_cot_answer'] = pd.to_numeric(
+                df_proc[token_col], errors='coerce'
+            ).fillna(0)
+            tok_label = token_col.replace('_', ' ')
+        else:
+            has_reason = 'reasoning_token_count' in df_proc.columns
+            has_resp = 'response_token_count' in df_proc.columns
+            has_out = 'output_token_count' in df_proc.columns
+            reason = (
+                pd.to_numeric(df_proc['reasoning_token_count'], errors='coerce')
+                .fillna(0)
+                if has_reason else pd.Series(0.0, index=df_proc.index)
+            )
+            resp = (
+                pd.to_numeric(df_proc['response_token_count'], errors='coerce')
+                .fillna(0)
+                if has_resp else pd.Series(0.0, index=df_proc.index)
+            )
+            cot = reason + resp
+            if has_out:
+                out = pd.to_numeric(
+                    df_proc['output_token_count'], errors='coerce'
+                ).fillna(0)
+                cot = cot.where(cot > 0, out)
+            df_proc['_cot_answer'] = cot
+
+        summary = cls._effort_summary_table(
+            df_proc, value_col, '_cot_answer', effort_col, seed_col,
+            group_col=final_group, facet_col=facet_col,
+        )
+
+        effort_rank = {'none': 0, 'low': 1, 'medium': 2, 'high': 3}
+
+        def _sort_efforts(vals):
+            return sorted(
+                vals, key=lambda v: effort_rank.get(str(v).lower(), 50)
+            )
+
+        efforts = _sort_efforts(summary[effort_col].unique())
+
+        if final_group:
+            groups = cls._sort_hue_pairs(
+                cls._ordered_levels(df_proc, final_group, summary[final_group])
+            )
+            has_fc_cs, _ = detect_encoding_factors(groups)
+            label_fn = (
+                strip_fc_effort_label if (multi_group or has_fc_cs)
+                else shorten_label
+            )
+        else:
+            groups = [None]
+            has_fc_cs = False
+            label_fn = lambda g: 'all'  # noqa: E731
+
+        if facet_col:
+            if facet_col not in df_proc.columns:
+                raise KeyError(f"facet_col {facet_col!r} not in data.")
+            if facet_order:
+                present = set(summary[facet_col].dropna().unique())
+                facets = [v for v in facet_order if v in present]
+            else:
+                facets = cls._ordered_levels(
+                    df_proc, facet_col, summary[facet_col]
+                )
+                facets = sorted(facets)
+            if not facets:
+                facets = list(summary[facet_col].dropna().unique())
+
+        else:
+            facets = [None]
+
+        n_facets = len(facets)
+        max_cols = max(1, int(max_cols))
+        n_cols = min(n_facets, max_cols) if n_facets > 1 else 1
+        n_rows = int(np.ceil(n_facets / n_cols)) if n_facets > 1 else 1
+
+        if figsize is None:
+            if n_facets > 1:
+                figsize = (3.9 * n_cols, 3.35 * n_rows + 1.1)
+            else:
+                figsize = (7.6, 5.0)
+
+        fig, axes2d = plt.subplots(
+            n_rows, n_cols, figsize=figsize, dpi=dpi or DEFAULT_DPI,
+            sharey=True, squeeze=False,
+        )
+        axes_flat = [ax for row in axes2d for ax in row]
+        # hide unused cells
+        for k in range(n_facets, len(axes_flat)):
+            axes_flat[k].set_visible(False)
+
+        proxies = []
+        global_max_acc = 0.0
+        # per-panel token ranges so each facet keeps a sensible x scale
+        panel_xlims = []
+
+        def _human_xticks(ax):
+            lo, hi = ax.get_xlim()
+            if not (np.isfinite(lo) and np.isfinite(hi)) or hi <= 0:
+                return
+            start = max(0, int(np.floor(np.log2(max(lo, 1)))))
+            stop = int(np.ceil(np.log2(hi))) + 1
+            ticks = [2 ** e for e in range(start, stop + 1)]
+            ticks = [t for t in ticks if lo * 0.85 <= t <= hi * 1.2]
+            if len(ticks) > 7:
+                ticks = ticks[::2]
+            if not ticks:
+                return
+            ax.xaxis.set_major_locator(mticker.FixedLocator(ticks))
+            ax.xaxis.set_major_formatter(
+                mticker.FuncFormatter(lambda v, _p: cls._fmt_tok(v))
+            )
+            ax.xaxis.set_minor_locator(mticker.NullLocator())
+
+        ms = float(markersize)
+        lw = float(linewidth)
+
+        for idx, fac in enumerate(facets):
+            ax = axes_flat[idx]
+            cls._apply_paper_style(ax, grid_axis='y')
+            row = summary if fac is None else summary[summary[facet_col] == fac]
+            t_lo, t_hi = np.inf, 0.0
+            max_acc = 0.0
+
+            if not row.empty:
+                for grp in groups:
+                    sub = (
+                        row if final_group is None
+                        else row[row[final_group] == grp]
+                    )
+                    if sub.empty:
+                        continue
+                    sub = sub.copy()
+                    sub['_erank'] = sub[effort_col].map(
+                        lambda v: effort_rank.get(str(v).lower(), 50)
+                    )
+                    sub = sub.sort_values('_erank')
+
+                    color, ls, _mk = (
+                        get_semantic_style(grp) if grp is not None
+                        else ('#4f46e5', '-', 'o')
+                    )
+                    short = label_fn(grp) if grp is not None else 'all'
+
+                    xs, ys, yerrs, mks = [], [], [], []
+                    for _, r in sub.iterrows():
+                        t = float(r['tokens'])
+                        a = float(r['accuracy'])
+                        if not (np.isfinite(t) and np.isfinite(a) and t > 0):
+                            continue
+                        xs.append(t)
+                        ys.append(a)
+                        ye = (
+                            float(r['acc_std']) if pd.notna(r['acc_std']) else 0.0
+                        )
+                        yerrs.append(ye)
+                        ek = str(r[effort_col]).lower()
+                        mks.append(get_effort_marker(ek))
+                        t_lo = min(t_lo, t)
+                        t_hi = max(t_hi, t)
+                        max_acc = max(max_acc, a + ye)
+
+                    if not xs:
+                        continue
+
+                    if connect_efforts and len(xs) >= 2:
+                        ax.plot(
+                            xs, ys, color=color, linestyle=ls, linewidth=lw,
+                            zorder=3, alpha=0.95, solid_capstyle='round',
+                        )
+                    for x, y, ye, mk in zip(xs, ys, yerrs, mks):
+                        is_fc0 = ls in (':', 'dotted')
+                        if is_fc0:
+                            ax.scatter(
+                                x, y, s=ms, facecolors='none', edgecolors=color,
+                                marker=mk, linewidths=1.35, zorder=5, alpha=0.95,
+                            )
+                        else:
+                            ax.scatter(
+                                x, y, s=ms * 0.92, color=color, marker=mk,
+                                edgecolor='white', linewidth=0.7, zorder=5,
+                                alpha=0.95,
+                            )
+                        if ye > 0:
+                            ax.errorbar(
+                                x, y, yerr=ye, fmt='none', ecolor=color,
+                                elinewidth=0.7, capsize=1.6, alpha=0.35, zorder=4,
+                            )
+                        if show_values:
+                            ax.annotate(
+                                fmt_metric(y), (x, y),
+                                textcoords='offset points', xytext=(0, 6),
+                                ha='center', fontsize=6.0, fontweight='bold',
+                                color=INK, zorder=6,
+                            )
+
+                    if short not in {p.get_label() for p in proxies}:
+                        proxies.append(Line2D(
+                            [0], [0], color=color, linestyle=ls, marker='o',
+                            markersize=5, markeredgecolor='white', label=short,
+                        ))
+
+            global_max_acc = max(global_max_acc, max_acc)
+            panel_xlims.append((t_lo, t_hi))
+
+            if log_x:
+                ax.set_xscale('log', base=2)
+                ax.minorticks_off()
+            if fac is not None:
+                ax.set_title(
+                    str(fac), fontsize=10, fontweight=700, color=INK, pad=6,
+                )
+            # x labels only on bottom row of used panels
+            row_i = idx // n_cols
+            if row_i == n_rows - 1 or idx + n_cols >= n_facets:
+                ax.set_xlabel(
+                    xlabel or f"Median {tok_label}",
+                    fontsize=7.5, color=SLATE, labelpad=3,
+                )
+            else:
+                ax.set_xlabel('')
+
+            if np.isfinite(t_lo) and t_hi > 0:
+                if log_x:
+                    ax.set_xlim(t_lo / 1.35, t_hi * 1.35)
+                else:
+                    ax.set_xlim(t_lo * 0.9, t_hi * 1.08)
+            if human_token_ticks and log_x:
+                _human_xticks(ax)
+
+        # shared y limits
+        for i in range(n_facets):
+            ax = axes_flat[i]
+            if _is_pct:
+                y_top = percent_axis_limit(global_max_acc, headroom=8)
+                ax.set_ylim(0, y_top)
+                ax.axhline(
+                    100, color=SPINE, linewidth=0.5, linestyle=':', zorder=1,
+                )
+            else:
+                ax.set_ylim(0, max(global_max_acc * 1.12, 1.0))
+
+        axes_flat[0].set_ylabel(
+            ylabel, fontsize=9, fontweight=700, color=SLATE,
+        )
+        # only left column keeps ylabel text; clear others to reduce clutter
+        for i in range(1, n_facets):
+            if (i % n_cols) != 0:
+                axes_flat[i].set_ylabel('')
+
+        has_subtitle = bool(subtitle)
+        fig.suptitle(title, fontsize=13, fontweight='bold', color=INK, y=0.995)
+        if has_subtitle:
+            # Sit clearly under the title, above panel headers.
+            sub_y = 0.965 if n_rows > 1 else 0.935
+            fig.text(
+                0.5, sub_y, subtitle, ha='center', fontsize=7.5,
+                color=FAINT, style='italic',
+            )
+
+        effort_h = []
+        for e in efforts:
+            ek = str(e).lower()
+            mk = get_effort_marker(ek)
+            effort_h.append(Line2D(
+                [0], [0], color=SLATE, marker=mk, linestyle='None',
+                markersize=6, markerfacecolor=SLATE,
+                markeredgecolor='white', label=str(e),
+            ))
+        fc_h = [
+            Line2D(
+                [0], [0], color=SLATE, marker='o', linestyle='None',
+                markersize=6.5, markerfacecolor='none',
+                markeredgecolor=SLATE, markeredgewidth=1.4, label='fc0',
+            ),
+            Line2D(
+                [0], [0], color=SLATE, marker='o', linestyle='None',
+                markersize=6.5, markerfacecolor=SLATE,
+                markeredgecolor='white', label='fc1',
+            ),
+        ]
+        all_h = list(proxies) + effort_h
+        if has_fc_cs:
+            all_h = all_h + fc_h
+
+        if all_h:
+            ncol_leg = min(len(all_h), 12 if n_facets > 1 else 16)
+            fig.legend(
+                all_h, [h.get_label() for h in all_h],
+                loc='upper center', bbox_to_anchor=(0.5, 0.0),
+                ncol=ncol_leg, frameon=False, fontsize=6.2,
+                handlelength=1.7, columnspacing=0.9, handletextpad=0.35,
+            )
+
+        cls._add_footer(
+            fig,
+            f"each point = effort level aggregate across n={n_seeds} "
+            f"{_footer_n_label}  ·  x = median CoT+answer tokens  ·  "
+            f"path = low → high effort  ·  "
+            f"lines: dotted = fc0 / solid = fc1",
+        )
+
+        if n_facets == 1:
+            top = 0.80 if has_subtitle else 0.88
+            bottom = 0.16 if all_h else 0.08
+            left = 0.09
+        else:
+            top = 0.85 if has_subtitle else 0.94
+            if n_rows >= 3:
+                top = 0.93 if has_subtitle else 0.96
+            bottom = 0.10 if all_h else 0.05
+            left = 0.07
+        fig.subplots_adjust(
+            left=left, right=0.99, top=top, bottom=bottom,
+            wspace=0.18 if n_facets > 1 else 0.12,
+            hspace=0.38 if n_rows > 1 else 0.15,
+        )
+        return fig, (axes2d if n_facets > 1 else axes_flat[0]), summary
+
+
+    @classmethod
+    def plot_effort_at_matched_tokens(
+        cls,
+        data: Union[pd.DataFrame, 'EvalPivotResult'],
+        value_col: str = 'correct',
+        token_col: str = 'reasoning_token_count',
+        effort_col: str = 'reasoning_effort',
+        group_col: Optional[Union[str, List[str]]] = 'backend',
+        facet_col: Optional[str] = None,
+        facet_order: Optional[List[str]] = None,
+        filter_query: Optional[str] = None,
+        seed_col: Optional[str] = None,
+        title: str = "Accuracy at matched reasoning length, by effort",
+        subtitle: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: str = "Accuracy (%)",
+        figsize: Optional[Tuple[float, float]] = None,
+        dpi: Optional[float] = None,
+        consistency: Optional[str] = None,
+        unit_col: Optional[str] = None,
+        pass_threshold: float = 1.0,
+        min_turns: Optional[int] = None,
+        pass_k: Optional[int] = None,
+        binning: str = 'doubling',
+        min_bin_n: int = 8,
+        log_x: bool = True,
+        human_token_ticks: bool = True,
+        max_cols: int = 2,
+        within_question: bool = True,
+        question_col: str = 'test_id',
+        markersize: float = 30.0,
+        linewidth: float = 1.5,
+        show_errorbars: bool = False,
+        errorbar_cap_pct: bool = True,
+    ):
+        """Falsify 'effort only buys more tokens'.
+
+        Hypothesis (H1)
+        ---------------
+        Conditional on roughly the same reasoning-token budget, mean accuracy
+        still differs by ``reasoning_effort``.
+
+        Encoding
+        --------
+        - If ``group_col`` includes backend (and optionally fc): suite colors +
+          linestyle/fill for fc; marker shape = effort.
+        - If ``group_col`` is None / empty: pool all runs; color by effort
+          (low=slate-green, medium=amber, high=coral) with solid lines.
+        - If fc is not in the grouping, lines and markers are always solid/filled.
+
+        ``within_question=True`` averages per ``test_id`` first so each question
+        contributes equally inside a token bin.
+        """
+        from matplotlib.lines import Line2D
+        import matplotlib.ticker as mticker
+
+        # Modern effort palette when not splitting by backend
+        EFFORT_COLORS = {
+            'low': '#0d9488',      # teal
+            'medium': '#d97706',   # amber
+            'high': '#e11d48',     # rose
+            'none': '#64748b',
+        }
+        effort_rank = {'none': 0, 'low': 1, 'medium': 2, 'high': 3}
+
+        raw_cols = (
+            data.filtered_df.columns if isinstance(data, EvalPivotResult)
+            else data.columns
+        )
+        if isinstance(group_col, str):
+            group_col = [group_col]
+        if group_col:
+            group_col = [c for c in group_col if c in raw_cols] or None
+        multi_group = bool(group_col and len(group_col) > 1)
+        group_has_fc = bool(
+            group_col and any(
+                c in ('fc_model', 'fc') or str(c).startswith('fc')
+                for c in group_col
+            )
+        )
+        group_has_backend = bool(
+            group_col and any('backend' in str(c).lower() for c in group_col)
+        )
+        # Pool-by-effort mode when no backend split
+        pool_by_effort = not group_has_backend
+
+        df_proc, seed_col, final_group = cls._prepare_data(
+            data, filter_query, group_col, seed_col, value_col=value_col,
+            consistency=consistency, unit_col=unit_col,
+            pass_threshold=pass_threshold, min_turns=min_turns, pass_k=pass_k,
+        )
+        n_seeds = df_proc[seed_col].nunique()
+        _footer_n_label = (
+            'units' if '_consistency_mode' in df_proc.columns else 'seeds'
+        )
+        _is_pct = is_percent_metric(value_col, ylabel)
+
+        if token_col not in df_proc.columns:
+            raise KeyError(f"token_col {token_col!r} not in data.")
+        if effort_col not in df_proc.columns:
+            raise KeyError(f"effort_col {effort_col!r} not in data.")
+
+        use_within = bool(within_question and question_col in df_proc.columns)
+        if within_question and not use_within:
+            import warnings
+            warnings.warn(
+                f"within_question=True but {question_col!r} missing; "
+                "falling back to pooled bins.",
+                stacklevel=2,
+            )
+
+        df_proc = df_proc.dropna(subset=[effort_col]).copy()
+        df_proc['_tok'] = pd.to_numeric(df_proc[token_col], errors='coerce')
+        df_proc = df_proc[df_proc['_tok'] > 0].copy()
+        if df_proc.empty:
+            raise ValueError(f"No rows with {token_col} > 0 after filtering.")
+
+        toks_all = df_proc['_tok'].to_numpy(dtype=float)
+        t_min = max(1.0, float(np.nanmin(toks_all)))
+        t_max = float(np.nanmax(toks_all))
+        if binning == 'doubling':
+            lo_exp = int(np.floor(np.log2(t_min)))
+            hi_exp = int(np.ceil(np.log2(max(t_max, t_min * 2))))
+            edges = sorted(set(2 ** e for e in range(lo_exp, hi_exp + 2)))
+            df_proc['_bin'] = pd.cut(
+                df_proc['_tok'], bins=edges, right=False, include_lowest=True,
+            )
+        else:
+            edges = df_proc['_tok'].quantile(np.linspace(0, 1, 9)).unique()
+            if len(edges) < 3:
+                raise ValueError("Not enough unique token values for bins.")
+            df_proc['_bin'] = pd.cut(
+                df_proc['_tok'], bins=edges, include_lowest=True,
+            )
+
+        def _bin_center(cat):
+            if pd.isna(cat):
+                return np.nan
+            try:
+                return float(np.sqrt(cat.left * max(cat.right, cat.left * 1.01)))
+            except Exception:
+                return np.nan
+
+        df_proc['_bin_center'] = df_proc['_bin'].map(_bin_center)
+
+        efforts = sorted(
+            df_proc[effort_col].dropna().unique(),
+            key=lambda v: effort_rank.get(str(v).lower(), 50),
+        )
+
+        if final_group and not pool_by_effort:
+            groups = cls._sort_hue_pairs(
+                cls._ordered_levels(df_proc, final_group, df_proc[final_group])
+            )
+            label_fn = (
+                strip_fc_effort_label if (multi_group or group_has_fc)
+                else shorten_label
+            )
+        else:
+            groups = [None]
+            final_group = None
+            label_fn = lambda g: 'all'  # noqa: E731
+
+        if facet_col:
+            if facet_col not in df_proc.columns:
+                raise KeyError(f"facet_col {facet_col!r} not in data.")
+            if facet_order:
+                present = set(df_proc[facet_col].dropna().unique())
+                facets = [v for v in facet_order if v in present]
+            else:
+                facets = cls._ordered_levels(
+                    df_proc, facet_col, df_proc[facet_col]
+                )
+            if not facets:
+                facets = list(df_proc[facet_col].dropna().unique())
+        else:
+            facets = [None]
+
+        n_facets = len(facets)
+        max_cols = max(1, int(max_cols))
+        n_cols = min(n_facets, max_cols) if n_facets > 1 else 1
+        n_rows = int(np.ceil(n_facets / n_cols)) if n_facets > 1 else 1
+
+        if figsize is None:
+            if n_facets > 1:
+                figsize = (4.6 * n_cols, 3.6 * n_rows + 0.9)
+            else:
+                figsize = (8.0, 5.0)
+
+        fig, axes2d = plt.subplots(
+            n_rows, n_cols, figsize=figsize, dpi=dpi or DEFAULT_DPI,
+            sharey=True, squeeze=False,
+        )
+        axes_flat = [ax for row in axes2d for ax in row]
+        for k in range(n_facets, len(axes_flat)):
+            axes_flat[k].set_visible(False)
+
+        def _human_xticks(ax):
+            lo, hi = ax.get_xlim()
+            if not (np.isfinite(lo) and np.isfinite(hi)) or hi <= 0:
+                return
+            start = max(0, int(np.floor(np.log2(max(lo, 1)))))
+            stop = int(np.ceil(np.log2(hi))) + 1
+            ticks = [2 ** e for e in range(start, stop + 1)]
+            ticks = [t for t in ticks if lo * 0.85 <= t <= hi * 1.2]
+            if len(ticks) > 8:
+                ticks = ticks[::2]
+            if not ticks:
+                return
+            ax.xaxis.set_major_locator(mticker.FixedLocator(ticks))
+            ax.xaxis.set_major_formatter(
+                mticker.FuncFormatter(lambda v, _p: cls._fmt_tok(v))
+            )
+            ax.xaxis.set_minor_locator(mticker.NullLocator())
+
+        ms = float(markersize)
+        lw = float(linewidth)
+        proxies = []
+        effort_proxies_done = set()
+        effort_proxies = []
+        global_max_acc = 0.0
+        overlap_notes = []
+        matched_parts = []
+
+        for idx, fac in enumerate(facets):
+            ax = axes_flat[idx]
+            cls._apply_paper_style(ax, grid_axis='y')
+            d = df_proc if fac is None else df_proc[df_proc[facet_col] == fac]
+            if d.empty:
+                continue
+
+            t_lo, t_hi = np.inf, 0.0
+
+            for grp in groups:
+                sub = (
+                    d if final_group is None
+                    else d[d[final_group] == grp]
+                )
+                if sub.empty:
+                    continue
+
+                if pool_by_effort:
+                    # Series identity is effort itself — handled in loop below.
+                    short = None
+                    base_color, base_ls = None, '-'
+                    force_solid = True
+                else:
+                    color, ls, _ = get_semantic_style(grp)
+                    # No fc in grouping → never dotted / hollow
+                    if not group_has_fc:
+                        ls = '-'
+                    short = label_fn(grp)
+                    base_color, base_ls = color, ls
+                    force_solid = not group_has_fc
+
+                # ---- aggregate ------------------------------------------
+                if use_within:
+                    q_keys = [question_col, '_bin_center', effort_col, seed_col]
+                    seed_lvl = (
+                        sub.groupby(q_keys, observed=True)[value_col]
+                        .mean().reset_index()
+                    )
+                    q_lvl = (
+                        seed_lvl.groupby(
+                            [question_col, '_bin_center', effort_col],
+                            observed=True,
+                        )[value_col]
+                        .agg(['mean', 'count'])
+                        .reset_index()
+                        .rename(columns={'mean': 'q_acc', 'count': 'n_seeds'})
+                    )
+                    n_runs_q = (
+                        sub.groupby(
+                            [question_col, '_bin_center', effort_col],
+                            observed=True,
+                        ).size().rename('n_runs').reset_index()
+                    )
+                    q_lvl = q_lvl.merge(
+                        n_runs_q,
+                        on=[question_col, '_bin_center', effort_col],
+                        how='left',
+                    )
+                    q_lvl = q_lvl[q_lvl['n_runs'] >= max(1, min_bin_n // 4)]
+                    summary = (
+                        q_lvl.groupby(['_bin_center', effort_col], observed=True)
+                        .agg(
+                            accuracy=('q_acc', 'mean'),
+                            acc_std=('q_acc', 'std'),
+                            n_questions=(question_col, 'nunique'),
+                            n_runs=('n_runs', 'sum'),
+                        )
+                        .reset_index()
+                    )
+                    summary = summary[
+                        (summary['n_runs'] >= min_bin_n)
+                        & (summary['n_questions'] >= 1)
+                    ].copy()
+                else:
+                    gb_keys = ['_bin_center', effort_col, seed_col]
+                    seed_means = (
+                        sub.groupby(gb_keys, observed=True)[value_col]
+                        .mean().reset_index()
+                    )
+                    summary = (
+                        seed_means.groupby(
+                            ['_bin_center', effort_col], observed=True
+                        )[value_col]
+                        .agg(['mean', 'std', 'count'])
+                        .reset_index()
+                        .rename(columns={
+                            'mean': 'accuracy', 'std': 'acc_std',
+                            'count': 'n_seeds',
+                        })
+                    )
+                    n_runs = (
+                        sub.groupby(
+                            ['_bin_center', effort_col], observed=True
+                        ).size().rename('n_runs').reset_index()
+                    )
+                    summary = summary.merge(
+                        n_runs, on=['_bin_center', effort_col], how='left'
+                    )
+                    summary = summary[summary['n_runs'] >= min_bin_n].copy()
+
+                if summary.empty:
+                    continue
+
+                if _is_pct and summary['accuracy'].max(skipna=True) <= 1.5:
+                    summary['accuracy'] = summary['accuracy'] * 100
+                    summary['acc_std'] = summary['acc_std'] * 100
+
+                part = summary.copy()
+                if fac is not None:
+                    part[facet_col] = fac
+                if final_group is not None and grp is not None:
+                    part[final_group] = grp
+                matched_parts.append(part)
+
+                for e in efforts:
+                    esub = summary[summary[effort_col] == e].sort_values(
+                        '_bin_center'
+                    )
+                    if esub.empty:
+                        continue
+                    ek = str(e).lower()
+                    mk = get_effort_marker(ek)
+
+                    if pool_by_effort:
+                        color = EFFORT_COLORS.get(ek, '#4f46e5')
+                        ls = '-'
+                        is_fc0 = False
+                    else:
+                        color = base_color
+                        ls = base_ls
+                        is_fc0 = (not force_solid) and (ls in (':', 'dotted'))
+
+                    xs = esub['_bin_center'].to_numpy(dtype=float)
+                    ys = esub['accuracy'].to_numpy(dtype=float)
+                    yerr = esub['acc_std'].fillna(0).to_numpy(dtype=float)
+
+                    ax.plot(
+                        xs, ys, color=color, linestyle=ls, linewidth=lw,
+                        zorder=3, alpha=0.92, solid_capstyle='round',
+                    )
+                    for x, y in zip(xs, ys):
+                        if is_fc0:
+                            ax.scatter(
+                                x, y, s=ms, facecolors='none', edgecolors=color,
+                                marker=mk, linewidths=1.35, zorder=5, alpha=0.95,
+                            )
+                        else:
+                            ax.scatter(
+                                x, y, s=ms * 0.92, color=color, marker=mk,
+                                edgecolor='white', linewidth=0.7, zorder=5,
+                                alpha=0.95,
+                            )
+
+                    if show_errorbars and np.any(yerr > 0):
+                        y_lo = ys - yerr
+                        y_hi = ys + yerr
+                        if errorbar_cap_pct and _is_pct:
+                            y_lo = np.clip(y_lo, 0, 100)
+                            y_hi = np.clip(y_hi, 0, 100)
+                        ax.vlines(
+                            xs, y_lo, y_hi, colors=color, linewidths=0.7,
+                            alpha=0.35, zorder=4,
+                        )
+                        ax.hlines(
+                            y_lo, xs - 0, xs + 0, colors=color, linewidths=0.7,
+                            alpha=0.35, zorder=4,
+                        )
+                        # small caps
+                        cap = 0.03 * (ax.get_xlim()[1] - ax.get_xlim()[0]) if not log_x else None
+                        for x, lo, hi in zip(xs, y_lo, y_hi):
+                            ax.plot(
+                                [x, x], [lo, hi], color=color, linewidth=0.7,
+                                alpha=0.35, zorder=4,
+                            )
+
+                    t_lo = min(t_lo, float(np.nanmin(xs)))
+                    t_hi = max(t_hi, float(np.nanmax(xs)))
+                    global_max_acc = max(
+                        global_max_acc, float(np.nanmax(ys + yerr))
+                    )
+
+                    if pool_by_effort:
+                        leg = str(e)
+                        if leg not in {p.get_label() for p in proxies}:
+                            proxies.append(Line2D(
+                                [0], [0], color=color, linestyle='-',
+                                marker=mk, markersize=5.5,
+                                markeredgecolor='white', label=leg,
+                            ))
+                    else:
+                        if ek not in effort_proxies_done:
+                            effort_proxies.append(Line2D(
+                                [0], [0], color=SLATE, marker=mk,
+                                linestyle='None', markersize=6,
+                                markerfacecolor=SLATE, markeredgecolor='white',
+                                label=str(e),
+                            ))
+                            effort_proxies_done.add(ek)
+
+                if not pool_by_effort and short not in {
+                    p.get_label() for p in proxies
+                }:
+                    proxies.append(Line2D(
+                        [0], [0], color=base_color, linestyle=base_ls,
+                        marker='o', markersize=5.5, markeredgecolor='white',
+                        label=short,
+                    ))
+
+            tmp = d.copy()
+            be = (
+                tmp.groupby(['_bin_center', effort_col], observed=True)
+                .size().reset_index(name='n')
+            )
+            be = be[be['n'] >= min_bin_n]
+            n_ov = int(
+                be.groupby('_bin_center')[effort_col].nunique().ge(2).sum()
+            )
+            overlap_notes.append(f"{fac or 'all'}: {n_ov} overlapping bins")
+
+            if fac is not None:
+                ax.set_title(
+                    str(fac), fontsize=11, fontweight=700, color=INK, pad=6,
+                )
+            if log_x and np.isfinite(t_lo) and t_hi > 0:
+                ax.set_xscale('log', base=2)
+                ax.minorticks_off()
+                ax.set_xlim(t_lo / 1.35, t_hi * 1.35)
+            if human_token_ticks and log_x:
+                _human_xticks(ax)
+
+            row_i = idx // n_cols
+            if row_i == n_rows - 1 or idx + n_cols >= n_facets:
+                ax.set_xlabel(
+                    xlabel or f"{token_col.replace('_', ' ')} (bin center)",
+                    fontsize=8, color=SLATE, labelpad=3,
+                )
+
+        for i in range(n_facets):
+            ax = axes_flat[i]
+            if _is_pct:
+                # keep 0–100 even if std would push past
+                y_top = min(110.0, percent_axis_limit(
+                    min(global_max_acc*1.12, 112.0), headroom=4
+                ))
+                y_top = max(y_top, 112.0) if global_max_acc >= 95 else y_top
+                # Prefer a clean 0–100 frame for accuracy
+                ax.set_ylim(0, 112)
+                ax.axhline(
+                    100, color=SPINE, linewidth=0.5, linestyle=':', zorder=1,
+                )
+            else:
+                ax.set_ylim(0, max(global_max_acc * 1.12, 1.12))
+
+        axes_flat[0].set_ylabel(ylabel, fontsize=9, fontweight=700, color=SLATE)
+
+        # Default subtitle carries H1 so footer stays short
+        if subtitle is None:
+            subtitle = (
+                "At matched reasoning length, higher effort still yields "
+                "higher accuracy"
+                + ("  ·  within-question" if use_within else "  ·  pooled runs")
+            )
+        has_subtitle = bool(subtitle)
+        fig.suptitle(title, fontsize=13, fontweight='bold', color=INK, y=1.0)
+        if has_subtitle:
+            fig.text(
+                0.5, 0.975 if n_rows > 1 else 0.945, subtitle,
+                ha='center', fontsize=7.5, color=FAINT, style='italic',
+            )
+
+        fc_h = []
+        if group_has_fc and not pool_by_effort:
+            fc_h = [
+                Line2D(
+                    [0], [0], color=SLATE, marker='o', linestyle='None',
+                    markersize=6.5, markerfacecolor='none',
+                    markeredgecolor=SLATE, markeredgewidth=1.4, label='fc0',
+                ),
+                Line2D(
+                    [0], [0], color=SLATE, marker='o', linestyle='None',
+                    markersize=6.5, markerfacecolor=SLATE,
+                    markeredgecolor='white', label='fc1',
+                ),
+            ]
+
+        all_h = list(proxies) + (
+            list(effort_proxies) if not pool_by_effort else []
+        ) + fc_h
+        if all_h:
+            fig.legend(
+                all_h, [p.get_label() for p in all_h],
+                loc='upper center', bbox_to_anchor=(0.5, 0.0),
+                ncol=min(len(all_h), 12), frameon=False, fontsize=6.3,
+                handlelength=1.7, columnspacing=0.9, handletextpad=0.35,
+            )
+
+        mode = (
+            f"within-{question_col}" if use_within else "pooled runs"
+        )
+        ov = '; '.join(overlap_notes[:4]) if overlap_notes else ''
+        footer = (
+            f"{mode}  ·  bins n≥{min_bin_n}  ·  "
+            f"mean across n={n_seeds} {_footer_n_label}"
+            + ("  ·  ±1 std" if show_errorbars else "")
+            + (f"  ·  {ov}" if ov else "")
+        )
+        cls._add_footer(fig, footer)
+
+        if n_facets == 1:
+            top = 0.78 if has_subtitle else 0.86
+            bottom = 0.14 if all_h else 0.08
+        else:
+            top = 0.86 if has_subtitle else 0.90
+            bottom = 0.11 if all_h else 0.06
+        fig.subplots_adjust(
+            left=0.09, right=0.98, top=top, bottom=bottom,
+            wspace=0.16, hspace=0.40 if n_rows > 1 else 0.15,
+        )
+        plot_data = (
+            pd.concat(matched_parts, ignore_index=True) if matched_parts
+            else pd.DataFrame()
+        )
+        return fig, (axes2d if n_facets > 1 else axes_flat[0]), plot_data

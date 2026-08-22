@@ -1,0 +1,36 @@
+## Abstract
+
+These 44 figures are the complete chart record behind the report: 320,192 evaluations of gpt-oss-20b, 3.49B tokens, 8 seeds per configuration at batch size 1, over 1,062 GPU hours on a single RTX 3090.
+
+Every phase compares the burrito harness against vanilla vLLM and llama.cpp clients, and every figure set uses the same five reliability metrics: mean accuracy, pass@8 (solved by at least one of eight seeds), pass^8 (solved by all eight), fail^8 (failed by all eight), and error rate.
+
+Phases 1 and 2 cover the full sweep at medium effort, first across all backends and wire APIs, then GPT-OSS on AIME25 and GPQA without tools.
+
+Phases 3 and 4 add reasoning-effort sweeps over BFCL_v4 and GPT-OSS, with the python tool enabled on AIME25.
+
+Phase 5 goes deep on multi-turn work, adding pass curves and turn-survival analysis.
+
+Phase 6 is the exploratory study of how much reasoning-effort differences are real signal.
+
+Read in order, the figures surface the report's seven findings.
+
+The irrelevance paradox: vanilla clients on the default template score 99.9% on BFCL's irrelevance test because any non-tool-call, including a silent failure, counts as correct, while burrito sits at 92.1–92.4% and enabling the FC model pulls every backend to a common 85.4–86.1%.
+
+The jinja fix: removing "commentary" from the valid output channels when no tools are present moves live_relevance from 3.1% to 41.4% and live_simple from 3.1% to 36.7%, and on tool-free AIME25/GPQA it puts llama.cpp at exact parity with burrito (73.8/67.5), with the phase's only nonzero error rate (3.3% of AIME25) vanishing once the template is fixed.
+
+Wire-API differences: on multi-turn work with AST parsing, vLLM's responses API errors on 83.5% of units versus 36.0% on chat, even though it is the more accurate of the two.
+
+Multi-turn base: schema tool definitions (fc=1) hold all-seed pass rates of 13.5–27.5% while AST parsing (fc=0) is near empty, and the cumulative survival curves show per-step failure compounding: fc=1 configurations keep 0.9–7.1% of all runs alive through turn 6, fc=0 is gone by turns 3–4, and the vanilla AST-parsed backends are almost dead at turn 0 itself.
+
+Preserved thinking: a marginal nudge, slightly up with schema tools (56.62% vs 56.12%) and slightly down with AST.
+
+Reasoning effort: low to medium is a genuine strategy change on AIME25 (38.3 to 73.8%), medium to high is mostly volume (10 more points for roughly 3× the tokens), and the token-matched controls (Figs. 6.15–6.16) show that at an equal reasoning budget higher effort simply reasons better (38.3/97.1/100.0% at ~1.4k reasoning tokens for low/medium/high), while ~90k+ reasoning-token runs collapse to ~38–44%.
+
+Python tools: +21.25 points on AIME25 at low effort, and 85.83% at medium effort on about half the thinking of the no-python run.
+
+Taken together, the set demonstrates that the stack around the model is the bottleneck: the same gpt-oss-20b ranges from 0% (vanilla clients with AST parsing and the broken jinja template on multi-turn work) to ~87% (AIME25 at high effort), and the pass@8 / pass^8 / fail^8 triplet in every phase decomposes each task into reliably solved, reliably broken, and per-seed luck, which on tool-free AIME25 is 93.3% solvable by some seed but only 36.7% by all seeds.
+
+The practical conclusion lands on one Pareto point, medium effort with schema tool definitions (76.1–76.7% on pooled BFCL at 377–407 median tokens, versus 74.3–75.9% at 1,362–1,975 tokens on high effort), and on the tool-free benchmarks the fixed template alone puts vanilla llama.cpp at parity with the harness.
+
+Burrito's contribution lives at the harness layer: the template fix, the completions-wire choice, and the tool parsing that turn a structurally trained model into a reliable one.
+
