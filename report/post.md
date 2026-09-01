@@ -19,7 +19,7 @@ So we did. One universe later, we had burrito.
 
 We built the harness (`burrito-core`) from scratch to test the model properly. The name stuck because [u/skeole](https://www.reddit.com/user/skeole/) was doing gig work driving physical burritos around town while the evals ran on a single RTX 3090.
 
-Once the harness was ready, the most autistic evals in history happened. We threw everything at it: reasoning benchmarks, multi-turn workflows, preserved thinking (the model's thinking kept across turns instead of pruned), effort levels (the low/medium/high 'how hard to think' setting). 320,192 runs. 8 seeds (each configuration run 8 times with different random number seeds — signal, not luck). Batch size 1 (one request at a time, no batching). Temperature 1.0. MXFP4 quantization (a 4-bit format) over 131K context. 
+Once the harness was ready, the most autistic evals in history happened. We threw everything at it: reasoning benchmarks, multi-turn workflows, preserved thinking (the model's thinking kept across turns instead of pruned), effort levels (the low/medium/high 'how hard to think' setting). 320,192 runs. 8 seeds (each configuration run 8 times with different random number seeds — signal, not luck). Batch size 1 (one request at a time, no batching). Temperature 1.0. MXFP4 quantization (a 4-bit format) over 128K context. 
 
 Yes, the model is dated. We ran this on May 2026 backend versions against the original August 2025 model weights. The backends have improved since launch, especially on the fc=1 path (fc = function calling; 1 = the mode that uses structured tool schemas). We know this. We are doing this in the name of fucking science.
 

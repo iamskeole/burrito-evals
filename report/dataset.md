@@ -2,7 +2,7 @@
 
 The complete dataset for the gpt-oss-20b evaluation: **320,192 rows, one row per run**. A *run* is one model attempt at one benchmark item (a *unit*) under one configuration and one seed. Every number in [`report.md`](report.md), [`story.md`](story.md), and [`post.md`](post.md), and all 44 figures in [`../plots/`](../plots/), derive from this single file. No GPU is needed to work with it: [`../eval_report.ipynb`](../eval_report.ipynb) regenerates the entire report from the CSV alone.
 
-Model and hardware: gpt-oss-20b at factory MXFP4 over 131K context, on a single RTX 3090, batch size 1, temperature 1.0, 1,062 GPU hours. Totals: 3,122,239,084 input tokens, 367,392,611 output tokens (3.49B combined).
+Model and hardware: gpt-oss-20b at factory MXFP4 over 128K context, on a single RTX 3090, batch size 1, temperature 1.0, 1,062 GPU hours. Totals: 3,122,239,084 input tokens, 367,392,611 output tokens (3.49B combined).
 
 ## 1. Quick start
 

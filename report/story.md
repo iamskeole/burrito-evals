@@ -290,7 +290,7 @@ Do not assume more reasoning is always better. Do not assume the model is just g
 
 ## Methodology
 
-This analysis draws from 320,192 evaluation runs of gpt-oss-20b on a single RTX 3090. The model runs in MXFP4 quantization (a 4-bit quantization format) with 131K context. All runs use temperature 1.0 and batch size 1. Eight random seeds per configuration.
+This analysis draws from 320,192 evaluation runs of gpt-oss-20b on a single RTX 3090. The model runs in MXFP4 quantization (a 4-bit quantization format) with 128K context. All runs use temperature 1.0 and batch size 1. Eight random seeds per configuration.
 
 Two inference backends: llama.cpp (GGUF weights — the file format llama.cpp uses for quantized models) and vLLM (safetensors — Hugging Face's file format for PyTorch tensors — in the same MXFP4 quantization). Both backends produce identical accuracy curves, confirming the pattern is backend-independent.
 

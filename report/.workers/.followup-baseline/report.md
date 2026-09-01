@@ -42,7 +42,7 @@ Every chart in this report is part of the complete 44-figure record kept in plot
 
 ## The Model
 
-This report evaluates gpt-oss-20b, OpenAI's 20-billion-parameter open weight model. It runs in MXFP4 quantization, which keeps memory footprint low enough for a single consumer GPU (RTX 3090) while preserving most of the model's capability. The model supports 131k context and was trained with native tool calling, interleaved reasoning channels, python code execution, and browser interaction.
+This report evaluates gpt-oss-20b, OpenAI's 20-billion-parameter open weight model. It runs in MXFP4 quantization, which keeps memory footprint low enough for a single consumer GPU (RTX 3090) while preserving most of the model's capability. The model supports 128K context and was trained with native tool calling, interleaved reasoning channels, python code execution, and browser interaction.
 
 What makes gpt-oss different from earlier open models is its channel-based architecture. The model does not just produce text. It alternates between thinking, calling tools, and providing final answers, and it can backtrack into reasoning mid-conversation. This design is powerful but demands an inference stack that respects those patterns instead of forcing them into a standard chat template.
 
