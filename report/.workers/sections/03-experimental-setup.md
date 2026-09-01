@@ -15,7 +15,7 @@ We evaluate across nine tests spanning four categories:
 - 61,376 rows total
 
 **Multi-turn** tests agentic workflows requiring multiple sequential tool calls:
-- `multi_turn_base` -- multi-step tasks with 2-5 turns
+- `multi_turn_base` -- multi-step agentic tasks, 1-7 turns each, tracked turn by turn
 - 64,000 rows total
 
 **GPT-OSS native benchmarks** test reasoning-heavy tasks:

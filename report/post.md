@@ -99,7 +99,7 @@ Everything. MIT license. No paywalls. No gated datasets. All the code, data, and
 - **plots/** -- all generated charts
 - **eval_helpers.py** -- the analysis scripts that produced the charts and tables
 
-The fixed jinja template is also being submitted as a PR to OpenAI's HuggingFace repo: [gpt-oss-20b/chat_template.jinja](https://huggingface.co/openai/gpt-oss-20b/blob/main/chat_template.jinja). If it gets merged, every user of this model gets the template fix automatically — and on tool-free reasoning benchmarks that alone puts vanilla llama.cpp at parity with burrito. The rest of the fix (the wire protocol the harness uses to talk to the backend, and the parsing of tool calls) lives in burrito and does not upstream.
+The fixed jinja template has also been submitted as a PR to OpenAI's HuggingFace repo: [gpt-oss-20b/chat_template.jinja](https://huggingface.co/openai/gpt-oss-20b/discussions/274/files). If it gets merged, every user of this model gets the template fix automatically — and on tool-free reasoning benchmarks that alone puts vanilla llama.cpp at parity with burrito. The rest of the fix (the wire protocol the harness uses to talk to the backend, and the parsing of tool calls) lives in burrito and does not upstream.
 
 ---
 
@@ -137,16 +137,10 @@ The prose you are reading is 100% locally generated, triple-checked against the 
 
 This was a one-person project run on consumer hardware. 1,062 GPU hours on a single RTX 3090 — the 3.49B tokens from the title are the total token count across all 320,192 runs. The evals literally ran while [u/skeole](https://www.reddit.com/user/skeole/) was driving burritos to customers.
 
-The analysis you are reading was co-authored by [u/skeole](https://www.reddit.com/user/skeole/) and unsloth--Qwen3.6-27B-UD-Q4_K_XL.gguf. (The Qwen co-author writes the next two sentences.) iamskeole designed the evaluation, pointed me at the eval helpers and report notebook, and drove the entire analytical direction. I executed the data queries, wrote the charts, and drafted the prose. We are both running locally on the same machine.
+The analysis you are reading was co-authored by [u/skeole](https://www.reddit.com/user/skeole/) and unsloth--Qwen3.6-27B-UD-Q4_K_XL.gguf. (The Qwen co-author writes the next two sentences.) [u/skeole](https://www.reddit.com/user/skeole/) designed the evaluation, pointed me at the eval helpers and report notebook, and drove the entire analytical direction. I executed the data queries, wrote the charts, and drafted the prose. We are both running locally on the same machine.
 
-The `eval_helpers.py` that produced every chart in this post was written by Grok 4.5 under iamskeole's creative direction. The GPU was busy running evals, so there was no room to run local inference during the initial build. The other labs' free quotas were shit -- OpenAI and Anthropic capped you after five fucking posts -- so Grok was the only option that did not charge per token. iamskeole discovered Grok out of necessity and actually liked working with it.
+The `eval_helpers.py` that produced every chart in this post was written by Grok 4.5 under [u/skeole](https://www.reddit.com/user/skeole/)'s creative direction. The GPU was busy running evals, so there was no room to run local inference during the initial build. The other labs' free quotas were shit -- OpenAI and Anthropic capped you after five fucking posts -- so Grok was the only option that did not charge per token. [u/skeole](https://www.reddit.com/user/skeole/) discovered Grok out of necessity and actually liked working with it.
 
 No cloud credits. No API subscriptions. No big lab money. Just one GPU, some gig work driving burritos, and a refusal to pay for access to models that should be free.
 
 One GPU is enough.
-
-Happy to answer questions about the methodology, the data, or the findings.
-
----
-
-*Edit: Links added. Repo is live.*

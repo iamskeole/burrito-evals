@@ -168,7 +168,7 @@ This is why burrito scores lower on irrelevance than the default-template vanill
 ![Error rates by task, across all seeds](../plots/phase_1-f05-is_error.png)
 > Fig. 1.5: Error rates by task and backend. Burrito's irrelevance error rate is at most 0.42% — its accuracy gap against the vanilla clients there is wrong calls, not errors — while the fixed jinja template is the phase's outlier, erroring on 16.7–99.3% of units with fc_model=0 (peaking at 99.25% on simple_python, 98.0% on multi_turn_base, and 96.9% on live_simple).
 
-## What This Means
+## Implications
 
 The irrelevance test conflates correct restraint with system failure. A high score can come from the model correctly deciding no tools are needed, or from the system producing no output at all. The benchmark cannot distinguish between the two.
 
@@ -180,7 +180,7 @@ This is a warning for anyone using BFCL or similar benchmarks. A test that marks
 
 The default jinja chat template for gpt-oss includes "commentary" as a valid output channel even when no tools are present in the request. This one template mismatch breaks the model on nearly every non-tool-call task.
 
-Removing "commentary" from valid channels when no tools are defined fixes the problem. The accuracy gains are dramatic.
+Removing "commentary" from valid channels when no tools are defined fixes the problem. The accuracy gains are dramatic. PR submitted to the official model repo on [HuggingFace](https://huggingface.co/openai/gpt-oss-20b/discussions/274/files).
 
 ## The Numbers
 
@@ -206,7 +206,7 @@ gpt-oss was trained to alternate between channels: thinking, tool calling, comme
 
 The fix is to remove "commentary" from the valid channel list when the request contains no tools. The model then produces clean responses in the expected format.
 
-## What This Means
+## Implications
 
 Removing one channel from the chat template moves accuracy from 3% to 40% on live tests. This is not a minor tuning adjustment. The default template shipped with the inference stack was making the model non-functional for basic tasks.
 
@@ -241,7 +241,7 @@ Burrito sidesteps the chat vs responses tradeoff entirely. It accepts both APIs 
 
 The `/v1/completions` endpoint is simpler than chat or responses. It takes a prompt and returns tokens. Burrito builds the prompt correctly using the model's training structure, then parses the output to extract tool calls, reasoning, and final responses. This two-step approach avoids the encoding issues that affect the higher-level APIs.
 
-## What This Means
+## Implications
 
 If you run vLLM directly and use the responses API for tool calling, expect high error rates on multi-turn tasks. The chat API is more stable but less capable with structured outputs. Neither is ideal.
 
@@ -286,7 +286,7 @@ Turn 0 is the wall of multi-turn work. Three measurements show why:
 ![Cumulative turn survival](../plots/phase_5-f08-turn_survival-cum.png)
 > Fig. 5.8: End-to-end path survival (the product of per-turn rates). Schema-tool configurations keep 0.9–7.1% of all runs alive through turn 6; AST-parsed configurations are gone by turns 3–4; the vanilla fc=0 backends by turn 1.
 
-## What This Means
+## Implications
 
 Tool definition format is the largest single factor in multi-turn performance. Schema-based definitions (fc_model=1) give the model the structure it needs to sustain conversations. AST parsing (fc_model=0) is unreliable for multi-step workflows.
 
@@ -320,7 +320,7 @@ Standard deviation across seeds is lower for preserved thinking with schema tool
 
 On single-turn BFCL tests (non-multi-turn, medium effort), preserved thinking shows small deltas that flip in direction across different tests. The effect is not consistent enough to recommend pt as a general improvement.
 
-## What This Means
+## Implications
 
 Preserved thinking is not a silver bullet. OpenAI's recommendation to prune thinking history unless the model is still issuing tool calls holds up under testing. Keeping all thinking history produces only marginal accuracy changes: slightly better with schema tools (fc=1, +3.7 points), slightly worse with AST parsing (fc=0, -2.1 points). The gains are small enough that we are not sure they are statistically significant.
 
@@ -411,7 +411,7 @@ The full picture across effort levels shows three phases:
 ![Reasoning effort effect-cost-tradeoff, AIME25+GPQA](../plots/phase_6-f08-reasoning_effort_story-non_bfcl.png)
 > Fig. 6.8: AIME25 and GPQA pooled. The low→medium step carries the story: on burrito@llamacpp it is worth +15.2 points on fc_model=0 (53.1 → 68.3%) and +23.7 on fc_model=1 (59.6 → 83.3%), while medium→high adds just 5.2 and 2.9 more as median output tokens go from 606 to 31,924. (GPQA ran fc_model=0 only, so the fc_model=1 lines are AIME25 alone.)
 
-## What This Means
+## Implications
 
 Two lessons transfer to any model with configurable reasoning depth.
 
@@ -452,7 +452,7 @@ Python calls also reduce token usage at medium effort: with the python tool enab
 ![Python tool impact on AIME25](../plots/phase_4-f01-mean_correct.png)
 > Fig. 4.1: AIME25 accuracy with python tool enabled vs disabled. Largest gains at low reasoning effort.
 
-## What This Means
+## Implications
 
 Python tool support is most valuable when reasoning effort is constrained. At low effort, it adds 21-24 points of accuracy. At medium effort, it adds 10-12 points while reducing token usage. At high effort, the benefit is mixed — the model already reasons its way to most solutions, so the toggle moves accuracy by a few points in either direction (+2.5 points on llama.cpp, −5.8 points on vLLM).
 
